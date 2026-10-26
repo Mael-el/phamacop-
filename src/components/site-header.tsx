@@ -2,6 +2,7 @@ import Link from "next/link";
 import { Icon } from "@/components/icon";
 import { SearchForm } from "@/components/search-form";
 import { LocaleSwitcher } from "@/components/locale-switcher";
+import { NavLinks } from "@/components/nav-links";
 import type { Dictionary, Locale } from "@/lib/i18n";
 
 export function SiteHeader({ t, locale }: { t: Dictionary; locale: Locale }) {
@@ -23,18 +24,14 @@ export function SiteHeader({ t, locale }: { t: Dictionary; locale: Locale }) {
           <span className="brand-mark"><Icon name="leaf" size={23} /></span>
           <span className="brand-copy"><strong>{t.meta.brandLine1}</strong><span>{t.meta.brandLine2}</span></span>
         </Link>
-        <nav className="desktop-nav" aria-label={t.nav.mainAria}>
-          {navigation.map((item) => <Link href={item.href} key={item.href}>{item.label}</Link>)}
-        </nav>
+        <NavLinks items={navigation} className="desktop-nav" ariaLabel={t.nav.mainAria} />
         <div className="header-search"><SearchForm compact placeholder={t.nav.searchPlaceholder} /></div>
         <LocaleSwitcher locale={locale} t={t} />
         <Link className="header-method" href="/preuves/methodologie" aria-label={t.home.method}>
           <span>{t.nav.methode}</span><Icon name="arrow" size={15} />
         </Link>
       </div>
-      <nav className="mobile-nav wrap" aria-label={t.nav.mobileAria}>
-        {navigation.map((item) => <Link href={item.href} key={item.href}>{item.label}</Link>)}
-      </nav>
+      <NavLinks items={navigation} className="mobile-nav wrap" ariaLabel={t.nav.mobileAria} />
     </header>
   );
 }

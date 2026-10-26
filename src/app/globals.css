@@ -1,28 +1,46 @@
 @import "tailwindcss";
 
 :root {
-  --paper: #f5f3ea;
-  --paper-2: #ebe9de;
-  --paper-3: #fffdf7;
-  --ink: #19382e;
-  --forest: #1c4638;
-  --deep: #15342c;
-  --deepest: #102820;
-  --leaf: #6f8a62;
-  --moss: #93a47c;
-  --pale-leaf: #d9e2d3;
-  --gold: #c29a5a;
-  --rust: #a8563d;
-  --muted: #69746b;
-  --line: #d9d9cd;
-  --white: #fffdf7;
-  --serif: Georgia, "Times New Roman", serif;
-  --sans: Arial, Helvetica, sans-serif;
+  --paper: #f6f4ec;
+  --paper-2: #eae7dc;
+  --paper-3: #fffef9;
+  --ink: #1b3a30;
+  --forest: #1e4a3a;
+  --deep: #17372e;
+  --deepest: #102b23;
+  --leaf: #6d8a61;
+  --moss: #96a680;
+  --pale-leaf: #dbe3d5;
+  --gold: #c09a5d;
+  --rust: #a45a41;
+  --muted: #66736a;
+  --line: #deddd2;
+  --white: #fffef9;
+
+  /* Typographie : sérif classique pour les titres, sans système pour le texte */
+  --serif: "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Georgia, "Times New Roman", serif;
+  --sans: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+
+  /* Rayons : échelle unique pour tous les blocs */
+  --r-xs: 6px;
+  --r-sm: 10px;
+  --r-md: 14px;
+  --r-lg: 18px;
+  --r-pill: 999px;
+
+  /* Ombres douces, jamais dures */
+  --shadow-1: 0 1px 2px rgba(20, 45, 36, .04), 0 6px 16px rgba(20, 45, 36, .05);
+  --shadow-2: 0 2px 4px rgba(20, 45, 36, .05), 0 16px 34px rgba(20, 45, 36, .09);
+
+  /* Mouvement : une seule courbe, des durées courtes */
+  --ease: cubic-bezier(.22, .61, .36, 1);
+  --t-fast: .16s;
+  --t-base: .24s;
 }
 
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; scroll-padding-top: 110px; }
-body { margin: 0; background: var(--paper); color: var(--ink); font-family: var(--sans); font-size: 15px; line-height: 1.65; -webkit-font-smoothing: antialiased; }
+body { margin: 0; background: var(--paper); color: var(--ink); font-family: var(--sans); font-size: clamp(15.5px, .28vw + 14.7px, 17px); line-height: 1.68; -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
 ::selection { background: #cad8c1; color: var(--deepest); }
 a { color: inherit; text-decoration: none; }
 button, input { font: inherit; }
@@ -580,3 +598,207 @@ em { font-family: var(--serif); }
 .record-card-organism { font-size: 12px; color: var(--muted); font-style: italic; margin-top: -6px; }
 .pathway-preparations { display: grid; gap: 8px; list-style: none; margin: 0; padding: 0; }
 .pathway-preparations li { display: flex; align-items: center; gap: 8px; font-size: 13.5px; padding: 8px 12px; border: 1px solid var(--line); border-radius: 10px; background: var(--paper-2); }
+
+/* =====================================================================
+   Passe de finition — classique, fluide et simple
+   Objectif : lecture confortable, coins adoucis, un seul rythme de
+   mouvement. Aucune règle ici ne change la structure des pages.
+   ===================================================================== */
+
+/* ---------- 1. En-tête : plus fin, plus calme ---------- */
+.site-header {
+  background: color-mix(in srgb, var(--paper) 88%, transparent);
+  border-bottom: 1px solid color-mix(in srgb, var(--ink) 9%, transparent);
+  backdrop-filter: blur(16px) saturate(1.1);
+}
+.header-main { min-height: 74px; }
+.brand-mark { transition: transform var(--t-base) var(--ease); }
+.brand:hover .brand-mark { transform: rotate(-6deg) scale(1.04); }
+.brand-copy strong { letter-spacing: .1em; }
+.brand-copy span { color: var(--muted); letter-spacing: .18em; }
+
+.desktop-nav a, .mobile-nav a {
+  position: relative;
+  color: color-mix(in srgb, var(--ink) 72%, transparent);
+  font-size: 12.5px;
+  font-weight: 600;
+  letter-spacing: .01em;
+  padding-block: 6px;
+  transition: color var(--t-fast) var(--ease);
+}
+.desktop-nav a::after {
+  content: "";
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  height: 1.5px;
+  background: var(--forest);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform var(--t-base) var(--ease);
+}
+.desktop-nav a:hover, .desktop-nav a[aria-current="page"] { color: var(--forest); }
+.desktop-nav a:hover::after, .desktop-nav a[aria-current="page"]::after { transform: scaleX(1); }
+.mobile-nav a[aria-current="page"] { color: var(--forest); }
+
+.search-form {
+  border-radius: var(--r-pill);
+  border-color: color-mix(in srgb, var(--ink) 14%, transparent);
+  box-shadow: none;
+  background: var(--paper-3);
+  transition: border-color var(--t-base) var(--ease), box-shadow var(--t-base) var(--ease);
+}
+.search-form:focus-within {
+  border-color: color-mix(in srgb, var(--forest) 45%, transparent);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--leaf) 16%, transparent);
+}
+.search-form button { border-radius: 50%; transition: background var(--t-base) var(--ease), transform var(--t-base) var(--ease); }
+.search-form button:hover { transform: scale(1.05); }
+.search-form-compact { background: transparent; }
+
+/* ---------- 2. Accueil : accueil plus doux, image cadrée ---------- */
+.home-hero {
+  background:
+    radial-gradient(120% 90% at 85% -10%, color-mix(in srgb, var(--leaf) 22%, transparent) 0%, transparent 60%),
+    linear-gradient(180deg, var(--deep) 0%, var(--deepest) 100%);
+}
+.hero-copy h1 { letter-spacing: -.035em; text-wrap: balance; }
+.hero-copy h1 em { color: #cdd9b8; }
+.hero-intro { color: #d8ded2; }
+.button { border-radius: var(--r-pill); padding-inline: 22px; transition: transform var(--t-base) var(--ease), background var(--t-base) var(--ease), border-color var(--t-base) var(--ease), color var(--t-base) var(--ease); }
+.button:hover { transform: translateY(-2px); }
+.button-primary { background: #e4e8d3; }
+.button-primary:hover { background: #f3efdd; }
+.hero-art { border-radius: var(--r-lg); border-color: color-mix(in srgb, #efe9d2 26%, transparent); }
+.hero-art-image { border-radius: calc(var(--r-lg) - 6px); }
+.hero-art-note { border-radius: var(--r-pill); }
+.hero-art-image img { transition: transform .6s var(--ease); }
+.hero-art:hover .hero-art-image img { transform: scale(1.03); }
+.hero-bottom { background: var(--paper); }
+.hero-stat strong { font-variant-numeric: tabular-nums; }
+
+/* ---------- 3. Cartes et blocs : coins adoucis, élévation légère ---------- */
+.plant-card,
+.record-card,
+.claim-card,
+.study-card,
+.compound-mini,
+.glossary-card,
+.evidence-method-card,
+.result-row,
+.solution-card {
+  border-radius: var(--r-md);
+  border-color: color-mix(in srgb, var(--ink) 10%, transparent);
+  box-shadow: var(--shadow-1);
+}
+.plant-card { transition: transform var(--t-base) var(--ease), box-shadow var(--t-base) var(--ease), border-color var(--t-base) var(--ease); }
+.plant-card:hover,
+.record-card:hover {
+  transform: translateY(-3px);
+  border-color: color-mix(in srgb, var(--leaf) 55%, transparent);
+  box-shadow: var(--shadow-2);
+}
+.record-card { transition: transform var(--t-base) var(--ease), box-shadow var(--t-base) var(--ease), border-color var(--t-base) var(--ease); }
+.study-card, .claim-card, .evidence-method-card, .glossary-card, .compound-mini { box-shadow: none; }
+.result-row { transition: transform var(--t-fast) var(--ease), border-color var(--t-fast) var(--ease), background var(--t-fast) var(--ease); }
+.result-row:hover { background: var(--paper-3); }
+
+.family-tag, .record-tag, .study-type-label, .tradition-label, .fon-badge, .identity-family {
+  border-radius: var(--r-pill);
+  letter-spacing: .07em;
+}
+.filter-chip { border-radius: var(--r-pill); transition: color var(--t-fast) var(--ease), background var(--t-fast) var(--ease), border-color var(--t-fast) var(--ease); }
+.evidence-badge { border-radius: var(--r-pill); }
+.page-hero-aside { border-radius: var(--r-md); background: color-mix(in srgb, var(--leaf) 8%, var(--paper-3)); }
+
+/* ---------- 4. Lecture : tailles minimales relevées ---------- */
+.section-kicker { font-size: 10.5px; letter-spacing: .15em; }
+.eyebrow { font-size: 11px; }
+.hero-bottom-label, .hero-stat span, .footer-label { font-size: 10px; }
+.plant-card-content h3 { font-size: 24px; }
+.plant-card-content p { font-size: 12.5px; line-height: 1.62; }
+.plant-card-meta { font-size: 10.5px; }
+.botanical-author { font-size: 14px; }
+.claim-text { font-size: clamp(19px, 1.1vw + 16px, 22px); line-height: 1.42; }
+.claim-rationale p, .claim-limit p { font-size: 12px; line-height: 1.7; }
+.claim-rationale strong, .claim-limit strong { font-size: 10px; }
+.claim-sources li { font-size: 11.5px; }
+.doi-link { font-size: 10.5px; }
+.study-summary { font-size: 12.5px; }
+.study-authors { font-size: 11.5px; }
+.study-limit { font-size: 11.5px; border-radius: var(--r-xs); }
+.record-card p { font-size: 12px; line-height: 1.68; }
+.record-card .record-card-top { font-size: 10px; }
+.record-card .record-card-link { font-size: 11.5px; }
+.detail-section-copy { font-size: 13.5px; line-height: 1.78; }
+.tradition-panel p, .safety-panel p { font-size: 12.5px; }
+.tradition-meta, .tradition-source, .safety-panel .safety-source { font-size: 10.5px; }
+.compound-mini p, .glossary-card p, .evidence-method-card p, .method-intro p { font-size: 12px; }
+.method-step p, .pathway-step p { font-size: 11px; }
+.identity-list dd { font-size: 11.5px; }
+.identity-list dt { font-size: 9.5px; }
+.footer-links a { font-size: 12.5px; }
+.footer-brand-block p { font-size: 13px; }
+.footer-bottom { font-size: 10.5px; }
+.breadcrumbs { font-size: 11.5px; }
+.page-hero .lead { font-size: 15px; line-height: 1.75; }
+.detail-title-summary { font-size: 14.5px; }
+.results-count, .result-row p, .page-intro { font-size: 12.5px; }
+
+/* ---------- 5. Photos : cadrage et zoom discrets ---------- */
+.photo-thumb { border-radius: var(--r-md); }
+.photo-figure-image { border-radius: var(--r-lg); }
+.plant-card:hover .photo-thumb img { transform: scale(1.05); }
+.photo-thumb img { transition: transform .5s var(--ease); }
+.photo-figure figcaption { font-size: 12.5px; }
+
+/* ---------- 6. Liens : soulignement animé, sobre ---------- */
+.text-link { transition: color var(--t-fast) var(--ease), gap var(--t-base) var(--ease); }
+.text-link:hover { gap: 13px; }
+.claim-pathway-list a, .pathway-chain-links a { transition: color var(--t-fast) var(--ease), border-color var(--t-fast) var(--ease), background var(--t-fast) var(--ease); }
+.pathway-chain-links a:hover { border-color: color-mix(in srgb, var(--leaf) 60%, transparent); background: color-mix(in srgb, var(--leaf) 10%, var(--paper-3)); }
+
+/* ---------- 7. Apparition fluide au défilement (progressive) ---------- */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .section-heading,
+    .plant-card,
+    .record-card,
+    .claim-card,
+    .study-card,
+    .tradition-notice,
+    .pathway-chain {
+      animation: float-in linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 55%;
+    }
+  }
+}
+@keyframes float-in {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ---------- 8. Petits écrans : on garde l'air, on réduit la densité ---------- */
+@media (max-width: 620px) {
+  body { font-size: 16px; }
+  .claim-text { font-size: 19px; }
+  .plant-card-content h3 { font-size: 22px; }
+  .header-main { min-height: 66px; }
+  .section { padding-block: 44px; }
+}
+
+/* ---------- 9. Entrée de page : très légère, jamais théâtrale ---------- */
+@media (prefers-reduced-motion: no-preference) {
+  main { animation: page-in .28s var(--ease) both; }
+}
+@keyframes page-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* ---------- 10. Détails classiques : filets et lettrines ---------- */
+.detail-title-block, .page-hero { border-bottom-color: color-mix(in srgb, var(--ink) 12%, transparent); }
+.hero-art-note, .barcode-note { letter-spacing: .14em; }
+.section-heading h2, .section-title, .page-hero h1 { letter-spacing: -.03em; text-wrap: balance; }
+.footer-links a { transition: color var(--t-fast) var(--ease); }
+.footer-bottom { letter-spacing: .01em; }
