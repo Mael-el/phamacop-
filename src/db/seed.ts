@@ -344,6 +344,40 @@ async function seed() {
         limitations:
           "Étude chez la souris; le modèle, l’extrait et les doses ne permettent pas de conclure à une efficacité ou une sécurité clinique chez l’humain.",
       },
+      {
+        slug: "benin-diarrhees-2021-enquete",
+        title: "An ethnobotanical survey of seventeen plants species used against diarrhoea and other diseases in southern Benin (West Africa)",
+        authors: "Dougnon V, Agbodjento E, Hounsa E, Legba BB, Deguenon E, et al.",
+        journal: "Journal of Biological Research — Bollettino della Società Italiana di Biologia Sperimentale",
+        year: 2021,
+        studyType: "ETHNOBOTANICAL" as StudyType,
+        doi: "10.4081/jbr.2021.9486",
+        pmid: null,
+        sourceUrl: sourceUrl("10.4081/jbr.2021.9486"),
+        abstractSummary:
+          "Enquête ethnobotanique par entretiens semi-structurés auprès de 72 praticiens de la médecine traditionnelle (52 herboristes de marché, 20 guérisseurs) à Cotonou, Ouidah, Abomey-Calavi et Porto-Novo, au Bénin, sur 17 plantes utilisées contre les diarrhées et d’autres affections.",
+        keyResults:
+          "Les auteurs rapportent 39 maladies ou symptômes traités, répartis en 15 catégories; les catégories infectieuses, sanguines et digestives sont les plus citées (paludisme, fièvre, diarrhée). Ocimum gratissimum, Alchornea cordifolia et Vernonia amygdalina figurent parmi les plantes les plus indiquées pour les infections diarrhéiques.",
+        limitations:
+          "Enquête déclarative : elle documente des pratiques rapportées, pas une efficacité. Les organes, préparations et quantités varient selon les praticiens, et l’étude ne comporte ni essai clinique ni évaluation de toxicité.",
+      },
+      {
+        slug: "picralima-sud-benin-2017-enquete",
+        title: "Importance ethnobotanique et valeur d’usage de Picralima nitida (Stapf) au Sud-Bénin (Afrique de l’Ouest)",
+        authors: "Akabassi GC, Padonou EA, Chadare FJ, Assogbadjo AE",
+        journal: "International Journal of Biological and Chemical Sciences",
+        year: 2017,
+        studyType: "ETHNOBOTANICAL" as StudyType,
+        doi: "10.4314/ijbcs.v11i5.4",
+        pmid: null,
+        sourceUrl: sourceUrl("10.4314/ijbcs.v11i5.4"),
+        abstractSummary:
+          "240 personnes issues des groupes socio-culturels Fon, Goun, Nago et Aïzo du Sud-Bénin ont été interrogées dans leur langue locale sur les connaissances et les usages de Picralima nitida.",
+        keyResults:
+          "Les enquêtés rapportent 21 traitements à partir de différentes parties de l’espèce; les graines sont l’organe le plus utilisé, devant les racines, les feuilles et l’écorce. Le groupe Goun présente la meilleure connaissance des usages.",
+        limitations:
+          "Données déclaratives et indices ethnobotaniques : l’étude ne mesure ni efficacité ni sécurité, et les auteurs signalent une mauvaise transmission intergénérationnelle des connaissances.",
+      },
     ];
 
     const studyBySlug = new Map<string, number>();
@@ -411,7 +445,7 @@ async function seed() {
         synonyms: ["Gymnanthemum amygdalinum (Delile) Sch.Bip. ex Walp."],
         summary:
           "Espèce de la famille des Asteraceae. Des extraits de feuilles et des molécules isolées ont été étudiés sur plusieurs stades de Plasmodium dans des modèles de laboratoire, murins et vectoriels; les résultats ne constituent pas une preuve clinique.",
-        sourceRegions: ["Afrique subsaharienne (contexte des publications citées)"],
+        sourceRegions: ["Afrique subsaharienne (contexte des publications citées)", "Bénin (enquête ethnobotanique, Sud-Bénin)"],
         partsUsed: ["Feuilles"],
       },
       {
@@ -426,7 +460,7 @@ async function seed() {
         synonyms: [],
         summary:
           "Espèce de la famille des Lamiaceae. Un article a caractérisé des feuilles séchées et testé des extraits aqueux ou hydroéthanoliques contre plusieurs bactéries en laboratoire.",
-        sourceRegions: ["Nigeria (contexte de l’étude)"],
+        sourceRegions: ["Nigeria (contexte de l’étude)", "Bénin (enquête ethnobotanique, Sud-Bénin)"],
         partsUsed: ["Feuilles séchées"],
       },
       {
@@ -434,7 +468,7 @@ async function seed() {
         scientificName: "Khaya senegalensis",
         botanicalAuthor: "(Desr.) A.Juss.",
         family: "Meliaceae",
-        commonNames: [],
+        commonNames: [{ language: "fon", name: "kpaya", region: "Bénin · nom fon cité par une source secondaire béninoise, à confirmer par un locuteur natif" }],
         synonyms: [],
         summary:
           "Arbre de la famille des Meliaceae. Une étude a caractérisé un extrait méthanolique d’écorce de tige et des limonoïdes, puis les a évalués in vitro contre des parasites; l’activité dépend du modèle et de la souche testée.",
@@ -458,7 +492,7 @@ async function seed() {
         scientificName: "Morinda lucida",
         botanicalAuthor: "Benth.",
         family: "Rubiaceae",
-        commonNames: [],
+        commonNames: [{ language: "fon", name: "hwenssi", region: "Bénin (Mono) · nom fon relevé dans la base Prelude/Ethnopharmacologia (variante : hwensso)" }],
         synonyms: [],
         summary:
           "Arbuste de la famille des Rubiaceae. Des extraits de feuilles et d’écorces ont été étudiés chez la souris dans un modèle expérimental de Plasmodium berghei; ces résultats ne sont pas des données de traitement humain.",
@@ -470,11 +504,11 @@ async function seed() {
         scientificName: "Alchornea cordifolia",
         botanicalAuthor: "(Schumach. & Thonn.) Müll.Arg.",
         family: "Euphorbiaceae",
-        commonNames: [],
+        commonNames: [{ language: "fon", name: "kamala", region: "Bénin · nom fon et goun relevé dans la base Prelude/Ethnopharmacologia (variante : avovlo en gèn)" }],
         synonyms: [],
         summary:
           "Espèce ligneuse documentée dans des enquêtes ethnobotaniques en Côte d’Ivoire et au Bénin. Des extraits aqueux de feuilles ont aussi été testés in vitro contre plusieurs souches de Plasmodium falciparum, avec des résultats variables selon la souche.",
-        sourceRegions: ["Côte d’Ivoire (enquête ethnobotanique)", "Bénin (enquête nationale)", "Ghana (essai in vitro)"],
+        sourceRegions: ["Côte d’Ivoire (enquête ethnobotanique)", "Bénin (enquête nationale, Sud-Bénin)", "Ghana (essai in vitro)"],
         partsUsed: ["Feuilles", "Tiges feuillées (parties mentionnées dans la littérature)"],
       },
       {
@@ -498,7 +532,7 @@ async function seed() {
         synonyms: [],
         summary:
           "Arbre d’Afrique de l’Ouest de la famille des Apocynaceae. Des extraits de différentes parties ont été évalués in vitro contre Plasmodium falciparum; les résultats varient fortement selon l’organe et le solvant utilisé.",
-        sourceRegions: ["Afrique de l’Ouest (espèce décrite dans les publications)"],
+        sourceRegions: ["Afrique de l’Ouest (espèce décrite dans les publications)", "Bénin (enquête ethnobotanique, Sud-Bénin)"],
         partsUsed: ["Racines", "Écorce de tige", "Péricarpe", "Feuilles et graines (résultats variables)"],
       },
       {
@@ -518,7 +552,11 @@ async function seed() {
         scientificName: "Mangifera indica",
         botanicalAuthor: "L.",
         family: "Anacardiaceae",
-        commonNames: [{ language: "fr", name: "Manguier", region: "Nom français courant" }, { language: "en", name: "Mango", region: "Nom anglais courant" }],
+        commonNames: [
+          { language: "fr", name: "Manguier", region: "Nom français courant" },
+          { language: "en", name: "Mango", region: "Nom anglais courant" },
+          { language: "fon", name: "manga", region: "Bénin · nom fon et goun relevé dans la base Prelude/Ethnopharmacologia (variantes : mangania, amangagoto)" },
+        ],
         synonyms: [],
         summary:
           "Arbre fruitier cultivé, étudié ici à travers des enquêtes ethnobotaniques au Bénin et un essai in vitro au Ghana. L’extrait aqueux de feuilles a montré une activité faible dans les souches testées; ce résultat ne préjuge pas d’autres usages ou préparations.",
@@ -584,6 +622,25 @@ async function seed() {
           scopeNote:
             "Ces travaux expérimentaux ne permettent pas de diagnostiquer le paludisme ni de recommander une plante. Les signes de maladie doivent être évalués par un professionnel de santé; un traitement prescrit ne doit pas être remplacé.",
         },
+      })
+      .returning({ id: pathologies.id });
+
+    const diarrhoeaSummary =
+      "Les sources reliées à cette page sont des enquêtes ethnobotaniques menées au Bénin : elles recensent les plantes que des praticiens citent pour les diarrhées et les infections digestives. Aucun essai clinique n’est associé à ce dossier pour le moment.";
+    const diarrhoeaScope =
+      "Une diarrhée peut être grave, en particulier chez le nourrisson, l’enfant et la personne âgée. La réhydratation et un avis médical sont prioritaires; aucune plante de cette page ne constitue une recommandation de traitement.";
+
+    const [diarrhoea] = await tx
+      .insert(pathologies)
+      .values({
+        slug: "diarrhees-infectieuses",
+        name: "Diarrhées infectieuses",
+        summary: diarrhoeaSummary,
+        scopeNote: diarrhoeaScope,
+      })
+      .onConflictDoUpdate({
+        target: pathologies.slug,
+        set: { name: "Diarrhées infectieuses", summary: diarrhoeaSummary, scopeNote: diarrhoeaScope },
       })
       .returning({ id: pathologies.id });
 
@@ -849,6 +906,62 @@ async function seed() {
         studySlug: "plantes-herbales-ghana-2020-in-vitro",
       },
       {
+        slug: "vernonia-diarrhees-benin-enquete",
+        plantSlug: "vernonia-amygdalina",
+        mechanismSlug: null,
+        pathologyId: diarrhoea.id,
+        claimText:
+          "Dans une enquête menée auprès de 72 praticiens du Sud-Bénin, Vernonia amygdalina fait partie des plantes les plus indiquées pour les infections diarrhéiques.",
+        evidenceLevel: "ETHNOBOTANICAL",
+        rationale:
+          "L’affirmation reprend une fréquence de citation recueillie par entretiens : elle documente une pratique rapportée, pas un effet mesuré.",
+        limitations:
+          "Enquête déclarative sans évaluation clinique; les organes et préparations varient d’un praticien à l’autre et ne sont pas standardisés.",
+        studySlug: "benin-diarrhees-2021-enquete",
+      },
+      {
+        slug: "ocimum-diarrhees-benin-enquete",
+        plantSlug: "ocimum-gratissimum",
+        mechanismSlug: null,
+        pathologyId: diarrhoea.id,
+        claimText:
+          "Ocimum gratissimum est la plante la plus fréquemment citée pour les infections diarrhéiques dans une enquête conduite dans quatre villes du Sud-Bénin.",
+        evidenceLevel: "ETHNOBOTANICAL",
+        rationale:
+          "Le résultat provient des entretiens (52 herboristes, 20 guérisseurs) analysés par les auteurs avec des indices de valeur d’usage et de consensus.",
+        limitations:
+          "Une fréquence de citation mesure la notoriété d’un usage; elle ne démontre ni efficacité ni innocuité et ne renseigne pas sur les quantités employées.",
+        studySlug: "benin-diarrhees-2021-enquete",
+      },
+      {
+        slug: "alchornea-diarrhees-benin-enquete",
+        plantSlug: "alchornea-cordifolia",
+        mechanismSlug: null,
+        pathologyId: diarrhoea.id,
+        claimText:
+          "Alchornea cordifolia est citée par les praticiens interrogés au Sud-Bénin parmi les plantes utilisées contre les diarrhées et les infections digestives.",
+        evidenceLevel: "ETHNOBOTANICAL",
+        rationale:
+          "Il s’agit d’un usage rapporté lors d’entretiens semi-structurés, sans mesure d’activité dans cette publication.",
+        limitations:
+          "Aucun test biologique ni essai clinique dans cette enquête; l’usage déclaré ne permet pas de conclure à un bénéfice.",
+        studySlug: "benin-diarrhees-2021-enquete",
+      },
+      {
+        slug: "picralima-usages-sud-benin",
+        plantSlug: "picralima-nitida",
+        mechanismSlug: null,
+        pathologyId: null,
+        claimText:
+          "Au Sud-Bénin, des personnes des groupes Fon, Goun, Nago et Aïzo rapportent 21 usages thérapeutiques différents de Picralima nitida, à partir des graines, racines, feuilles et écorces.",
+        evidenceLevel: "ETHNOBOTANICAL",
+        rationale:
+          "Enquête ethnobotanique auprès de 240 personnes, avec calcul d’indices de valeur d’usage et comparaison entre groupes socio-culturels.",
+        limitations:
+          "Inventaire d’usages déclarés : aucune mesure d’efficacité ou de sécurité; plusieurs usages reposent sur des connaissances peu transmises selon les auteurs.",
+        studySlug: "picralima-sud-benin-2017-enquete",
+      },
+      {
         slug: "moringa-oleifera-inactif-dans-essai",
         plantSlug: "moringa-oleifera",
         mechanismSlug: "croissance-plasmodium",
@@ -1072,6 +1185,31 @@ async function seed() {
         studySlug: "benin-woody-species-2021-enquete",
         sourceContext: "Donnée de fréquence de citation; ne constitue pas une preuve clinique.",
       },
+      {
+        slug: "alchornea-usage-diarrhees-benin",
+        plantSlug: "alchornea-cordifolia",
+        description:
+          "Dans une enquête menée auprès de 72 praticiens du Sud-Bénin, A. cordifolia est citée parmi les plantes utilisées contre les diarrhées et les infections digestives. Les auteurs recensent 39 symptômes ou maladies traités par les 17 plantes étudiées.",
+        region: "Bénin (Cotonou, Ouidah, Abomey-Calavi, Porto-Novo)",
+        community: "52 herboristes de marché et 20 guérisseurs interrogés",
+        partReported: "Feuilles (organe majoritairement cité pour cette espèce dans l’enquête)",
+        preparationReported:
+          "Préparations variables selon les praticiens (décoctions et macérations citées) — information documentaire, pas une instruction de préparation.",
+        studySlug: "benin-diarrhees-2021-enquete",
+        sourceContext: "Usage rapporté par entretiens semi-structurés; aucune mesure d’efficacité.",
+      },
+      {
+        slug: "picralima-usage-sud-benin",
+        plantSlug: "picralima-nitida",
+        description:
+          "Au Sud-Bénin, 240 personnes des groupes Fon, Goun, Nago et Aïzo décrivent 21 traitements à base de P. nitida; les graines sont l’organe le plus utilisé, devant les racines, les feuilles et l’écorce.",
+        region: "Bénin (Sud-Bénin, quatre groupes socio-culturels)",
+        community: "Fon, Goun, Nago et Aïzo",
+        partReported: "Graines (organe le plus cité), racines, feuilles, écorce",
+        preparationReported: null,
+        studySlug: "picralima-sud-benin-2017-enquete",
+        sourceContext: "Inventaire d’usages déclarés; l’étude ne mesure ni efficacité ni sécurité.",
+      },
     ];
 
     for (const use of useRows) {
@@ -1221,14 +1359,14 @@ async function seed() {
     const plantStudySlugs: Record<string, string[]> = {
       "nauclea-latifolia": ["nauclea-latifolia-1998-in-vitro", "revue-plantes-africaines-paludisme-2021"],
       "alstonia-boonei": ["alstonia-boonei-2021-souris", "alstonia-boonei-revue-2012", "morinda-alstonia-2020-souris", "revue-plantes-africaines-paludisme-2021"],
-      "vernonia-amygdalina": ["vernonia-amygdalina-2015-transmission", "revue-plantes-africaines-paludisme-2021"],
-      "ocimum-gratissimum": ["ocimum-gratissimum-2017-antimicrobien"],
+      "vernonia-amygdalina": ["vernonia-amygdalina-2015-transmission", "revue-plantes-africaines-paludisme-2021", "benin-diarrhees-2021-enquete"],
+      "ocimum-gratissimum": ["ocimum-gratissimum-2017-antimicrobien", "benin-diarrhees-2021-enquete"],
       "khaya-senegalensis": ["khaya-senegalensis-2023-limonoides", "revue-plantes-africaines-paludisme-2021"],
       "cryptolepis-sanguinolenta": ["cryptolepis-sanguinolenta-2010-clinique"],
       "morinda-lucida": ["morinda-alstonia-2020-souris"],
-      "alchornea-cordifolia": ["plantes-herbales-ghana-2020-in-vitro", "plantes-ouest-afrique-2000-enquete-in-vitro", "benin-woody-species-2021-enquete"],
+      "alchornea-cordifolia": ["plantes-herbales-ghana-2020-in-vitro", "plantes-ouest-afrique-2000-enquete-in-vitro", "benin-woody-species-2021-enquete", "benin-diarrhees-2021-enquete"],
       "guiera-senegalensis": ["guiera-senegalensis-2006-in-vitro", "guiera-senegalensis-2018-souris"],
-      "picralima-nitida": ["picralima-nitida-1996-in-vitro", "picralima-nitida-1992-in-vitro", "picralima-nitida-revue-2014"],
+      "picralima-nitida": ["picralima-nitida-1996-in-vitro", "picralima-nitida-1992-in-vitro", "picralima-nitida-revue-2014", "picralima-sud-benin-2017-enquete"],
       "enantia-chlorantha": ["enantia-chlorantha-1991-souris", "enantia-chlorantha-2025-souris"],
       "mangifera-indica": ["plantes-herbales-ghana-2020-in-vitro", "benin-woody-species-2021-enquete"],
       "moringa-oleifera": ["plantes-herbales-ghana-2020-in-vitro"],

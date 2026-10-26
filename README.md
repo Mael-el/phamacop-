@@ -19,7 +19,7 @@ npm run db:start              # démarre le cluster local et crée app_db si bes
 
 # 3. schéma + jeu de données scientifique
 npm run db:push               # drizzle-kit push (synchro du schéma)
-npm run db:seed               # 13 plantes, 19 études, 16 affirmations, 9 composés
+npm run db:seed               # 13 plantes, 21 études, 20 affirmations, 9 composés
 
 # 4. lancement
 npm run dev                   # http://localhost:3000
@@ -107,12 +107,40 @@ est affiché (`src/lib/discovery.ts`).
 - **Contenu** : toute l’interface est traduite ; les textes fon sont signalés comme
   « version de travail » par un bandeau, en attente de relecture par un locuteur natif.
 - **Noms de plantes en fon** : la fiche espèce affiche un bloc « Nom en fon » (recherche sur
-  `commonNames` avec `language: "fon"`). Noms déjà renseignés dans le seed :
-  *Nauclea latifolia* → **nimon**, *Vernonia amygdalina* → **amanvivè**, *Ocimum gratissimum* →
-  **tchiayo**, *Moringa oleifera* → **kpatinman**. Chaque nom est accompagné de sa variante et
-  d’une mention invitant à confirmation par un locuteur natif.
+  `commonNames` avec `language: "fon"`). Huit espèces sur treize sont renseignées, chacune avec sa
+  source et ses variantes :
+
+  | Espèce | Nom fon | Source |
+  | --- | --- | --- |
+  | *Nauclea latifolia* | nimon (ko) | listes de noms de plantes en fon du Bénin |
+  | *Vernonia amygdalina* | amanvivè (aloman) | fiche technique Vernonia, Bénin |
+  | *Ocimum gratissimum* | tchiayo (tchayo, yandodou) | CIRAD/INRAB & Prelude/Ethnopharmacologia |
+  | *Moringa oleifera* | kpatinman (yovokpatinman) | travaux béninois sur la poudre de feuilles |
+  | *Morinda lucida* | hwenssi (hwensso) | Prelude/Ethnopharmacologia, Bénin (Mono) |
+  | *Mangifera indica* | manga (mangania, amangagoto) | Prelude/Ethnopharmacologia (Fon, Goun) |
+  | *Alchornea cordifolia* | kamala (avovlo en gèn) | Prelude/Ethnopharmacologia (Fon, Goun) |
+  | *Khaya senegalensis* | kpaya | source secondaire béninoise — **à confirmer** |
+
+  Les cinq espèces restantes (*Alstonia boonei*, *Cryptolepis sanguinolenta*, *Guiera senegalensis*,
+  *Picralima nitida*, *Enantia chlorantha*) n’ont **pas** de nom fon renseigné : aucune source jugée
+  fiable n’a été trouvée, et l’interface affiche « Non renseigné en fon » plutôt qu’une invention.
+  Tous les noms restent à valider par un locuteur natif.
 - Les publications et résumés d’études restent dans leur langue d’origine (sources primaires) :
   aucune traduction automatique n’est injectée dans le corpus scientifique.
+
+## Contenus ajoutés (Bénin)
+
+| Élément | Détail |
+| --- | --- |
+| Étude | Dougnon V. *et al.*, enquête ethnobotanique sur 17 plantes contre les diarrhées au Sud-Bénin (72 praticiens, Cotonou, Ouidah, Abomey-Calavi, Porto-Novo), *J. Biol. Res.* 2021 — DOI `10.4081/jbr.2021.9486` |
+| Étude | Akabassi G.C. *et al.*, « Importance ethnobotanique et valeur d’usage de *Picralima nitida* au Sud-Bénin » (240 personnes : Fon, Goun, Nago, Aïzo), *IJBCS* 2017 — DOI `10.4314/ijbcs.v11i5.4` |
+| Pathologie | **Diarrhées infectieuses** — 3 affirmations ethnobotaniques (Ocimum, Alchornea, Vernonia), aucune prétention d’efficacité |
+| Affirmation | Usages de *Picralima nitida* au Sud-Bénin (21 traitements déclarés, graines en premier) |
+| Usages traditionnels | 2 fiches supplémentaires (Alchornea, Picralima) avec région, communauté et organe |
+
+Chaque affirmation reste de niveau **ETHNOBOTANIQUE** : une fréquence de citation documente une
+pratique, jamais une efficacité. Le dossier diarrhées rappelle en tête de page que la réhydratation
+et un avis médical sont prioritaires.
 
 ## Solutions documentées
 
