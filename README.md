@@ -13,7 +13,8 @@ npm install
 
 # 2. base de données (PostgreSQL 14+ accessible via DATABASE_URL)
 cp .env.example .env          # ajuster DATABASE_URL si nécessaire
-createdb app_db               # ou via psql / votre hébergeur
+npm run db:start              # démarre le cluster local et crée app_db si besoin
+                              # (ou `createdb app_db` avec votre PostgreSQL habituel)
 
 # 3. schéma + jeu de données scientifique
 npm run db:push               # drizzle-kit push (synchro du schéma)
@@ -22,6 +23,12 @@ npm run db:seed               # 13 plantes, 19 études, 16 affirmations, 9 compo
 # 4. lancement
 npm run dev                   # http://localhost:3000
 ```
+
+`scripts/db-start.sh` (alias `npm run db:start`) initialise si nécessaire un cluster
+PostgreSQL 16 dans `$PGDATA` puis le démarre ; il utilise les binaires indiqués par
+`PG_BIN` (par défaut l'installation locale `/home/user/.pgbin/bin`, issue du paquet
+Python `pgserver`, sans dépendance à `apt`). Variables reconnues : `PG_BIN`, `PGDATA`,
+`PGPORT`, `PGLOG`, `DATABASE_NAME`.
 
 Variables d'environnement :
 
@@ -39,6 +46,7 @@ Variables d'environnement :
 | `npm run build` / `npm start` | build et exécution en production |
 | `npm run lint` | ESLint (config Next) |
 | `npm run typecheck` | `tsc --noEmit` |
+| `npm run db:start` | démarre le PostgreSQL local (et crée `app_db`) |
 | `npm run db:push` | applique `src/db/schema.ts` à la base |
 | `npm run db:seed` | insère / met à jour le corpus scientifique de démonstration |
 

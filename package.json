@@ -7,6 +7,7 @@
     "start": "next start",
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
+    "db:start": "bash scripts/db-start.sh",
     "db:push": "drizzle-kit push --force",
     "db:seed": "tsx src/db/seed.ts"
   },
