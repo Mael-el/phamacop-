@@ -2,6 +2,7 @@ import Link from "next/link";
 import { Breadcrumbs } from "@/components/breadcrumbs";
 import { EvidenceBadge } from "@/components/evidence-badge";
 import type { EvidenceLevel } from "@/db/schema";
+import { getDictionary } from "@/lib/i18n";
 
 export const metadata = {
   title: "Méthodologie des niveaux de preuve",
@@ -17,7 +18,8 @@ const levels: Array<{ id: string; level: EvidenceLevel; title: string; text: str
   { id: "risk-signal", level: "RISK_SIGNAL", title: "Signal de risque", text: "Information de prudence indépendante de l’activité revendiquée. Elle peut provenir d’une étude ou d’une synthèse; sa portée dépend du modèle, de l’extrait et de la qualité des données." },
 ];
 
-export default function MethodologyPage() {
+export default async function MethodologyPage() {
+  const { locale, t } = await getDictionary();
   return (
     <main>
       <section className="page-hero"><div className="wrap">
@@ -28,6 +30,11 @@ export default function MethodologyPage() {
         </div>
       </div></section>
       <section className="page-content"><div className="wrap">
+        {locale === "fon" && (
+          <div className="method-callout" style={{ marginBottom: 24 }}>
+            <strong>{t.method.fonSummaryTitle}</strong><br />{t.method.fonSummaryBody}
+          </div>
+        )}
         <div className="method-intro">
           <p>Chaque badge est cliquable et mène à cette page. Sur une fiche, la justification, les études liées et les limites de méthode apparaissent à côté de l’affirmation. Les références publiées possèdent un DOI ou un PMID. Les usages traditionnels sont rangés dans un bloc séparé et identifiés comme données ethnobotaniques.</p>
           <aside className="method-callout"><strong>État du corpus de démonstration.</strong><br />Les premières classifications sont des classements éditoriaux de travail basés sur le type d’étude recensé. Elles ne sont pas attribuées ni validées par un expert indépendant; chaque fiche porte donc la mention « à valider par un expert ».</aside>
@@ -36,7 +43,7 @@ export default function MethodologyPage() {
         <div className="evidence-grid">
           {levels.map((item) => (
             <article className="evidence-method-card" id={item.id} key={item.id}>
-              <EvidenceBadge level={item.level} />
+              <EvidenceBadge level={item.level} t={t} />
               <h2>{item.title}</h2>
               <p>{item.text}</p>
             </article>

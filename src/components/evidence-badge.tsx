@@ -1,22 +1,25 @@
 import Link from "next/link";
 import type { EvidenceLevel } from "@/db/schema";
+import type { Dictionary } from "@/lib/i18n";
 
-const evidenceMeta: Record<EvidenceLevel, { label: string; explanation: string; className: string }> = {
-  HIGH: { label: "Preuve élevée", explanation: "Niveau réservé à des données humaines robustes, répliquées et évaluées; non attribué dans ce corpus de démonstration.", className: "evidence-high" },
-  MODERATE: { label: "Preuve modérée", explanation: "Niveau réservé à des données humaines convergentes mais encore limitées; non attribué dans ce corpus de démonstration.", className: "evidence-moderate" },
-  PRECLINICAL: { label: "Préclinique", explanation: "Résultat provenant d’essais in vitro, ex vivo ou de modèles animaux; il ne démontre pas un bénéfice clinique.", className: "evidence-preclinical" },
-  ETHNOBOTANICAL: { label: "Donnée ethnobotanique", explanation: "Usage rapporté dans une source; ce constat ne prouve pas l’efficacité ni la sécurité.", className: "evidence-ethnobotanical" },
-  INSUFFICIENT: { label: "Données insuffisantes", explanation: "Les sources recensées ne permettent pas de tirer une conclusion sur cette affirmation.", className: "evidence-insufficient" },
-  RISK_SIGNAL: { label: "Signal de risque", explanation: "Un signal de prudence est rapporté indépendamment de l’activité étudiée; il doit être interprété dans son contexte.", className: "evidence-risk" },
-};
+export function evidenceMeta(t: Dictionary): Record<EvidenceLevel, { label: string; explanation: string; className: string }> {
+  return {
+    HIGH: { label: t.evidence.high, explanation: t.evidence.highText, className: "evidence-high" },
+    MODERATE: { label: t.evidence.moderate, explanation: t.evidence.moderateText, className: "evidence-moderate" },
+    PRECLINICAL: { label: t.evidence.preclinical, explanation: t.evidence.preclinicalText, className: "evidence-preclinical" },
+    ETHNOBOTANICAL: { label: t.evidence.ethnobotanical, explanation: t.evidence.ethnobotanicalText, className: "evidence-ethnobotanical" },
+    INSUFFICIENT: { label: t.evidence.insufficient, explanation: t.evidence.insufficientText, className: "evidence-insufficient" },
+    RISK_SIGNAL: { label: t.evidence.risk, explanation: t.evidence.riskText, className: "evidence-risk" },
+  };
+}
 
-export function EvidenceBadge({ level, compact = false }: { level: EvidenceLevel; compact?: boolean }) {
-  const meta = evidenceMeta[level];
+export function EvidenceBadge({ level, t, compact = false }: { level: EvidenceLevel; t: Dictionary; compact?: boolean }) {
+  const meta = evidenceMeta(t)[level];
   return (
     <Link
       href={`/preuves/methodologie#${level.toLowerCase().replaceAll("_", "-")}`}
       className={`evidence-badge ${meta.className} ${compact ? "evidence-badge-compact" : ""}`}
-      aria-label={`${meta.label}. ${meta.explanation} Ouvrir la méthodologie.`}
+      aria-label={`${meta.label}. ${meta.explanation} ${t.evidence.openMethod}.`}
       title={meta.explanation}
     >
       <span className="evidence-dot" aria-hidden="true" />
@@ -26,6 +29,6 @@ export function EvidenceBadge({ level, compact = false }: { level: EvidenceLevel
   );
 }
 
-export function ReviewStatus({ label = "À valider par un expert" }: { label?: string }) {
+export function ReviewStatus({ label }: { label: string }) {
   return <span className="review-status"><span aria-hidden="true">↗</span> {label}</span>;
 }

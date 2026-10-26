@@ -1,13 +1,15 @@
 import Link from "next/link";
+import { getDictionary } from "@/lib/i18n";
 
-export default function NotFound() {
+export default async function NotFound() {
+  const { t } = await getDictionary();
   return (
     <main className="not-found">
       <div className="not-found-inner">
-        <span className="not-found-code">404 · FICHE INTROUVABLE</span>
-        <h1>Cette page n’est pas dans l’herbier.</h1>
-        <p>La référence a peut-être changé ou ne fait pas partie du corpus documenté pour le moment.</p>
-        <Link className="button button-primary" href="/plantes">Explorer les plantes <span aria-hidden="true">→</span></Link>
+        <span className="not-found-code">{t.notFound.code}</span>
+        <h1>{t.notFound.title}</h1>
+        <p>{t.notFound.body}</p>
+        <Link className="button button-primary" href="/plantes">{t.notFound.cta} <span aria-hidden="true">→</span></Link>
       </div>
     </main>
   );

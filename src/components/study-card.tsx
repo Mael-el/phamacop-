@@ -2,33 +2,36 @@ import Link from "next/link";
 import type { StudyRecord, PlantRecord } from "@/lib/catalog";
 import type { StudyType } from "@/db/schema";
 import { Icon } from "@/components/icon";
+import type { Dictionary } from "@/lib/i18n";
 
-const typeLabels: Record<StudyType, string> = {
-  IN_VITRO: "In vitro",
-  IN_VIVO: "In vivo · modèle animal",
-  MIXED_PRECLINICAL: "Étude préclinique multi-modèles",
-  CLINICAL: "Clinique",
-  OBSERVATIONAL: "Observationnelle",
-  REVIEW: "Revue de littérature",
-  ETHNOBOTANICAL: "Ethnobotanique",
-};
-
-export function StudyTypeLabel({ type }: { type: StudyType }) {
-  return <span className="study-type-label">{typeLabels[type] ?? "Étude"}</span>;
+function typeLabels(t: Dictionary): Record<StudyType, string> {
+  return {
+    IN_VITRO: t.study.inVitro,
+    IN_VIVO: t.study.inVivo,
+    MIXED_PRECLINICAL: t.study.mixed,
+    CLINICAL: t.study.clinical,
+    OBSERVATIONAL: t.study.observational,
+    REVIEW: t.study.review,
+    ETHNOBOTANICAL: t.study.ethnobotanical,
+  };
 }
 
-export function StudyCard({ study, associatedPlants = [] }: { study: StudyRecord; associatedPlants?: PlantRecord[] }) {
+export function StudyTypeLabel({ type, t }: { type: StudyType; t: Dictionary }) {
+  return <span className="study-type-label">{typeLabels(t)[type] ?? t.study.fallback}</span>;
+}
+
+export function StudyCard({ study, t, associatedPlants = [] }: { study: StudyRecord; t: Dictionary; associatedPlants?: PlantRecord[] }) {
   const doiUrl = study.doi ? `https://doi.org/${study.doi}` : study.pmid ? `https://pubmed.ncbi.nlm.nih.gov/${study.pmid}/` : study.sourceUrl;
   return (
     <article className="study-card" id={study.slug}>
       <div className="study-card-head">
-        <StudyTypeLabel type={study.studyType} />
+        <StudyTypeLabel type={study.studyType} t={t} />
         <span className="study-year">{study.year}</span>
       </div>
       <h3>{study.title}</h3>
       <p className="study-authors">{study.authors} · {study.journal}</p>
       <p className="study-summary">{study.keyResults}</p>
-      {study.limitations && <p className="study-limit"><strong>Limites :</strong> {study.limitations}</p>}
+      {study.limitations && <p className="study-limit"><strong>{t.publications.limits} :</strong> {study.limitations}</p>}
       {associatedPlants.length > 0 && (
         <div className="study-plants">
           {associatedPlants.map((plant) => <Link key={plant.id} href={`/plantes/${plant.slug}`}><em>{plant.scientificName}</em></Link>)}

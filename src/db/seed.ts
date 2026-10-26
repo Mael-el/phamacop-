@@ -377,7 +377,10 @@ async function seed() {
         scientificName: "Nauclea latifolia",
         botanicalAuthor: "Sm.",
         family: "Rubiaceae",
-        commonNames: [{ language: "en", name: "Pincushion tree", region: "Nom courant anglophone cité dans la littérature botanique" }],
+        commonNames: [
+          { language: "en", name: "Pincushion tree", region: "Nom courant anglophone cité dans la littérature botanique" },
+          { language: "fon", name: "nimon", region: "Bénin · nom fon relevé dans les listes de noms de plantes en fon (variante : ko)" },
+        ],
         synonyms: [],
         summary:
           "Arbuste ou petit arbre de la famille des Rubiaceae. Des extraits aqueux de tiges et de racines ont été étudiés in vitro sur Plasmodium falciparum; l’article rapporte également un usage traditionnel en Côte d’Ivoire.",
@@ -401,7 +404,10 @@ async function seed() {
         scientificName: "Vernonia amygdalina",
         botanicalAuthor: "Delile",
         family: "Asteraceae",
-        commonNames: [{ language: "en", name: "Bitter leaf", region: "Nom anglais courant repris dans la littérature" }],
+        commonNames: [
+          { language: "en", name: "Bitter leaf", region: "Nom anglais courant repris dans la littérature" },
+          { language: "fon", name: "amanvivè", region: "Bénin · nom fon (fiche technique Vernonia, INRAB/Bénin ; variante : aloman)" },
+        ],
         synonyms: ["Gymnanthemum amygdalinum (Delile) Sch.Bip. ex Walp."],
         summary:
           "Espèce de la famille des Asteraceae. Des extraits de feuilles et des molécules isolées ont été étudiés sur plusieurs stades de Plasmodium dans des modèles de laboratoire, murins et vectoriels; les résultats ne constituent pas une preuve clinique.",
@@ -413,7 +419,10 @@ async function seed() {
         scientificName: "Ocimum gratissimum",
         botanicalAuthor: "L.",
         family: "Lamiaceae",
-        commonNames: [{ language: "en", name: "African basil", region: "Nom anglais courant repris dans la littérature" }],
+        commonNames: [
+          { language: "en", name: "African basil", region: "Nom anglais courant repris dans la littérature" },
+          { language: "fon", name: "tchiayo", region: "Bénin · nom fongbè attesté (variantes : tchayo, yandodou)" },
+        ],
         synonyms: [],
         summary:
           "Espèce de la famille des Lamiaceae. Un article a caractérisé des feuilles séchées et testé des extraits aqueux ou hydroéthanoliques contre plusieurs bactéries en laboratoire.",
@@ -521,7 +530,10 @@ async function seed() {
         scientificName: "Moringa oleifera",
         botanicalAuthor: "Lam.",
         family: "Moringaceae",
-        commonNames: [{ language: "fr", name: "Moringa", region: "Nom courant" }],
+        commonNames: [
+          { language: "fr", name: "Moringa", region: "Nom courant" },
+          { language: "fon", name: "kpatinman", region: "Bénin · nom fon et goun attesté (variante : yovokpatinman)" },
+        ],
         synonyms: [],
         summary:
           "Espèce cultivée, incluse dans une étude ghanéenne d’extraits aqueux de plantes utilisées localement. L’extrait de feuilles n’a pas montré d’activité antiplasmodiale dans les souches et les conditions de cet essai in vitro.",

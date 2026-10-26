@@ -3,6 +3,7 @@ import type { StudyRecord } from "@/lib/catalog";
 import type { EvidenceLevel } from "@/db/schema";
 import { EvidenceBadge, ReviewStatus } from "@/components/evidence-badge";
 import { Icon } from "@/components/icon";
+import type { Dictionary } from "@/lib/i18n";
 
 type ClaimCardData = {
   slug: string;
@@ -15,26 +16,26 @@ type ClaimCardData = {
   plant?: { slug: string; scientificName: string };
 };
 
-export function ClaimCard({ claim, showPlant = false }: { claim: ClaimCardData; showPlant?: boolean }) {
+export function ClaimCard({ claim, t, showPlant = false }: { claim: ClaimCardData; t: Dictionary; showPlant?: boolean }) {
   return (
     <article className="claim-card" id={`affirmation-${claim.slug}`}>
       <div className="claim-card-heading">
-        <EvidenceBadge level={claim.evidenceLevel} />
+        <EvidenceBadge level={claim.evidenceLevel} t={t} />
         <ReviewStatus label={claim.reviewerStatus} />
       </div>
       {showPlant && claim.plant && <Link className="claim-plant-link" href={`/plantes/${claim.plant.slug}`}><em>{claim.plant.scientificName}</em><Icon name="arrow" size={14} /></Link>}
       <p className="claim-text">{claim.claimText}</p>
       <div className="claim-rationale">
-        <strong>Pourquoi ce niveau ?</strong>
+        <strong>{t.evidence.whyThisLevel}</strong>
         <p>{claim.rationale}</p>
       </div>
       <div className="claim-limit">
-        <strong>À garder en tête</strong>
+        <strong>{t.evidence.keepInMind}</strong>
         <p>{claim.limitations}</p>
       </div>
       {claim.sources.length > 0 && (
         <div className="claim-sources">
-          <span className="claim-source-title"><Icon name="book" size={15} /> Sources de cette affirmation</span>
+          <span className="claim-source-title"><Icon name="book" size={15} /> {t.evidence.claimSources}</span>
           <ul>
             {claim.sources.map((study) => (
               <li key={study.id}>

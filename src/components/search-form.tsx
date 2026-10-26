@@ -1,7 +1,8 @@
 import { Icon } from "@/components/icon";
+import { getDictionary } from "@/lib/i18n";
 
-export function SearchForm({
-  placeholder = "Nom botanique, composé, mécanisme…",
+export async function SearchForm({
+  placeholder,
   className = "",
   defaultValue = "",
   compact = false,
@@ -11,20 +12,21 @@ export function SearchForm({
   defaultValue?: string;
   compact?: boolean;
 }) {
+  const { t } = await getDictionary();
   return (
     <form action="/recherche" method="get" role="search" className={`search-form ${compact ? "search-form-compact" : ""} ${className}`}>
       <label className="sr-only">
-        Rechercher dans la pharmacopée
+        {t.nav.searchLabel}
         <input
           type="search"
           name="q"
           defaultValue={defaultValue}
-          placeholder={placeholder}
+          placeholder={placeholder ?? t.nav.searchPlaceholder}
           autoComplete="off"
           maxLength={120}
         />
       </label>
-      <button type="submit" aria-label="Lancer la recherche">
+      <button type="submit" aria-label={t.nav.searchAria}>
         <Icon name="search" size={19} />
       </button>
     </form>

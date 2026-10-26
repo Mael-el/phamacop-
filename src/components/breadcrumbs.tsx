@@ -1,10 +1,12 @@
 import Link from "next/link";
 import { Icon } from "@/components/icon";
+import { getDictionary } from "@/lib/i18n";
 
-export function Breadcrumbs({ items }: { items: Array<{ label: string; href?: string }> }) {
+export async function Breadcrumbs({ items }: { items: Array<{ label: string; href?: string }> }) {
+  const { t } = await getDictionary();
   return (
-    <nav className="breadcrumbs" aria-label="Fil d’Ariane">
-      <Link href="/" aria-label="Accueil">Accueil</Link>
+    <nav className="breadcrumbs" aria-label={t.nav.breadcrumbAria}>
+      <Link href="/" aria-label={t.nav.home}>{t.nav.home}</Link>
       {items.map((item, index) => (
         <span className="breadcrumb-item" key={`${item.label}-${index}`}>
           <Icon name="chevron" size={14} />

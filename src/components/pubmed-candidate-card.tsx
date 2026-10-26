@@ -1,11 +1,12 @@
 import type { PubMedCandidate } from "@/lib/pubmed";
 import { Icon } from "@/components/icon";
+import type { Dictionary } from "@/lib/i18n";
 
-export function PubMedCandidateCard({ candidate }: { candidate: PubMedCandidate }) {
+export function PubMedCandidateCard({ candidate, t }: { candidate: PubMedCandidate; t: Dictionary }) {
   return (
     <article className="candidate-card">
       <div className="candidate-card-head">
-        <span className="candidate-status"><span aria-hidden="true" /> PubMed · à valider</span>
+        <span className="candidate-status"><span aria-hidden="true" /> PubMed · {t.evidence.reviewDefault}</span>
         {candidate.publicationYear && <span className="study-year">{candidate.publicationYear}</span>}
       </div>
       <h3>{candidate.title}</h3>

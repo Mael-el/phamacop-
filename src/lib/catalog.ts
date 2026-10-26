@@ -387,3 +387,80 @@ export async function getSearchCount(rawQuery: string) {
   ]);
   return Number(rows[0]?.total ?? 0);
 }
+
+export type SolutionEntry = (typeof claims.$inferSelect) & {
+  plant: PlantRecord;
+  mechanism: MechanismRecord | null;
+  sources: StudyRecord[];
+};
+
+export type SolutionGroup = {
+  key: string;
+  title: string;
+  summary: string;
+  scopeNote: string | null;
+  href: string | null;
+  entries: SolutionEntry[];
+};
+
+/**
+ * Vue « solutions documentées » : pour chaque sujet, les plantes étudiées,
+ * le mécanisme mesuré, le niveau de preuve et les sources.
+ * Les affirmations sans sujet assigné sont regroupées à part, jamais masquées.
+ * Aucune dose ni posologie n’est exposée ici, par construction.
+ */
+export async function getSolutionsOverview(): Promise<SolutionGroup[]> {
+  const pathologyRows = await db.select().from(pathologies).orderBy(asc(pathologies.name));
+
+  const claimRows = await db
+    .select({ claim: claims, plant: plants, mechanism: mechanisms })
+    .from(claims)
+    .innerJoin(plants, eq(claims.plantId, plants.id))
+    .leftJoin(mechanisms, eq(claims.mechanismId, mechanisms.id))
+    .orderBy(asc(plants.scientificName));
+
+  const claimIds = claimRows.map((row) => row.claim.id);
+  const sourceRows = claimIds.length
+    ? await db
+        .select({ claimId: claimStudies.claimId, study: studies })
+        .from(claimStudies)
+        .innerJoin(studies, eq(claimStudies.studyId, studies.id))
+        .where(inArray(claimStudies.claimId, claimIds))
+        .orderBy(desc(studies.year))
+    : [];
+  const sourceMap = new Map<number, StudyRecord[]>();
+  for (const row of sourceRows) {
+    sourceMap.set(row.claimId, [...(sourceMap.get(row.claimId) ?? []), row.study]);
+  }
+
+  const entries = claimRows.map((row) => ({
+    ...row.claim,
+    plant: row.plant,
+    mechanism: row.mechanism,
+    sources: sourceMap.get(row.claim.id) ?? [],
+  }));
+
+  const groups: SolutionGroup[] = pathologyRows.map((pathology) => ({
+    key: pathology.slug,
+    title: pathology.name,
+    summary: pathology.summary,
+    scopeNote: pathology.scopeNote,
+    href: `/pathologies/${pathology.slug}`,
+    entries: entries.filter((entry) => entry.pathologyId === pathology.id),
+  }));
+
+  const orphans = entries.filter((entry) => entry.pathologyId === null);
+  if (orphans.length > 0) {
+    groups.push({
+      key: "autres-pistes",
+      title: "Autres pistes documentées",
+      summary:
+        "Affirmations sourcées qui ne sont rattachées à aucun dossier de pathologie : résultats expérimentaux, sécurité ou données insuffisantes.",
+      scopeNote: null,
+      href: null,
+      entries: orphans,
+    });
+  }
+
+  return groups.filter((group) => group.entries.length > 0);
+}

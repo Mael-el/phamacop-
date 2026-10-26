@@ -5,36 +5,35 @@ import { PlantCard } from "@/components/plant-card";
 import { SearchForm } from "@/components/search-form";
 import { StudyCard } from "@/components/study-card";
 import { getHomeData } from "@/lib/catalog";
+import { getDictionary } from "@/lib/i18n";
 
 export const dynamic = "force-dynamic";
 
 export default async function HomePage() {
-  const { plants, studies, stats } = await getHomeData();
+  const [{ plants, studies, pathologies, stats }, { t }] = await Promise.all([getHomeData(), getDictionary()]);
   const featuredPlants = plants.slice(0, 3);
   const latestStudies = studies.slice(0, 3);
+  const solutions = pathologies.filter((pathology) => pathology.claimCount > 0).slice(0, 3);
 
   return (
     <main>
       <section className="home-hero">
         <div className="home-hero-inner wrap">
           <div className="hero-copy">
-            <p className="eyebrow"><span className="eyebrow-mark" /> Pharmacopée végétale · base documentaire</p>
-            <h1>Les plantes.<br /><em>Les preuves.</em><br />Le contexte.</h1>
-            <p className="hero-intro">
-              Explorer la pharmacopée végétale ouest-africaine à travers des usages rapportés,
-              des études publiées et leurs limites — sans transformer l’information en prescription.
-            </p>
+            <p className="eyebrow"><span className="eyebrow-mark" /> {t.home.eyebrow}</p>
+            <h1>{t.home.title1}<br /><em>{t.home.title2}</em><br />{t.home.title3}</h1>
+            <p className="hero-intro">{t.home.intro}</p>
             <div className="hero-actions">
-              <Link className="button button-primary" href="/plantes">Explorer les plantes <Icon name="arrow" size={16} /></Link>
-              <Link className="button button-ghost" href="/preuves/methodologie">Notre méthode</Link>
+              <Link className="button button-primary" href="/plantes">{t.home.explorePlants} <Icon name="arrow" size={16} /></Link>
+              <Link className="button button-ghost" href="/preuves/methodologie">{t.home.method}</Link>
             </div>
           </div>
           <div className="hero-art">
-            <span className="hero-art-note">Illustration éditoriale · non botanique</span>
+            <span className="hero-art-note">{t.home.artNote}</span>
             <div className="hero-art-image">
-              <Image src="/images/hero-herbier.jpg" alt="Composition éditoriale de feuilles et de spécimens végétaux sur papier d’herbier" width={900} height={600} priority />
+              <Image src="/images/hero-herbier.jpg" alt={t.home.artCaptionStrong} width={900} height={600} priority />
               <div className="hero-art-caption">
-                <div><small>Une base de recherche ouverte</small><strong>De la tradition aux données publiées</strong></div>
+                <div><small>{t.home.artCaptionSmall}</small><strong>{t.home.artCaptionStrong}</strong></div>
                 <span className="hero-art-number">01 / 05</span>
               </div>
             </div>
@@ -42,16 +41,17 @@ export default async function HomePage() {
         </div>
       </section>
 
-      <section className="hero-bottom" aria-label="Recherche rapide et contenu du corpus">
+      <section className="hero-bottom" aria-label={t.home.corpusAria}>
         <div className="hero-bottom-inner wrap">
           <div>
-            <span className="hero-bottom-label">Commencer une exploration</span>
-            <SearchForm placeholder="Ex. Nauclea, Plasmodium, limonoïde…" />
+            <span className="hero-bottom-label">{t.home.startExploration}</span>
+            <SearchForm placeholder={t.home.searchPlaceholder} />
           </div>
-          <div className="hero-stats" aria-label="Contenu actuel de la base">
-            <div className="hero-stat"><strong>{stats.plants}</strong><span>Espèces</span></div>
-            <div className="hero-stat"><strong>{stats.studies}</strong><span>Études sourcées</span></div>
-            <div className="hero-stat"><strong>{stats.claims}</strong><span>Affirmations</span></div>
+          <div className="hero-stats" aria-label={t.home.corpusAria}>
+            <div className="hero-stat"><strong>{stats.plants}</strong><span>{t.home.statSpecies}</span></div>
+            <div className="hero-stat"><strong>{stats.studies}</strong><span>{t.home.statStudies}</span></div>
+            <div className="hero-stat"><strong>{stats.claims}</strong><span>{t.home.statClaims}</span></div>
+            <div className="hero-stat"><strong>{pathologies.length}</strong><span>{t.home.statSolutions}</span></div>
           </div>
         </div>
       </section>
@@ -60,49 +60,61 @@ export default async function HomePage() {
         <div className="wrap">
           <div className="section-heading">
             <div>
-              <p className="section-kicker">Le catalogue · {plants.length} espèces documentées</p>
-              <h2>Un herbier relié aux sources.</h2>
+              <p className="section-kicker">{t.home.sectionPlants} · {plants.length}</p>
+              <h2>{t.plants.title}</h2>
+              <p>{t.home.sectionPlantsLead}</p>
             </div>
-            <Link className="text-link" href="/plantes">Voir toutes les plantes <Icon name="arrow" size={16} /></Link>
+            <Link className="text-link" href="/plantes">{t.home.seeAll} <Icon name="arrow" size={16} /></Link>
           </div>
           {featuredPlants.length > 0 ? (
             <div className="plant-grid">
-              {featuredPlants.map((plant, index) => <PlantCard key={plant.id} plant={plant} index={index} />)}
+              {featuredPlants.map((plant, index) => <PlantCard key={plant.id} plant={plant} t={t} index={index} />)}
             </div>
           ) : (
-            <div className="empty-note">Le catalogue se prépare. Les premières fiches sourcées apparaîtront ici.</div>
+            <div className="empty-note">{t.plants.empty}</div>
           )}
-        </div>
-      </section>
-
-      <section className="section section-dark">
-        <div className="wrap">
-          <div className="section-heading">
-            <div>
-              <p className="section-kicker">Le graphe de connaissance</p>
-              <h2>Suivre une question,<br />pas une promesse.</h2>
-            </div>
-            <p>Chaque affirmation renvoie à une ou plusieurs études, à un niveau de preuve, puis à ses limites. Les résultats d’un extrait ne deviennent jamais une recommandation.</p>
-          </div>
-          <div className="pathway-grid">
-            <div className="pathway-step"><span className="pathway-step-number">01</span><h3>Pathologie</h3><p>Un sujet étudié, présenté sans diagnostic ni conseil de soin.</p></div>
-            <div className="pathway-step"><span className="pathway-step-number">02</span><h3>Mécanisme observé</h3><p>Le modèle expérimental décrit ce qui a été mesuré.</p></div>
-            <div className="pathway-step"><span className="pathway-step-number">03</span><h3>Plante & composé</h3><p>Une espèce, une partie et une préparation explicitement référencées.</p></div>
-            <div className="pathway-step"><span className="pathway-step-number">04</span><h3>Étude & limites</h3><p>Le DOI ou PMID, les résultats et ce qu’ils ne démontrent pas.</p></div>
-          </div>
-          <div style={{ marginTop: 23 }}><Link className="text-link" href="/pathologies/paludisme">Parcourir le dossier paludisme <Icon name="arrow" size={16} /></Link></div>
         </div>
       </section>
 
       <section className="section section-tinted">
         <div className="wrap">
+          <div className="section-heading">
+            <div>
+              <p className="section-kicker">{t.solutions.kicker}</p>
+              <h2>{t.solutions.title}</h2>
+              <p>{t.home.sectionSolutionsLead}</p>
+            </div>
+            <Link className="text-link" href="/solutions">{t.home.seeAll} <Icon name="arrow" size={16} /></Link>
+          </div>
+          {solutions.length > 0 ? (
+            <div className="record-grid">
+              {solutions.map((solution) => (
+                <Link href="/solutions" className="record-card" key={solution.id}>
+                  <div className="record-card-top"><span className="record-tag">{t.solutions.kicker}</span><span>{solution.claimCount} {solution.claimCount === 1 ? t.pathologies.claimOne : t.pathologies.claimMany}</span></div>
+                  <h2>{solution.name}</h2>
+                  <p>{solution.summary}</p>
+                  <span className="record-card-link">{t.solutions.testedPlants} <Icon name="arrow" size={15} /></span>
+                </Link>
+              ))}
+            </div>
+          ) : (
+            <div className="empty-note">{t.solutions.empty}</div>
+          )}
+          <div className="method-callout" style={{ marginTop: 22 }}>
+            <strong>{t.solutions.caution}</strong>
+          </div>
+        </div>
+      </section>
+
+      <section className="section">
+        <div className="wrap">
           <div className="tradition-notice">
             <span className="tradition-notice-icon"><Icon name="book" size={20} /></span>
             <div>
-              <strong>Deux registres, jamais confondus.</strong>
-              <p>Les usages traditionnels sont documentés dans un bloc distinct; ils ne sont pas une preuve d’efficacité scientifique.</p>
+              <strong>{t.understand.asideTitle}</strong>
+              <p>{t.understand.asideBody}</p>
             </div>
-            <Link className="text-link" href="/comprendre">Comprendre la différence <Icon name="arrow" size={15} /></Link>
+            <Link className="text-link" href="/comprendre">{t.footer.understand} <Icon name="arrow" size={15} /></Link>
           </div>
         </div>
       </section>
@@ -111,12 +123,15 @@ export default async function HomePage() {
         <div className="wrap">
           <div className="section-heading">
             <div>
-              <p className="section-kicker">Bibliographie · DOI et PubMed</p>
-              <h2>Des résultats à leur contexte.</h2>
+              <p className="section-kicker">{t.publications.kicker}</p>
+              <h2>{t.home.sectionStudies}</h2>
+              <p>{t.home.sectionStudiesLead}</p>
             </div>
-            <Link className="text-link" href="/publications">Toute la bibliographie <Icon name="arrow" size={16} /></Link>
+            <Link className="text-link" href="/publications">{t.home.seeAll} <Icon name="arrow" size={16} /></Link>
           </div>
-          {latestStudies.length > 0 ? latestStudies.map((study) => <StudyCard key={study.id} study={study} associatedPlants={study.plants} />) : <div className="empty-note">Aucune publication n’est encore enregistrée.</div>}
+          {latestStudies.length > 0
+            ? latestStudies.map((study) => <StudyCard key={study.id} study={study} t={t} associatedPlants={study.plants} />)
+            : <div className="empty-note">{t.publications.empty}</div>}
         </div>
       </section>
 
@@ -124,11 +139,11 @@ export default async function HomePage() {
         <div className="wrap">
           <div className="section-heading" style={{ marginBottom: 0 }}>
             <div>
-              <p className="section-kicker">Transparence d’abord</p>
-              <h2>La preuve s’attache à l’affirmation.</h2>
-              <p>Une même espèce peut avoir plusieurs propriétés étudiées et plusieurs niveaux de preuve. Les classements de cette version de démonstration sont provisoires et attendent une validation experte indépendante.</p>
+              <p className="section-kicker">{t.footer.transparency}</p>
+              <h2>{t.home.pledgeTitle}</h2>
+              <p>{t.home.pledgeBody}</p>
             </div>
-            <Link className="button button-primary" href="/preuves/methodologie">Lire la méthodologie <Icon name="arrow" size={15} /></Link>
+            <Link className="button button-primary" href="/preuves/methodologie">{t.nav.methode} <Icon name="arrow" size={15} /></Link>
           </div>
         </div>
       </section>

@@ -1,0 +1,867 @@
+import { cookies } from "next/headers";
+
+export type Locale = "fr" | "fon";
+
+export const LOCALE_COOKIE = "pharmacopee_langue";
+export const DEFAULT_LOCALE: Locale = "fr";
+
+export function isLocale(value: unknown): value is Locale {
+  return value === "fr" || value === "fon";
+}
+
+/** Langue active, lue depuis le cookie posé par le sélecteur FR / FON. */
+export async function getLocale(): Promise<Locale> {
+  const store = await cookies();
+  const value = store.get(LOCALE_COOKIE)?.value;
+  return isLocale(value) ? value : DEFAULT_LOCALE;
+}
+
+/** Attribut `lang` du document : `fon` est le code ISO 639-3 du fon. */
+export function htmlLang(locale: Locale): string {
+  return locale === "fon" ? "fon" : "fr";
+}
+
+type DeepStrings<T> = { [K in keyof T]: T[K] extends string ? string : DeepStrings<T[K]> };
+
+const fr = {
+  meta: {
+    siteName: "Herbier africain",
+    brandLine1: "HERBIER",
+    brandLine2: "AFRICAIN",
+    brandAria: "Pharmacopée végétale africaine, accueil",
+    defaultTitle: "Herbier africain — plantes du Bénin et d’Afrique, preuves et sources",
+    defaultDescription:
+      "Base documentaire de pharmacopée végétale africaine : plantes du Bénin et d’Afrique de l’Ouest, usages rapportés, études scientifiques, niveaux de preuve et limites, références DOI et PubMed.",
+  },
+  nav: {
+    plantes: "Plantes",
+    pathologies: "Pathologies",
+    mecanismes: "Mécanismes",
+    solutions: "Solutions",
+    composes: "Composés",
+    publications: "Publications",
+    veille: "Veille",
+    recherche: "Recherche",
+    methode: "Méthode",
+    mainAria: "Navigation principale",
+    mobileAria: "Navigation principale mobile",
+    searchPlaceholder: "Rechercher…",
+    searchAria: "Lancer la recherche",
+    searchLabel: "Rechercher dans la pharmacopée",
+    home: "Accueil",
+    breadcrumbAria: "Fil d’Ariane",
+  },
+  lang: {
+    label: "Langue",
+    fr: "Français",
+    fon: "Fon",
+    frShort: "FR",
+    fonShort: "FON",
+    switchToFon: "Afficher le site en fon",
+    switchToFr: "Afficher le site en français",
+    workingNote:
+      "Version fon de travail (Bénin) : les textes fon sont proposés pour l’accessibilité et doivent être relus par un locuteur natif avant publication.",
+    reviewBadge: "Fon · relecture à faire",
+  },
+  footer: {
+    about:
+      "Une base documentaire pour explorer les plantes africaines, les travaux scientifiques et les savoirs rapportés — sans prescrire.",
+    explore: "Explorer",
+    transparency: "Transparence",
+    solutions: "Solutions documentées",
+    veille: "Veille bibliographique",
+    methodology: "Méthodologie des preuves",
+    understand: "Comprendre les études",
+    legal: "Mentions & précautions",
+    copyright: "Documentation scientifique ouverte",
+    disclaimer: "Information générale, pas un conseil médical.",
+    africaNote: "Corpus centré sur l’Afrique de l’Ouest, en particulier le Bénin.",
+  },
+  home: {
+    eyebrow: "Pharmacopée végétale · base documentaire",
+    title1: "Les plantes",
+    title2: "d’Afrique.",
+    title3: "Les preuves.",
+    intro:
+      "Explorer la pharmacopée végétale africaine — du Bénin et d’Afrique de l’Ouest — à travers des usages rapportés, des études publiées et leurs limites, sans transformer l’information en prescription.",
+    explorePlants: "Explorer les plantes",
+    method: "Notre méthode",
+    artNote: "Illustration éditoriale · non botanique",
+    artCaptionSmall: "Une base de recherche ouverte",
+    artCaptionStrong: "De la tradition aux données publiées",
+    startExploration: "Commencer une exploration",
+    searchPlaceholder: "Ex. Nauclea, Plasmodium, paludisme…",
+    corpusAria: "Contenu actuel de la base",
+    statSpecies: "Espèces africaines",
+    statStudies: "Études sourcées",
+    statClaims: "Affirmations",
+    statSolutions: "Solutions documentées",
+    sectionPlants: "Espèces documentées",
+    sectionPlantsLead: "Plantes médicinales d’Afrique de l’Ouest présentes dans les publications recensées.",
+    sectionSolutions: "Solutions documentées",
+    sectionSolutionsLead:
+      "Ce que les études proposent d’explorer, sujet par sujet — sans dose, sans ordonnance.",
+    sectionStudies: "Dernières publications",
+    sectionStudiesLead: "Sources primaires avec DOI ou PMID, résultats et limites en langage clair.",
+    seeAll: "Tout voir",
+    pledgeTitle: "Documenter, jamais prescrire.",
+    pledgeBody:
+      "Aucune fiche ne propose de dose ni de traitement. Chaque affirmation est reliée à une publication et à ses limites.",
+  },
+  plants: {
+    kicker: "Catalogue botanique · plantes africaines",
+    title: "Les plantes documentées.",
+    lead:
+      "Chaque fiche relie identité botanique, noms usuels (dont le fon), usages rapportés, études scientifiques, composés et précautions. La présence d’une espèce n’est ni une validation médicale ni une recommandation.",
+    asideTitle: "Comment lire ces fiches",
+    asideBody:
+      "Les résultats scientifiques sont attachés à des affirmations précises et à leurs sources. Les traditions sont consignées séparément et étiquetées.",
+    searchPlaceholder: "Nom scientifique, nom fon, famille, sujet…",
+    allFamilies: "Toutes les familles",
+    filterAria: "Filtrer par famille botanique",
+    countOne: "espèce dans le catalogue",
+    countMany: "espèces dans le catalogue",
+    empty: "Aucune espèce ne correspond à cette famille dans le corpus actuel.",
+    detailKicker: "Fiche botanique",
+    summaryNote: "Résumé du contexte documentaire de l’espèce.",
+    usesTitle: "Usages traditionnels rapportés",
+    usesNote:
+      "Ce bloc documente ce que les sources rapportent. Il ne constitue pas une preuve d’efficacité, une recette ni une recommandation d’usage.",
+    usesEmpty: "Aucun usage traditionnel n’est consigné dans les sources sélectionnées pour cette fiche.",
+    useLabel: "Donnée ethnobotanique · non preuve d’efficacité",
+    useContext: "Contexte rapporté",
+    usePreparation: "Préparation rapportée",
+    useRegion: "Région",
+    usePart: "Partie mentionnée",
+    sourcePrefix: "Source",
+    claimsTitle: "Affirmations scientifiques",
+    claimsNote:
+      "Le niveau porte sur l’affirmation et les études reliées, jamais sur l’espèce entière. Les niveaux de cette version initiale sont signalés comme provisoires et à valider par un expert.",
+    claimsEmpty: "Aucune affirmation scientifique sourcée n’est publiée pour le moment.",
+    axisLabel: "Axe étudié",
+    pathwayLabel: "Parcours de recherche",
+    compoundsTitle: "Composés identifiés",
+    compoundsEmpty:
+      "Aucun composé associé n’est enregistré dans le corpus actuel. Cela ne signifie pas que l’espèce ne contient pas de composés.",
+    seeCompound: "Voir la fiche composé",
+    studiesTitle: "Études scientifiques",
+    studiesNote:
+      "Les références ci-dessous possèdent un DOI ou un identifiant PubMed. Les résultats et leurs limites sont résumés en langage clair.",
+    studiesEmpty: "Aucune publication liée à cette espèce.",
+    safetyTitle: "Sécurité & précautions",
+    safetyRisk: "Signal de prudence",
+    safetyInsufficient: "Données de sécurité insuffisantes",
+    safetyContext: "Contexte",
+    safetySource: "Source de prudence",
+    safetyEmpty: "Les données spécifiques de sécurité ne sont pas renseignées dans cette fiche.",
+    identityTitle: "Identité botanique",
+    botanicalAuthority: "Autorité botanique",
+    noAuthority: "Autorité botanique non renseignée",
+    family: "Famille",
+    partsUsed: "Parties étudiées",
+    notDocumented: "Non documentées",
+    commonNames: "Noms usuels",
+    fonNames: "Nom en fon",
+    fonNone: "Non renseigné en fon",
+    fonNote:
+      "Noms fon issus de la littérature béninoise (listes de noms fon, fiches techniques) : à confirmer par un locuteur natif.",
+    namesNotHarmonised: "Non harmonisés dans les sources consultées",
+    synonyms: "Synonymes",
+    noSynonym: "Aucun synonyme documenté ici",
+    sourceContext: "Contexte des sources",
+    regionUnknown: "Région non précisée dans les sources sélectionnées",
+    references: "Références",
+    publicationOne: "publication liée",
+    publicationMany: "publications liées",
+    importantTitle: "Important.",
+    importantBody:
+      "La présence d’une espèce dans une étude ne prouve ni sa sécurité ni son efficacité clinique. Les affirmations sont sourcées et les limites restent visibles.",
+    safetyClaim: "Affirmation de sécurité",
+    solutionsTitle: "Solutions documentées",
+    solutionsNote:
+      "Pistes concrètes tirées des sources : modèle testé, préparation étudiée, résultat observé. Aucune dose, aucune posologie, aucune garantie d’efficacité chez la personne.",
+    solutionsEmpty: "Aucune piste documentée pour cette espèce dans le corpus actuel.",
+    solutionsModel: "Modèle testé",
+    solutionsPreparation: "Préparation étudiée",
+    solutionsResult: "Résultat observé",
+    solutionsLimit: "Ce que cela ne prouve pas",
+  },
+  pathologies: {
+    kicker: "Parcours guidé · du sujet à la source",
+    title: "Explorer par sujet.",
+    lead:
+      "Ces pages rassemblent des questions de recherche et les affirmations documentées qui y sont associées. Elles ne proposent ni diagnostic, ni recommandation de plante, ni traitement.",
+    asideTitle: "À lire avec recul",
+    asideBody:
+      "Un sujet pathologique relié à une plante signifie uniquement qu’une étude ou une source traite de cette relation.",
+    tag: "Dossier documentaire",
+    claimOne: "affirmation",
+    claimMany: "affirmations",
+    open: "Ouvrir le parcours",
+    empty: "Aucun dossier n’est encore publié.",
+    detailKicker: "Dossier documentaire · parcours guidé",
+    pathway: "Pathologie",
+    pathwayMechanism: "Mécanisme étudié",
+    pathwayPlant: "Plante",
+    pathwayEvidence: "Preuve & source",
+    relatedClaims: "Affirmations reliées",
+    tested: "Ce que les études ont testé.",
+    relatedMechanisms: "Mécanismes ou résultats expérimentaux associés",
+    claimsEmpty: "Aucune affirmation sourcée n’est actuellement associée à ce dossier.",
+    countOne: "affirmation",
+    countMany: "affirmations",
+  },
+  mechanisms: {
+    kicker: "Mesures expérimentales · pas des promesses",
+    title: "Comprendre ce qui a été mesuré.",
+    lead:
+      "Les termes ci-dessous décrivent les cibles ou résultats expérimentaux mentionnés dans les articles. Un résultat en culture ou chez l’animal ne démontre pas un mécanisme clinique chez l’humain.",
+    asideTitle: "Lecture scientifique",
+    asideBody: "Chaque axe est relié à une affirmation, un modèle d’étude et une publication consultable.",
+    tag: "Axe expérimental",
+    claimOne: "affirmation",
+    claimMany: "affirmations",
+    open: "Lire l’explication",
+    empty: "Aucun mécanisme n’est encore publié.",
+    detailKicker: "Comprendre · résultat expérimental",
+    plainTitle: "En termes simples",
+    relatedSubjects: "Sujets associés",
+    relatedStudies: "Études reliées",
+    plantsClaims: "Plantes & affirmations.",
+    resultOne: "résultat",
+    resultMany: "résultats",
+    emptyDetail: "Aucune affirmation n’est associée à cet axe pour le moment.",
+  },
+  compounds: {
+    kicker: "Phytochimie · composés identifiés",
+    title: "De l’espèce à la molécule.",
+    lead:
+      "Les molécules listées ici sont celles que les études associées ont isolées ou caractérisées. Leur présence ne signifie ni efficacité thérapeutique ni sécurité d’emploi.",
+    asideTitle: "Traçabilité chimique",
+    asideBody:
+      "Chaque composé renvoie à la plante et à la publication qui l’a identifié. Les essais précliniques restent distincts des résultats cliniques.",
+    speciesOne: "espèce",
+    speciesMany: "espèces",
+    open: "Suivre les références",
+    empty: "Aucun composé n’est encore documenté dans le corpus.",
+    detailKicker: "Phytochimie · fiche composé",
+    relations: "Relations sourcées",
+    plantsPublications: "Plantes & publications.",
+    associationOne: "association",
+    associationMany: "associations",
+    partUnspecified: "Partie non précisée",
+    identificationSource: "Source d’identification",
+    cautionTitle: "À ne pas extrapoler.",
+    cautionBody:
+      "La caractérisation d’une molécule et un essai sur un modèle biologique ne démontrent pas que la plante ou le composé est un médicament efficace ou sûr chez l’humain.",
+  },
+  publications: {
+    kicker: "Bibliographie · liens DOI et PubMed",
+    title: "Les sources avant les conclusions.",
+    lead:
+      "Les publications qui soutiennent le corpus sont consultables par leur DOI ou leur identifiant PubMed. Les résumés en français indiquent aussi le modèle d’étude et les limites.",
+    asideTitle: "Références vérifiables",
+    asideBody:
+      "Chaque publication de la base comporte au moins un DOI ou un PMID. Les liens ouvrent la source externe.",
+    searchPlaceholder: "Rechercher une publication ou une plante…",
+    filterAria: "Filtrer les publications par type",
+    all: "Toutes les études",
+    preclinicalMixed: "Préclinique multi-modèles",
+    clinical: "Clinique",
+    ethnobotanical: "Ethnobotanique",
+    reviews: "Revues",
+    countOne: "publication · triées par année",
+    countMany: "publications · triées par année",
+    empty: "Aucune publication pour ce type.",
+    limits: "Limites",
+    openSource: "Ouvrir la source",
+  },
+  solutions: {
+    kicker: "Solutions documentées · pistes de recherche",
+    title: "Ce que les sources proposent d’explorer.",
+    lead:
+      "Pour chaque sujet, cette page rassemble les plantes étudiées, le mécanisme mesuré, le niveau de preuve et les publications. Ce sont des pistes de recherche documentées — jamais une ordonnance, une dose ou une promesse de guérison.",
+    asideTitle: "Un cadre strict",
+    asideBody:
+      "Une piste documentée ne remplace pas un avis médical. Une maladie se traite avec un professionnel de santé ; ces pages servent à comprendre la recherche, pas à s’auto-médiquer.",
+    testedPlants: "Plantes étudiées",
+    mechanism: "Mécanisme / résultat",
+    evidence: "Niveau de preuve",
+    sources: "Sources",
+    empty: "Aucune piste documentée pour le moment.",
+    nextStepsTitle: "Comment utiliser cette page",
+    nextStep1: "Lire le niveau de preuve avant le résultat.",
+    nextStep2: "Ouvrir la publication d’origine via son DOI ou son PMID.",
+    nextStep3: "Parler à un professionnel de santé avant tout usage.",
+    caution: "Aucune posologie n’est publiée ici, volontairement.",
+    otherTitle: "Autres pistes documentées",
+    otherSummary:
+      "Affirmations sourcées qui ne sont rattachées à aucun dossier de pathologie : résultats expérimentaux, sécurité ou données insuffisantes.",
+    groupOne: "sujet documenté",
+    groupMany: "sujets documentés",
+    entryOne: "piste",
+    entryMany: "pistes",
+  },
+  search: {
+    kicker: "Recherche plein texte · PostgreSQL + PubMed",
+    title: "Retrouver une information.",
+    lead:
+      "La recherche interroge le corpus local et, en parallèle, PubMed. Les notices externes retrouvées sont enregistrées comme candidates à vérifier — elles ne sont pas publiées automatiquement.",
+    asideTitle: "Collecte avec garde-fou",
+    asideBody:
+      "Les requêtes de trois caractères ou plus sont transmises à PubMed (NCBI). Seules les notices bibliographiques sont conservées; la requête elle-même n’est pas enregistrée.",
+    placeholder: "Ex. Nauclea, Plasmodium, paludisme, tchayo…",
+    emptyPrompt:
+      "Saisissez au moins deux caractères pour chercher dans l’herbier. À partir de trois caractères, la recherche consulte aussi PubMed.",
+    tooShort: "Ajoutez un caractère pour lancer la recherche.",
+    localKicker: "Corpus documentaire local",
+    localTitle: "Résultats vérifiés dans l’herbier",
+    resultOne: "résultat",
+    resultMany: "résultats",
+    localEmpty:
+      "Aucun résultat exact dans l’herbier. Consultez les notices PubMed candidates ci-dessous ou essayez un nom scientifique.",
+    pubmedKicker: "Collecte bibliographique en direct",
+    pubmedTitle: "Nouvelles notices PubMed",
+    candidateOne: "candidate",
+    candidateMany: "candidates",
+    pubmedNote:
+      "Source : PubMed / NCBI E-utilities. Les titres, auteurs, résumés et identifiants sont récupérés depuis les notices. Les résultats ne sont ni résumés par IA ni transformés en affirmations ou niveaux de preuve.",
+    unavailable:
+      "PubMed n’est pas joignable pour le moment. Les résultats du corpus local restent consultables; réessayez plus tard.",
+    notSaved:
+      "Les notices PubMed ont été récupérées mais la file de vérification n’a pas pu être mise à jour. Elles restent affichées comme candidates non validées.",
+    noCandidate:
+      "Aucune notice PubMed trouvée pour cette requête, ou ajoutez au moins trois caractères pour lancer la collecte externe.",
+    categories: {
+      plant: "Plante",
+      pathology: "Pathologie",
+      mechanism: "Mécanisme",
+      compound: "Composé",
+      publication: "Publication",
+    },
+  },
+  veille: {
+    kicker: "PubMed · collecte à la demande",
+    title: "Notices à examiner.",
+    lead:
+      "Les notices ci-dessous ont été trouvées automatiquement lorsqu’une recherche a interrogé PubMed. Elles sont conservées comme références candidates; elles ne font pas partie des fiches scientifiques validées.",
+    asideTitle: "Validation humaine obligatoire",
+    asideBody:
+      "Aucune notice de cette file ne crée automatiquement une affirmation, un niveau de preuve ou une recommandation. Un expert doit examiner la publication originale avant toute intégration.",
+    queueOne: "notice en attente de vérification (100 dernières affichées).",
+    queueMany: "notices en attente de vérification (100 dernières affichées).",
+    note:
+      "Les métadonnées et résumés proviennent des notices PubMed, avec leur PMID et DOI lorsqu’il est disponible. Les requêtes de recherche ne sont pas stockées dans cette file. Les résumés affichés restent ceux de la source, dans leur langue d’origine.",
+    empty:
+      "Aucune notice candidate pour le moment. Lancez une recherche par nom de plante, composé ou sujet pour interroger PubMed.",
+  },
+  understand: {
+    title: "Comprendre les études",
+    description:
+      "Glossaire pour lire les études sur les plantes médicinales africaines et distinguer les usages rapportés des preuves scientifiques.",
+    kicker: "Vulgarisation · sans raccourci",
+    heading: "Lire les études avec recul.",
+    lead:
+      "Quelques repères pour comprendre ce qu’une publication démontre — et ce qu’elle ne permet pas de conclure.",
+    asideTitle: "Le point clé",
+    asideBody:
+      "Un usage rapporté, un résultat de laboratoire et un bénéfice chez l’humain sont trois informations différentes.",
+    calloutTitle: "Documenter, jamais prescrire.",
+    calloutBody:
+      "Les fiches n’établissent aucun diagnostic et ne proposent aucune dose ou traitement. Une maladie ou un médicament doit être discuté avec un professionnel de santé.",
+    seeMethod: "Voir comment les preuves sont classées",
+    terms: {
+      traditional: "Usage traditionnel",
+      traditionalText:
+        "Information issue d’une enquête, d’une source historique ou d’une revue décrivant une pratique rapportée. Cela documente un savoir ou une pratique; ce n’est pas une validation clinique.",
+      inVitro: "In vitro",
+      inVitroText:
+        "Essai réalisé hors d’un organisme vivant, par exemple sur des cellules, des parasites ou des bactéries en culture. Un effet observé dans ce modèle ne prouve pas un effet chez une personne.",
+      inVivo: "In vivo",
+      inVivoText:
+        "Essai réalisé chez un organisme vivant, souvent un animal dans les publications précliniques. Les résultats animaux ne se transposent pas directement à la santé humaine.",
+      exVivo: "Ex vivo",
+      exVivoText:
+        "Test effectué hors de l’organisme sur un tissu ou un échantillon biologique prélevé. Il reste distinct d’un essai clinique.",
+      clinical: "Essai clinique",
+      clinicalText:
+        "Étude menée auprès de participants humains selon un protocole défini. Sa présence seule n’établit pas une efficacité: méthode, taille, comparateur et résultats doivent être examinés.",
+      doi: "DOI",
+      doiText: "Identifiant pérenne d’une publication. Un DOI permet de retrouver l’article via le résolveur doi.org.",
+      pmid: "PMID",
+      pmidText:
+        "Identifiant d’une notice bibliographique dans PubMed, la base de la National Library of Medicine des États-Unis.",
+      limit: "Limite méthodologique",
+      limitText:
+        "Élément qui restreint l’interprétation: modèle, taille, préparation, comparateur, biais, durée ou manque de données. Les limites doivent rester visibles à côté du résultat.",
+    },
+  },
+  evidence: {
+    high: "Preuve élevée",
+    highText: "Niveau réservé à des données humaines robustes, répliquées et évaluées; non attribué dans ce corpus.",
+    moderate: "Preuve modérée",
+    moderateText: "Niveau réservé à des données humaines convergentes mais encore limitées; non attribué dans ce corpus.",
+    preclinical: "Préclinique",
+    preclinicalText:
+      "Résultat provenant d’essais in vitro, ex vivo ou de modèles animaux; il ne démontre pas un bénéfice clinique.",
+    ethnobotanical: "Donnée ethnobotanique",
+    ethnobotanicalText: "Usage rapporté dans une source; ce constat ne prouve pas l’efficacité ni la sécurité.",
+    insufficient: "Données insuffisantes",
+    insufficientText: "Les sources recensées ne permettent pas de tirer une conclusion sur cette affirmation.",
+    risk: "Signal de risque",
+    riskText:
+      "Un signal de prudence est rapporté indépendamment de l’activité étudiée; il doit être interprété dans son contexte.",
+    openMethod: "Ouvrir la méthodologie",
+    reviewDefault: "À valider par un expert",
+    whyThisLevel: "Pourquoi ce niveau ?",
+    keepInMind: "À garder en tête",
+    claimSources: "Sources de cette affirmation",
+  },
+  study: {
+    inVitro: "In vitro",
+    inVivo: "In vivo · modèle animal",
+    mixed: "Étude préclinique multi-modèles",
+    clinical: "Clinique",
+    observational: "Observationnelle",
+    review: "Revue de littérature",
+    ethnobotanical: "Ethnobotanique",
+    fallback: "Étude",
+  },
+  notFound: {
+    code: "404 · FICHE INTROUVABLE",
+    title: "Cette page n’est pas dans l’herbier.",
+    body: "La référence a peut-être changé ou ne fait pas partie du corpus documenté pour le moment.",
+    cta: "Explorer les plantes",
+  },
+  method: {
+    fonSummaryTitle: "Résumé en fon",
+    fonSummaryBody:
+      "Wema ɖokpó ɖokpó ɖó DOI alǒ PMID. Nǔ e wema lɛ ɖɔ ɔ́, è nɔ kpɔ́n tɔ̀n ganjí, bɔ è nɔ ɖɔ nǔ e è tuùn ǎ lɛ́ hwè.",
+    frenchLink: "Lire la page complète en français",
+  },
+  legal: {
+    fonSummaryTitle: "Résumé en fon",
+    fonSummaryBody:
+      "Xó e ɖò wema e mɛ ɔ́: atín ɖé sixú hɛn vɔ́ wá nú mɛ. È ma nɔ ná kɛnklɛn sɛ́n ɖé ǎ. Azɔ̀n ɖé ɖò mɛ ɔ́, byɔ dɔ́ktɔ́.",
+    frenchLink: "Lire la page complète en français",
+  },
+} as const;
+
+export type Dictionary = DeepStrings<typeof fr>;
+
+const fon: Dictionary = {
+  meta: {
+    siteName: "Afríka atínkɔn",
+    brandLine1: "ATÍNKƆN",
+    brandLine2: "AFRÍKA",
+    brandAria: "Atínkɔn xwé, bǐbɛ́mɛ",
+    defaultTitle: "Afríka atínkɔn — atín, nùnyá kpodó xógbɛ́ kpó",
+    defaultDescription:
+      "Wema kpɔ́n atínkɔn tɔn: atín e ɖò Benɛ̂n kpodó Afríka wè lɛ é, nǔ e kɔ́nú ɖɔ, wema nùnyá tɔn, kpodó nǔ e è tuùn ǎ lɛ́ kpó.",
+  },
+  nav: {
+    plantes: "Atín lɛ",
+    pathologies: "Azɔ̀n lɛ",
+    mecanismes: "Nǔ e è kpɔ́n",
+    solutions: "Kɛnklɛn lɛ",
+    composes: "Atín nǔ lɛ",
+    publications: "Wema lɛ",
+    veille: "Wema yɔyɔ́ lɛ",
+    recherche: "Ba nǔ",
+    methode: "Sɛ́n nǔkpɔ́n",
+    mainAria: "Xlɛ́ tɛn nukɔntɔn",
+    mobileAria: "Xlɛ́ tɛn nukɔntɔn (telefonu)",
+    searchPlaceholder: "Ba nǔ…",
+    searchAria: "Ba nǔ",
+    searchLabel: "Ba nǔ ɖò atínkɔn mɛ",
+    home: "Xwégbè",
+    breadcrumbAria: "Mɔ e è zɔ́ lɛ́",
+  },
+  lang: {
+    label: "Gbè",
+    fr: "Flansé",
+    fon: "Fɔngbè",
+    frShort: "FR",
+    fonShort: "FON",
+    switchToFon: "Xlɛ́ xó ɔ́ ɖò fɔngbè mɛ",
+    switchToFr: "Xlɛ́ xó ɔ́ ɖò flansé mɛ",
+    workingNote:
+      "Fɔngbè xó ɖò azɔ̌ wɛ: è ɖó ná kpɔ́n tɔ̀n ɖèé bɔ mɛ e nɔ dó fɔngbè ɔ́ nà ɖɔ nǔgbó xógbɛ́ tɔn hwenu e è ná ɖe tɔ̀n ɖó.",
+    reviewBadge: "Fɔngbè · kpɔ́n ɖèé",
+  },
+  footer: {
+    about:
+      "Wema e nɔ kpɔ́n atín Afríka tɔn lɛ́, wema nùnyá tɔn lɛ́ kpodó nǔ e kɔ́nú ɖɔ lɛ́ kpó — bɔ è ma nɔ ná kɛnklɛn ɖé ǎ.",
+    explore: "Kpɔ́n",
+    transparency: "Nǔgbó xó",
+    solutions: "Kɛnklɛn e wema lɛ ɖɔ",
+    veille: "Wema yɔyɔ́ lɛ",
+    methodology: "Sɛ́n e è nɔ kpɔ́n nǔɖiɖé",
+    understand: "Sè wema lɛ",
+    legal: "Sɛ́n kpodó nǔ e ɖó ná kpɔ́n",
+    copyright: "Nùnyá xó e ɖò abɔ̀ nú mɛ bǐ",
+    disclaimer: "Xó ɖékpókpé wɛ; ma yǐn kɛnklɛn dɔ́ktɔ́ tɔn ǎ.",
+    africaNote: "Atín e ɖò Afríka wè lɛ́, ɖó Benɛ̂n tɔn lɛ́ hwè.",
+  },
+  home: {
+    eyebrow: "Atínkɔn · wema kpɔ́n",
+    title1: "Atín lɛ",
+    title2: "Afríka tɔn.",
+    title3: "Nǔɖiɖé lɛ.",
+    intro:
+      "Kpɔ́n atínkɔn Afríka tɔn — Benɛ̂n kpodó Afríka wè tɔn — ɖò nǔ e kɔ́nú ɖɔ, wema e è ɖe tɔ́n lɛ́ kpodó nǔ e è tuùn ǎ lɛ́ kpó, bɔ è ma ná wlán kɛnklɛn ɖé ǎ.",
+    explorePlants: "Kpɔ́n atín lɛ",
+    method: "Sɛ́n nǔkpɔ́n tɔn",
+    artNote: "Yǐɖeɖe tɔn wɛ · ma yǐn atín kpɔ́n ǎ",
+    artCaptionSmall: "Wema e ɖò abɔ̀ nú mɛ bǐ",
+    artCaptionStrong: "Sɔ́n kɔ́nú mɛ wá wema nùnyá tɔn mɛ",
+    startExploration: "Bɛ́ nǔ ba",
+    searchPlaceholder: "Aɖe: Nauclea, Plasmodium, azɔ̀n zozo…",
+    corpusAria: "Nǔ e ɖò wema ɔ́ mɛ",
+    statSpecies: "Atín Afríka tɔn",
+    statStudies: "Wema nùnyá tɔn",
+    statClaims: "Xó e è ɖɔ",
+    statSolutions: "Kɛnklɛn e wema lɛ ɖɔ",
+    sectionPlants: "Atín e wema lɛ ɖɔ",
+    sectionPlantsLead: "Atínkɔn Afríka wè tɔn e ɖò wema lɛ mɛ é.",
+    sectionSolutions: "Kɛnklɛn e wema lɛ ɖɔ",
+    sectionSolutionsLead:
+      "Nǔ e wema lɛ ɖɔ bɔ è kpɔ́n, azɔ̀n ɖokpó ɖokpó — ma ɖó kɛnklɛn sɛ́n ɖé ǎ.",
+    sectionStudies: "Wema yɔyɔ́ lɛ",
+    sectionStudiesLead: "Wema e ɖó DOI alǒ PMID, kpodó nǔ e è mɔ̀ kpodó nǔ e è tuùn ǎ kpó.",
+    seeAll: "Kpɔ́n bǐ",
+    pledgeTitle: "Wlán nǔ, ma wlán kɛnklɛn ǎ.",
+    pledgeBody:
+      "Wema ɖé ma nɔ ná kɛnklɛn alǒ dó azɔ̀n ɖé ǎ. Xó ɖokpó ɖokpó ɖó wema tɔ̀n kpodó nǔ e è tuùn ǎ kpó.",
+  },
+  plants: {
+    kicker: "Atínkɔn · atín Afríka tɔn",
+    title: "Atín e wema lɛ ɖɔ.",
+    lead:
+      "Wema ɖokpó ɖokpó ɖɔ atín ɔ́ tɔ̀n, nǔ e è nɔ ylɔ́ tɔ̀n ɖò fɔngbè mɛ, nǔ e kɔ́nú ɖɔ, wema nùnyá tɔn lɛ́, atín nǔ tɔn lɛ́ kpodó nǔ e ɖó ná kpɔ́n kpó. Atín ɖé ɖò wema ɔ́ mɛ ɔ́, ma yǐn kɛnklɛn ǎ.",
+    asideTitle: "Nɛ̌ è ná xá wema e lɛ́",
+    asideBody:
+      "Wema nùnyá tɔn lɛ́ ɖó xó ɖé ɖokpó kpɔ́n. Kɔ́nú xó lɛ́ ɖò vɔ̀ ɖé, bɔ è ɖɔ xógbɛ́ tɔ̀n.",
+    searchPlaceholder: "Atín nyǐkɔ́, fɔngbè nyǐkɔ́, hɛnnu, xó…",
+    allFamilies: "Hɛnnu bǐ",
+    filterAria: "Ba atín lɛ ɖò hɛnnu mɛ",
+    countOne: "atín ɖò wema ɔ́ mɛ",
+    countMany: "atín lɛ ɖò wema ɔ́ mɛ",
+    empty: "Atín ɖé ma ɖò hɛnnu e mɛ ǎ.",
+    detailKicker: "Atín wema",
+    summaryNote: "Xó kpɛví atín ɔ́ tɔn.",
+    usesTitle: "Nǔ e kɔ́nú ɖɔ",
+    usesNote:
+      "Wema e ɖò flí ɔ́ ɖɔ nǔ e xógbɛ́ lɛ ɖɔ. Ma yǐn nǔɖiɖé alǒ kɛnklɛn sɛ́n ǎ.",
+    usesEmpty: "Xógbɛ́ e è ɖe tɔ́n lɛ́ ma ɖɔ kɔ́nú ɖé ǎ.",
+    useLabel: "Kɔ́nú xó · ma yǐn nǔɖiɖé ǎ",
+    useContext: "Xó e è ɖɔ",
+    usePreparation: "Nɛ̌ è nɔ wá nǔ ɔ́",
+    useRegion: "Tò",
+    usePart: "Atín ɔ́ kpá e è ɖɔ",
+    sourcePrefix: "Xógbɛ́",
+    claimsTitle: "Xó nùnyá tɔn lɛ",
+    claimsNote:
+      "Nǔɖiɖé ɔ́ ɖó xó ɔ́ kpodó wema e ɖò tɔ̀n lɛ́ kpó; ma ɖó atín ɔ́ bǐ ǎ. Wema e ɖò flí ɔ́ ma ɖó nǔɖiɖé kɔ́n ǎ; mɛ e tuùn nǔ ɔ́ ɖó ná kpɔ́n tɔ̀n.",
+    claimsEmpty: "Xó nùnyá tɔn ɖé ma ɖò wema ɔ́ mɛ ǎ.",
+    axisLabel: "Nǔ e è kpɔ́n",
+    pathwayLabel: "Mɔ e è zɔ́",
+    compoundsTitle: "Atín nǔ e è mɔ̀",
+    compoundsEmpty:
+      "Atín nǔ ɖé ma ɖò wema ɔ́ mɛ ǎ. Enɛ́ ma ɖɔ ɖɔ atín ɔ́ ɖó atín nǔ ɖé ǎ.",
+    seeCompound: "Kpɔ́n atín nǔ wema",
+    studiesTitle: "Wema nùnyá tɔn lɛ",
+    studiesNote: "Wema e ɖò flí ɔ́ ɖó DOI alǒ PMID. Nǔ e è mɔ̀ kpodó nǔ e è tuùn ǎ kpó ɖò xó kpɛví mɛ.",
+    studiesEmpty: "Wema ɖé ma ɖó atín e ɔ́ ǎ.",
+    safetyTitle: "Nǔ e ɖó ná kpɔ́n",
+    safetyRisk: "Nǔ e sixú hɛn vɔ́ wá",
+    safetyInsufficient: "Nǔ e è tuùn ɖó nǔ e ɖó ná kpɔ́n wu ɔ́ ma sù ǎ",
+    safetyContext: "Xó e ɖò tɔ̀n",
+    safetySource: "Xógbɛ́ e ɖɔ nǔ e ɖó ná kpɔ́n",
+    safetyEmpty: "Nǔ e ɖó ná kpɔ́n ɖó atín e ɔ́ wu ɔ́ ma ɖò wema ɔ́ mɛ ǎ.",
+    identityTitle: "Atín ɔ́ tɔ̀n",
+    botanicalAuthority: "Mɛ e ɖɔ nyǐkɔ́ ɔ́",
+    noAuthority: "Mɛ e ɖɔ nyǐkɔ́ ɔ́ ma ɖò wema ɔ́ mɛ ǎ",
+    family: "Hɛnnu",
+    partsUsed: "Atín ɔ́ kpá e è kpɔ́n",
+    notDocumented: "Ma ɖò wema ɔ́ mɛ ǎ",
+    commonNames: "Nyǐkɔ́ e è nɔ ylɔ́",
+    fonNames: "Nyǐkɔ́ ɖò fɔngbè mɛ",
+    fonNone: "Ma ɖò fɔngbè mɛ ǎ",
+    fonNote: "Nyǐkɔ́ fɔngbè tɔn lɛ́ sɔ́n wema Benɛ̂n tɔn lɛ́ mɛ; mɛ e nɔ dó fɔngbè ɔ́ ɖó ná kpɔ́n yé.",
+    namesNotHarmonised: "Nyǐkɔ́ lɛ́ ma ɖò ɖokpó ǎ",
+    synonyms: "Nyǐkɔ́ bɔbɔ lɛ",
+    noSynonym: "Nyǐkɔ́ bɔbɔ ɖé ma ɖò flí ɔ́ ǎ",
+    sourceContext: "Xógbɛ́ lɛ́ tɔn",
+    regionUnknown: "Tò e xógbɛ́ lɛ́ ɖɔ ɔ́ ma ɖò flí ɔ́ ǎ",
+    references: "Wema lɛ",
+    publicationOne: "wema ɖò atín e ɔ́",
+    publicationMany: "wema lɛ ɖò atín e ɔ́",
+    importantTitle: "Nǔ ɖagbe ná tuùn.",
+    importantBody:
+      "Atín ɖé ɖò wema ɖé mɛ ɔ́, ma yǐn ɖɔ è sixú sɔ́ tɔ̀n ɖò agbaza ǎ, ma yǐn nǔɖiɖé ǎ. Xó lɛ́ ɖó wema tɔ̀n, bɔ nǔ e è tuùn ǎ lɛ́ ɖò xlɛ́.",
+    safetyClaim: "Nǔ e ɖó ná kpɔ́n wu xó",
+    solutionsTitle: "Kɛnklɛn e wema lɛ ɖɔ",
+    solutionsNote:
+      "Nǔ e wema lɛ ɖɔ: nɛ̌ è kpɔ́n nǔ ɔ́ (kpɔ́n mɛ, atín ɔ́ kpá, nǔ e è mɔ̀). Ma ɖó kɛnklɛn sɛ́n alǒ nǔɖiɖé ɖɔ ɖɔ è ná ganjí ǎ.",
+    solutionsEmpty: "Kɛnklɛn ɖé ma ɖò wema ɔ́ mɛ nú atín e ɔ́ ǎ.",
+    solutionsModel: "Nɛ̌ è kpɔ́n nǔ ɔ́",
+    solutionsPreparation: "Atín ɔ́ kpá e è sɔ́",
+    solutionsResult: "Nǔ e è mɔ̀",
+    solutionsLimit: "Nǔ e enɛ́ ma ɖiɖé ǎ",
+  },
+  pathologies: {
+    kicker: "Mɔ e è zɔ́ · sɔ́n xó wá xógbɛ́",
+    title: "Kpɔ́n azɔ̀n ɖokpó ɖokpó.",
+    lead:
+      "Wema e lɛ́ ɖó azɔ̀n xó lɛ́ kpodó xó nùnyá tɔn e ɖò tɔ̀n lɛ́ kpó. Yé ma nɔ ɖɔ azɔ̀n ɔ́ tɔ̀n ǎ, ma nɔ ɖɔ atín ɖé ǎ, ma nɔ ná kɛnklɛn ǎ.",
+    asideTitle: "Xá kpodó nùnyá kpó",
+    asideBody:
+      "Azɔ̀n ɖé kpodó atín ɖé kpó ɖò xó ɖokpó mɛ ɔ́, enɛ́ ɖɔ ɖɔ wema ɖé ɖɔ xó yé lɛ́ tɔn wɛ.",
+    tag: "Azɔ̀n wema",
+    claimOne: "xó",
+    claimMany: "xó lɛ",
+    open: "Xá wema ɔ́",
+    empty: "Azɔ̀n wema ɖé ma ɖe tɔ́n ǎ.",
+    detailKicker: "Azɔ̀n wema · mɔ e è zɔ́",
+    pathway: "Azɔ̀n",
+    pathwayMechanism: "Nǔ e è kpɔ́n",
+    pathwayPlant: "Atín",
+    pathwayEvidence: "Nǔɖiɖé kpodó xógbɛ́",
+    relatedClaims: "Xó e ɖò tɔ̀n lɛ",
+    tested: "Nǔ e wema lɛ kpɔ́n.",
+    relatedMechanisms: "Nǔ e è mɔ̀ ɖò wema lɛ mɛ",
+    claimsEmpty: "Xó nùnyá tɔn ɖé ma ɖò azɔ̀n wema e ɔ́ ǎ.",
+    countOne: "xó",
+    countMany: "xó lɛ",
+  },
+  mechanisms: {
+    kicker: "Nǔ e è kpɔ́n · ma yǐn kaka ǎ",
+    title: "Sè nǔ e è kpɔ́n ɔ́.",
+    lead:
+      "Xó e ɖò flí ɔ́ ɖɔ nǔ e wema lɛ kpɔ́n ɔ́ tɔ̀n. Nǔ e è mɔ̀ ɖò kpɔ́n mɛ alǒ ɖò kanlin wu ɔ́, ma ɖiɖé ɖɔ nǔ ɔ́ nɔ wá ɖò mɛ wu ǎ.",
+    asideTitle: "Nùnyá kpɔ́n",
+    asideBody: "Xó ɖokpó ɖokpó ɖó xó ɖé, kpɔ́n mɛ ɖé kpodó wema ɖé kpó.",
+    tag: "Nǔ e è kpɔ́n",
+    claimOne: "xó",
+    claimMany: "xó lɛ",
+    open: "Xá xó ɔ́",
+    empty: "Nǔ e è kpɔ́n ɖé ma ɖe tɔ́n ǎ.",
+    detailKicker: "Sè · nǔ e è mɔ̀",
+    plainTitle: "Ðò xó kpɛví mɛ",
+    relatedSubjects: "Azɔ̀n e ɖò tɔ̀n lɛ",
+    relatedStudies: "Wema e ɖò tɔ̀n lɛ",
+    plantsClaims: "Atín lɛ kpodó xó lɛ kpó.",
+    resultOne: "nǔ e è mɔ̀",
+    resultMany: "nǔ e è mɔ̀ lɛ",
+    emptyDetail: "Xó ɖé ma ɖò nǔ e ɔ́ wu ǎ.",
+  },
+  compounds: {
+    kicker: "Atín nǔ · nǔ e è mɔ̀",
+    title: "Sɔ́n atín wá atín nǔ mɛ.",
+    lead:
+      "Atín nǔ e ɖò flí ɔ́ wɛ wema lɛ mɔ̀. Yé ɖò atín ɔ́ mɛ ɔ́, enɛ́ ma ɖɔ ɖɔ yé nɔ kɛnklɛn azɔ̀n ǎ, ma ɖɔ ɖɔ yé ɖò agbaza ǎ.",
+    asideTitle: "Mɔ atín nǔ lɛ",
+    asideBody:
+      "Atín nǔ ɖokpó ɖokpó ɖó atín kpodó wema e mɔ̀ tɔ̀n kpó. Nǔ e è kpɔ́n ɖò kpɔ́n mɛ ɔ́ ma ɖiɖé nǔ e è mɔ̀ ɖò mɛ wu ǎ.",
+    speciesOne: "atín",
+    speciesMany: "atín lɛ",
+    open: "Kpɔ́n wema lɛ",
+    empty: "Atín nǔ ɖé ma ɖò wema ɔ́ mɛ ǎ.",
+    detailKicker: "Atín nǔ · wema",
+    relations: "Nǔ e ɖó xógbɛ́",
+    plantsPublications: "Atín lɛ kpodó wema lɛ kpó.",
+    associationOne: "xó ɖokpó",
+    associationMany: "xó lɛ",
+    partUnspecified: "Kpá ɔ́ ma ɖò flí ɔ́ ǎ",
+    identificationSource: "Xógbɛ́ e mɔ̀ nǔ ɔ́",
+    cautionTitle: "Ma zɔ́n hwè hwè ǎ.",
+    cautionBody:
+      "Atín nǔ ɖé kpodó nǔ e è mɔ̀ ɖò kpɔ́n mɛ kpó ma ɖiɖé ɖɔ atín ɔ́ alǒ atín nǔ ɔ́ nɔ kɛnklɛn mɛ ɖò agbaza ǎ, bɔ è sixú sɔ́ ɖò agbaza ǎ.",
+  },
+  publications: {
+    kicker: "Wema lɛ · DOI kpodó PubMed kpó",
+    title: "Xógbɛ́ lɛ nukɔn xó lɛ.",
+    lead:
+      "Wema e ɖò wema ɔ́ mɛ lɛ́ sixú kpɔ́n yé ɖò DOI alǒ PMID wu. Xó kpɛví lɛ ɖɔ nɛ̌ è kpɔ́n nǔ ɔ́ kpodó nǔ e è tuùn ǎ kpó.",
+    asideTitle: "Wema e è sixú kpɔ́n",
+    asideBody: "Wema ɖokpó ɖokpó ɖó DOI alǒ PMID. Link lɛ ɔ́ nɔ hùn wema ɔ́.",
+    searchPlaceholder: "Ba wema alǒ atín…",
+    filterAria: "Ba wema lɛ ɖò xɔ mɛ",
+    all: "Wema bǐ",
+    preclinicalMixed: "Nǔ e è kpɔ́n ɖò kpɔ́n mɛ (xo ɖé)",
+    clinical: "Mɛ wu",
+    ethnobotanical: "Kɔ́nú xó",
+    reviews: "Wema e kpɔ́n wema ɖé lɛ",
+    countOne: "wema · è ɖó xá xwè",
+    countMany: "wema lɛ · è ɖó xá xwè",
+    empty: "Wema ɖé ma ɖò xɔ e ɔ́ mɛ ǎ.",
+    limits: "Nǔ e è tuùn ǎ",
+    openSource: "Hùn xógbɛ́ ɔ́",
+  },
+  solutions: {
+    kicker: "Kɛnklɛn lɛ · mɔ e è ná zɔ́",
+    title: "Nǔ e wema lɛ ɖɔ bɔ è kpɔ́n.",
+    lead:
+      "Azɔ̀n ɖokpó ɖokpó ɔ́, wema e lɛ́ ɖó atín e è kpɔ́n lɛ́, nǔ e è mɔ̀, nǔɖiɖé tɔ̀n kpodó wema lɛ kpó. Kɛnklɛn wɛ — ma yǐn kɛnklɛn sɛ́n alǒ nǔɖiɖé ɖɔ è ná ganjí ǎ.",
+    asideTitle: "Sɛ́n ɖé ɖò flí",
+    asideBody:
+      "Kɛnklɛn e ɖò flí ɔ́ ma yǐn kɛnklɛn dɔ́ktɔ́ tɔn ǎ. Azɔ̀n ɖé ɖò mɛ ɔ́, byɔ dɔ́ktɔ́. Wema e lɛ́ nɔ kpɔ́n nùnyá xó wɛ, ma nɔ ná kɛnklɛn ǎ.",
+    testedPlants: "Atín e è kpɔ́n",
+    mechanism: "Nǔ e è mɔ̀",
+    evidence: "Nǔɖiɖé",
+    sources: "Xógbɛ́ lɛ",
+    empty: "Kɛnklɛn ɖé ma ɖò flí ɔ́ ǎ.",
+    nextStepsTitle: "Nɛ̌ è ná sɔ́ wema e ɔ́",
+    nextStep1: "Xá nǔɖiɖé ɔ́ nukɔn nǔ e è mɔ̀ ɔ́.",
+    nextStep2: "Hùn wema ɔ́ ɖò DOI alǒ PMID wu.",
+    nextStep3: "Byɔ dɔ́ktɔ́ nukɔn bɔ è ná sɔ́ atín ɖé.",
+    caution: "Kɛnklɛn sɛ́n ɖé ma ɖò flí ɔ́ ǎ — ɖò nǔgbó wu.",
+    otherTitle: "Kɛnklɛn ɖevo e wema lɛ ɖɔ",
+    otherSummary:
+      "Xó e ɖó xógbɛ́ bɔ è ma ɖó azɔ̀n wema ɖé nú yé ǎ: nǔ e è mɔ̀ ɖò kpɔ́n mɛ, nǔ e ɖó ná kpɔ́n, alǒ nǔ e è tuùn ma sù ǎ.",
+    groupOne: "xó ɖokpó",
+    groupMany: "xó lɛ",
+    entryOne: "kɛnklɛn",
+    entryMany: "kɛnklɛn lɛ",
+  },
+  search: {
+    kicker: "Ba nǔ ɖò wema mɛ · PostgreSQL + PubMed",
+    title: "Mɔ xó ɖé.",
+    lead:
+      "Ba nǔ ɔ́ nɔ ba ɖò wema ɔ́ mɛ kpodó PubMed kpó. Wema e è mɔ̀ ɖò PubMed ɔ́ nɔ ɖò wema kpɔ́n mɛ, bɔ mɛ ɖó ná kpɔ́n yé nukɔn.",
+    asideTitle: "Ba nǔ kpodó nǔkpɔ́n kpó",
+    asideBody:
+      "Xó e ɖó wálɔ̀n atɔ̀n alǒ hǔn ɔ́, è nɔ sɛ́n yé ɖó PubMed (NCBI). Wema tɔn lɛ́ kɛ́n wɛ è nɔ sɔ́; xó e è ba ɔ́ ma nɔ ɖò flí ǎ.",
+    placeholder: "Aɖe: Nauclea, Plasmodium, azɔ̀n zozo, tchayo…",
+    emptyPrompt: "Wlán wálɔ̀n wè ɖò xó ɔ́ mɛ nú è ná ba nǔ. Sɔ́n atɔ̀n gɔ́ ɔ́, PubMed ná kpɔ́n nǔ ɔ́.",
+    tooShort: "Wlán wálɔ̀n ɖokpó hǔn nú è ná ba nǔ.",
+    localKicker: "Wema e ɖò xwégbè",
+    localTitle: "Nǔ e è mɔ̀ ɖò atínkɔn mɛ",
+    resultOne: "nǔ e è mɔ̀",
+    resultMany: "nǔ e è mɔ̀ lɛ",
+    localEmpty: "Nǔ ɖé ma ɖò atínkɔn mɛ ǎ. Kpɔ́n wema PubMed e ɖò gudo ɔ́, alǒ ba kpodó nyǐkɔ́ nùnyá tɔn kpó.",
+    pubmedKicker: "Ba wema ɖò PubMed",
+    pubmedTitle: "Wema yɔyɔ́ PubMed tɔn lɛ",
+    candidateOne: "wema",
+    candidateMany: "wema lɛ",
+    pubmedNote:
+      "Xógbɛ́: PubMed / NCBI E-utilities. Nyǐkɔ́, mɛ e wlán lɛ́, xó kpɛví kpodó PMID kpó sɔ́n PubMed wá. Ma yǐn AI ǎ; ma vɔ̀ xó nùnyá tɔn ǎ.",
+    unavailable: "PubMed ma ɖò ǎ ɖò hwenu e ɔ́. Wema e ɖò xwégbè ɔ́ ɖò; zlɔ́n ayǐ bɔ ná ba nǔ.",
+    notSaved: "Wema PubMed tɔn lɛ́ jɔ́, loɔ è ma sixú wlán yé ɖò wema kpɔ́n mɛ ǎ. Yé ɖò xlɛ́ wema e è ma kpɔ́n ǎ lɛ́.",
+    noCandidate: "Wema PubMed ɖé ma ɖò xó e ɔ́ wu ǎ, alǒ wlán wálɔ̀n atɔ̀n hǔn.",
+    categories: {
+      plant: "Atín",
+      pathology: "Azɔ̀n",
+      mechanism: "Nǔ e è kpɔ́n",
+      compound: "Atín nǔ",
+      publication: "Wema",
+    },
+  },
+  veille: {
+    kicker: "PubMed · ba wema ɖò hwenu ɖé",
+    title: "Wema e ɖó ná kpɔ́n.",
+    lead:
+      "Wema e ɖò flí ɔ́ ɔ́, è mɔ̀ yé hwenu e è ba nǔ ɖò PubMed. Yé ɖò wema kpɔ́n mɛ; yé ma ɖò wema nùnyá tɔn e è kpɔ́n ǎ lɛ́ mɛ ǎ.",
+    asideTitle: "Mɛ ɖó ná kpɔ́n",
+    asideBody:
+      "Wema ɖé ma nɔ wá xó nùnyá tɔn alǒ nǔɖiɖé ɖé ǎ. Mɛ e tuùn nǔ ɔ́ ɖó ná xá wema ɔ́ nukɔn.",
+    queueOne: "wema ɖò kpɔ́n mɛ (100 gudo tɔn ɖò xlɛ́).",
+    queueMany: "wema lɛ ɖò kpɔ́n mɛ (100 gudo tɔn ɖò xlɛ́).",
+    note:
+      "Xó lɛ́ kpodó xó kpɛví lɛ́ sɔ́n PubMed wá, kpodó PMID kpodó DOI kpó hwenu e yé ɖò é. Xó e è ba lɛ́ ma nɔ ɖò flí ǎ. Xó kpɛví lɛ́ ɖò gbè e xógbɛ́ ɔ́ ɖó mɛ.",
+    empty: "Wema ɖé ma ɖò kpɔ́n mɛ ǎ. Ba atín, atín nǔ alǒ azɔ̀n ɖé ɖò PubMed.",
+  },
+  understand: {
+    title: "Sè wema lɛ",
+    description: "Xó kpɛví lɛ nú è ná sè wema atínkɔn tɔn lɛ́ bɔ è ná ɖi kɔ́nú xó kpodó nǔɖiɖé kpó.",
+    kicker: "Nùnyá xó · ma ɖó xó ɖokpó ǎ",
+    heading: "Xá wema lɛ kpodó nùnyá kpó.",
+    lead: "Nǔ ɖé lɛ́ nú è ná sè nǔ e wema ɖé ɖɔ — kpodó nǔ e é ma ɖɔ ǎ kpó.",
+    asideTitle: "Nǔ e hwé ɔ́",
+    asideBody: "Kɔ́nú xó, nǔ e è mɔ̀ ɖò kpɔ́n mɛ, kpodó nǔ e mɛ nɔ mɔ̀ ɖò agbaza ɔ́: yé ɖò vɔ̀ atɔ̀n.",
+    calloutTitle: "Wlán nǔ, ma wlán kɛnklɛn ǎ.",
+    calloutBody:
+      "Wema lɛ́ ma nɔ ɖɔ azɔ̀n ɖé tɔ̀n ǎ; ma nɔ ná kɛnklɛn alǒ atín sɛ́n ǎ. Azɔ̀n alǒ atín ɖé ɔ́, byɔ dɔ́ktɔ́.",
+    seeMethod: "Kpɔ́n nɛ̌ è nɔ ɖi nǔɖiɖé lɛ́",
+    terms: {
+      traditional: "Kɔ́nú xó",
+      traditionalText:
+        "Xó e sɔ́n wema alǒ kɔ́nú mɛ wá, bɔ è ɖɔ nǔ e è nɔ wá ɔ́. Enɛ́ ɖɔ nùnyá ɖé wɛ; ma yǐn nǔɖiɖé ǎ.",
+      inVitro: "In vitro",
+      inVitroText:
+        "Nǔ e è kpɔ́n ɖò lanmɛ ɖé mɛ ǎ — ɖò kpɔ́n mɛ, ɖò azɔ̀n nǔ alǒ ɖò bakteeri mɛ. Nǔ e è mɔ̀ ɖò enɛ́ mɛ ɔ́, ma ɖiɖé ɖɔ nǔ ɔ́ nɔ wá ɖò mɛ wu ǎ.",
+      inVivo: "In vivo",
+      inVivoText:
+        "Nǔ e è kpɔ́n ɖò lanmɛ ɖé mɛ — ɖò wema nùnyá tɔn mɛ ɔ́, kanlin wɛ. Nǔ e è mɔ̀ ɖò kanlin wu ɔ́ ma nɔ wá ɖò mɛ wu ɖokpó ǎ.",
+      exVivo: "Ex vivo",
+      exVivoText: "Nǔ e è kpɔ́n ɖò lanmɛ ɖé kpá wu, e è ɖe tɔ́n ɔ́. Ma yǐn nǔ e è kpɔ́n ɖò mɛ wu ǎ.",
+      clinical: "Nǔ e è kpɔ́n ɖò mɛ wu",
+      clinicalText:
+        "Wema e è kpɔ́n ɖò mɛ wu ɖò sɛ́n ɖé wu. Enɛ́ ɖokpó ma ɖiɖé ɖɔ atín ɔ́ nɔ kɛnklɛn ǎ: ɖó ná kpɔ́n nɛ̌ è wá nǔ ɔ́, mɛ e sù, kpodó nǔ e è mɔ̀ kpó.",
+      doi: "DOI",
+      doiText: "Nǔ e nɔ ɖu wema ɖé ɖò te hwebɔ́. DOI nɔ hɛn mɛ ɖó wema ɔ́ wu ɖò doi.org.",
+      pmid: "PMID",
+      pmidText: "Nǔ e nɔ ɖu wema ɖé ɖò te ɖò PubMed, wema nùnyá tɔn Amɛríka tɔn mɛ.",
+      limit: "Nǔ e sɔ́ nǔ kpɔ́n ɖó",
+      limitText:
+        "Nǔ e ma nɔ hɛn mɛ ɖó nǔ ɔ́ wu ɖokpó ǎ: kpɔ́n mɛ, mɛ e sù, atín ɔ́ kpá, kpodó nǔ e è tuùn ǎ kpó. Yé ɖó ná ɖò xlɛ́ ɖò nǔ e è mɔ̀ ɔ́ kpá.",
+    },
+  },
+  evidence: {
+    high: "Nǔɖiɖé ɖagbe",
+    highText: "Mɛ wu nǔ e è kpɔ́n ɖagbe lɛ́ kɛ́n; wema e ɔ́ ma ɖó tɔ̀n ǎ.",
+    moderate: "Nǔɖiɖé ɖò te",
+    moderateText: "Mɛ wu nǔ e è kpɔ́n, loɔ yé ma sù ǎ; wema e ɔ́ ma ɖó tɔ̀n ǎ.",
+    preclinical: "Nukɔn nú mɛ wu",
+    preclinicalText:
+      "Nǔ e è mɔ̀ ɖò kpɔ́n mɛ alǒ ɖò kanlin wu. Enɛ́ ma ɖiɖé ɖɔ nǔ ɔ́ nɔ kɛnklɛn mɛ ǎ.",
+    ethnobotanical: "Kɔ́nú xó",
+    ethnobotanicalText: "Nǔ e xógbɛ́ ɖɔ ɖɔ è nɔ wá. Enɛ́ ma ɖiɖé ɖɔ nǔ ɔ́ nɔ kɛnklɛn mɛ ǎ, ma ɖɔ ɖɔ nǔ ɖagbe ɖò ǎ.",
+    insufficient: "Nǔ e è tuùn ma sù ǎ",
+    insufficientText: "Wema e ɖò flí ɔ́ ma sixú ɖɔ nǔ ɖé ɖò xó e ɔ́ wu ǎ.",
+    risk: "Nǔ e sixú hɛn vɔ́ wá",
+    riskText: "Nǔ e ɖó ná kpɔ́n wɛ, bɔ è ɖɔ tɔ̀n ɖò xó e è kpɔ́n ɔ́ kpá. È ɖó ná kpɔ́n tɔ̀n ɖò xó e ɖò tɔ̀n ɔ́ mɛ.",
+    openMethod: "Hùn sɛ́n nǔkpɔ́n",
+    reviewDefault: "Mɛ e tuùn nǔ ɖó ná kpɔ́n",
+    whyThisLevel: "Etɛ́wú nǔɖiɖé e ɔ́?",
+    keepInMind: "Nǔ e ɖó ná ɖò wà nú we",
+    claimSources: "Xógbɛ́ xó e ɔ́ tɔn lɛ",
+  },
+  study: {
+    inVitro: "In vitro",
+    inVivo: "In vivo · kanlin wu",
+    mixed: "Nǔ e è kpɔ́n ɖò kpɔ́n mɛ (xo ɖé)",
+    clinical: "Mɛ wu",
+    observational: "Kpɔ́n mɛ",
+    review: "Wema e kpɔ́n wema ɖé lɛ",
+    ethnobotanical: "Kɔ́nú xó",
+    fallback: "Wema",
+  },
+  notFound: {
+    code: "404 · WEMA Ɔ́ MA ƉÒ Ǎ",
+    title: "Wema e ɔ́ ma ɖò atínkɔn mɛ ǎ.",
+    body: "E sixú ɖi vɔ̀ alǒ ma ɖò wema e ɖò flí ɔ́ mɛ ǎ.",
+    cta: "Kpɔ́n atín lɛ",
+  },
+  method: {
+    fonSummaryTitle: "Xó kpɛví ɖò fɔngbè mɛ",
+    fonSummaryBody:
+      "Wema ɖokpó ɖokpó ɖó DOI alǒ PMID. Nǔ e wema lɛ ɖɔ ɔ́, è nɔ kpɔ́n tɔ̀n ganjí, bɔ è nɔ ɖɔ nǔ e è tuùn ǎ lɛ́ hwè.",
+    frenchLink: "Xá wema ɔ́ bǐ ɖò flansé mɛ",
+  },
+  legal: {
+    fonSummaryTitle: "Xó kpɛví ɖò fɔngbè mɛ",
+    fonSummaryBody:
+      "Atín ɖé sixú hɛn vɔ́ wá nú mɛ. Wema e ɔ́ ma nɔ ná kɛnklɛn sɛ́n ɖé ǎ. Azɔ̀n ɖé ɖò mɛ ɔ́, byɔ dɔ́ktɔ́.",
+    frenchLink: "Xá wema ɔ́ bǐ ɖò flansé mɛ",
+  },
+};
+
+export const dictionaries: Record<Locale, Dictionary> = { fr, fon };
+
+/** Dictionnaire de la langue active. */
+export async function getDictionary(): Promise<{ locale: Locale; t: Dictionary }> {
+  const locale = await getLocale();
+  return { locale, t: dictionaries[locale] };
+}

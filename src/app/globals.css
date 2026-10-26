@@ -500,3 +500,36 @@ em { font-family: var(--serif); }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
 }
+
+/* ---------- Sélecteur de langue FR / FON (bilingue) ---------- */
+.locale-switcher { display: inline-flex; align-items: center; gap: 2px; padding: 3px; border: 1px solid var(--line); border-radius: 999px; background: var(--paper-3); }
+.locale-option { padding: 5px 10px; border: 0; border-radius: 999px; background: transparent; color: var(--muted); font-size: 11px; font-weight: 700; letter-spacing: .06em; cursor: pointer; transition: background .18s ease, color .18s ease; }
+.locale-option:hover { color: var(--forest); background: var(--paper-2); }
+.locale-option.active { background: var(--forest); color: var(--paper-3); }
+.lang-banner { margin: 0 auto; padding: 10px 16px; color: var(--forest); font-size: 12.5px; line-height: 1.55; border-bottom: 1px solid var(--line); background: linear-gradient(180deg, #e9eee2, #f5f3ea); }
+.lang-banner::before { content: "FONGBÈ · "; font-weight: 700; letter-spacing: .06em; }
+.footer-africa-note { margin-top: 8px; color: var(--muted); font-size: 12px; }
+
+/* ---------- Fiche : noms usuels / fon + solutions ---------- */
+.fon-name-block { display: grid; gap: 6px; }
+.fon-name-item { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px; }
+.fon-name-item .fon-term { font-family: var(--serif); font-size: 16px; color: var(--forest); }
+.fon-name-item .fon-variant { color: var(--muted); font-size: 12px; }
+.fon-badge { display: inline-flex; align-items: center; gap: 5px; padding: 3px 8px; border: 1px solid var(--line); border-radius: 999px; background: var(--paper-3); color: var(--muted); font-size: 10px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
+.solution-list { display: grid; gap: 14px; }
+.solution-card { padding: 18px 20px; border: 1px solid var(--line); border-radius: 14px; background: var(--paper-3); }
+.solution-card-head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 10px; }
+.solution-card h3 { margin: 0; font-family: var(--serif); font-size: 19px; font-weight: 400; }
+.solution-grid { display: grid; gap: 10px; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); margin-top: 12px; }
+.solution-grid div { padding: 10px 12px; border-radius: 10px; background: var(--paper); }
+.solution-grid dt { margin-bottom: 4px; color: var(--muted); font-size: 10px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
+.solution-grid dd { margin: 0; font-size: 13.5px; line-height: 1.5; }
+.solution-plant { display: inline-flex; align-items: center; gap: 6px; font-family: var(--serif); font-style: italic; }
+.solution-example { margin-top: 16px; padding: 14px 18px; border-left: 3px solid var(--gold); background: var(--paper-2); font-size: 13.5px; line-height: 1.6; }
+.solution-steps { display: grid; gap: 10px; margin: 18px 0 0; padding: 0; list-style: none; counter-reset: step; }
+.solution-steps li { display: flex; gap: 12px; counter-increment: step; font-size: 14px; }
+.solution-steps li::before { content: counter(step, decimal-leading-zero); flex: none; color: var(--gold); font-family: var(--serif); font-size: 15px; }
+@media (max-width: 720px) { .locale-switcher { display: none; } }
+.plant-card-fon { display: flex; align-items: baseline; gap: 7px; margin: 2px 0 6px; color: var(--forest); font-family: var(--serif); font-size: 15px; }
+.plant-card-fon .fon-badge { font-family: var(--sans); }
+.fon-usual { display: grid; gap: 4px; margin-top: 4px; }

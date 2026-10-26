@@ -1,9 +1,10 @@
-# Herbier ouest-africain — pharmacopée végétale, preuves et sources
+# Herbier africain — pharmacopée végétale, preuves et sources
 
-Base documentaire (Next.js 16 + PostgreSQL/Drizzle) consacrée à la pharmacopée végétale
-ouest-africaine : plantes, usages rapportés, études publiées, niveaux de preuve et limites.
+Base documentaire bilingue **français / fon** (Next.js 16 + PostgreSQL/Drizzle) consacrée à la
+pharmacopée végétale africaine — plantes du Bénin et d’Afrique de l’Ouest : usages rapportés,
+études publiées, niveaux de preuve, solutions documentées et limites.
 Le site ne délivre ni diagnostic ni prescription : il documente ce que les sources publiées disent,
-et ce qu'elles ne disent pas.
+et ce qu’elles ne disent pas.
 
 ## Démarrage rapide
 
@@ -55,8 +56,10 @@ Variables d'environnement :
 ```
 src/
 ├── app/                     routes App Router (toutes en rendu dynamique)
-│   ├── page.tsx             accueil : chiffres du corpus, plantes et études en avant
-│   ├── plantes/             liste + fiche espèce (usages, composés, affirmations, sécurité)
+│   ├── page.tsx             accueil : chiffres du corpus, plantes, solutions et études en avant
+│   ├── solutions/           vue « solutions documentées » par sujet (plante, mécanisme, preuve, sources)
+│   ├── langue/[locale]/     bascule de langue par cookie + redirection relative
+│   ├── plantes/             liste + fiche espèce (noms fon, usages, solutions, composés, sécurité)
 │   ├── pathologies/         liste + fiche pathologie, mécanismes associés
 │   ├── mecanismes/          liste + fiche mécanisme / axe de recherche
 │   ├── composes/            liste + fiche composé chimique
@@ -65,9 +68,9 @@ src/
 │   ├── veille/              file de notices candidates à vérifier
 │   ├── comprendre/, preuves/methodologie/, mentions-legales/
 │   └── api/health/          sonde base de données (200/500)
-├── components/              header/footer, cartes plante-étude-affirmation, badges, recherche
+├── components/              header/footer, sélecteur FR/FON, cartes plante-étude-affirmation, badges
 ├── db/                      pool Drizzle, schéma (12 tables), seed scientifique
-└── lib/                     catalog (requêtes + recherche), pubmed, discovery, literature
+└── lib/                     i18n (dictionnaires fr/fon), catalog, pubmed, discovery, literature
 ```
 
 ### Modèle de données (`src/db/schema.ts`)
@@ -92,6 +95,31 @@ timeout 8 s). Les notices trouvées sont enregistrées en `literature_candidates
 `PENDING_REVIEW` : jamais publiées automatiquement, jamais transformées en niveau de preuve.
 La panne réseau est gérée : la recherche locale reste servie et le statut `unavailable`
 est affiché (`src/lib/discovery.ts`).
+
+## Bilingue français / fon
+
+- **Sélecteur FR / FON** dans l’en-tête (`src/components/locale-switcher.tsx`) : deux liens internes
+  vers `/langue/{fr|fon}?next=<page courante>`. La route `src/app/langue/[locale]/route.ts` pose le
+  cookie `pharmacopee_langue` (un an, `SameSite=Lax`) puis redirige en **chemin relatif** — donc sans
+  JavaScript et sans dépendre de l’hôte (proxy de prévisualisation inclus).
+- **Dictionnaires** : `src/lib/i18n.ts` expose les clés FR et fon (`dictionaries`), la langue active
+  (`getDictionary`) et l’attribut `lang` du document (`fon` = code ISO 639-3).
+- **Contenu** : toute l’interface est traduite ; les textes fon sont signalés comme
+  « version de travail » par un bandeau, en attente de relecture par un locuteur natif.
+- **Noms de plantes en fon** : la fiche espèce affiche un bloc « Nom en fon » (recherche sur
+  `commonNames` avec `language: "fon"`). Noms déjà renseignés dans le seed :
+  *Nauclea latifolia* → **nimon**, *Vernonia amygdalina* → **amanvivè**, *Ocimum gratissimum* →
+  **tchiayo**, *Moringa oleifera* → **kpatinman**. Chaque nom est accompagné de sa variante et
+  d’une mention invitant à confirmation par un locuteur natif.
+- Les publications et résumés d’études restent dans leur langue d’origine (sources primaires) :
+  aucune traduction automatique n’est injectée dans le corpus scientifique.
+
+## Solutions documentées
+
+`/solutions` rassemble, sujet par sujet, les plantes étudiées, le mécanisme mesuré, le niveau de
+preuve, ce que le résultat ne prouve pas et les sources (DOI/PMID). Les affirmations non rattachées
+à un dossier de pathologie ne sont pas masquées : elles apparaissent dans « Autres pistes
+documentées ». **Aucune dose ni posologie n’est publiée**, par construction.
 
 ## État vérifié
 
