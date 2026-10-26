@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { Breadcrumbs } from "@/components/breadcrumbs";
 import { ClaimCard } from "@/components/claim-card";
 import { Icon } from "@/components/icon";
+import { PhotoFigure } from "@/components/plant-photo";
 import { getPathologyBySlug } from "@/lib/catalog";
 import { getDictionary } from "@/lib/i18n";
 
@@ -30,6 +31,16 @@ export default async function PathologyDetailPage({ params }: PageProps) {
         <h1 className="plant-detail-title">{data.pathology.name}</h1>
         <p className="detail-title-summary">{data.pathology.summary}</p>
       </header>
+      {data.illustration && (
+        <div className="detail-illustration">
+          <PhotoFigure
+            photo={data.illustration}
+            alt={t.plants.photoAlt.replace("{name}", data.illustration.scientificName)}
+            caption={`${t.plants.photoIllustration} : ${data.illustration.scientificName}`}
+            t={t}
+          />
+        </div>
+      )}
       <section className="pathology-caution">
         <Icon name="shield" size={20} /><p>{data.pathology.scopeNote}</p>
       </section>

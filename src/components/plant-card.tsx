@@ -1,6 +1,7 @@
 import Link from "next/link";
 import type { PlantListItem } from "@/lib/catalog";
 import { Icon } from "@/components/icon";
+import { PhotoThumb } from "@/components/plant-photo";
 import type { Dictionary } from "@/lib/i18n";
 
 /** Noms fon saisis dans les noms usuels (`language: "fon"`). */
@@ -18,9 +19,12 @@ export function PlantCard({ plant, t, index }: { plant: PlantListItem; t: Dictio
         <span className="family-tag">{plant.family}</span>
         {indexLabel && <span className="plant-card-index">{indexLabel}</span>}
       </div>
-      <div className="plant-illustration" aria-hidden="true">
-        <Icon name="plant" size={54} />
-        <span className="plant-illustration-ring" />
+      <div className="plant-card-photo">
+        <PhotoThumb
+          photo={plant}
+          alt={t.plants.photoAlt.replace("{name}", plant.scientificName)}
+          t={t}
+        />
       </div>
       <div className="plant-card-content">
         <h3><em>{plant.scientificName}</em>{plant.botanicalAuthor && <span className="botanical-author"> {plant.botanicalAuthor}</span>}</h3>

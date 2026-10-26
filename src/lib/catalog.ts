@@ -22,6 +22,31 @@ export type CompoundRecord = typeof compounds.$inferSelect;
 
 export type PlantListItem = PlantRecord & { sourceCount: number };
 
+/** Photo d’illustration empruntée à une espèce reliée (crédit affiché avec l’image). */
+export type Illustration = {
+  slug: string;
+  scientificName: string;
+  imageUrl: string | null;
+  imageCredit: string | null;
+  imageSourceUrl: string | null;
+  imageNote: string | null;
+};
+
+export function illustrationOf(
+  plantsLike: Array<{ slug: string; scientificName: string; imageUrl: string | null; imageCredit: string | null; imageSourceUrl: string | null; imageNote: string | null }>,
+): Illustration | null {
+  const withPhoto = plantsLike.find((item) => item.imageUrl);
+  if (!withPhoto) return null;
+  return {
+    slug: withPhoto.slug,
+    scientificName: withPhoto.scientificName,
+    imageUrl: withPhoto.imageUrl,
+    imageCredit: withPhoto.imageCredit,
+    imageSourceUrl: withPhoto.imageSourceUrl,
+    imageNote: withPhoto.imageNote,
+  };
+}
+
 export type ClaimRecord = typeof claims.$inferSelect & {
   mechanism: MechanismRecord | null;
   pathology: PathologyRecord | null;
@@ -145,7 +170,60 @@ export async function getPathologies() {
     .where(sql`${claims.pathologyId} is not null`)
     .groupBy(claims.pathologyId);
   const counts = new Map(related.map((row) => [row.pathologyId, Number(row.total)]));
-  return rows.map((pathology) => ({ ...pathology, claimCount: counts.get(pathology.id) ?? 0 }));
+  const illustrations = await getIllustrationsByPathology();
+  return rows.map((pathology) => ({
+    ...pathology,
+    claimCount: counts.get(pathology.id) ?? 0,
+    illustration: illustrations.get(pathology.id) ?? null,
+  }));
+}
+
+/** Première espèce illustrée d’un dossier de pathologie (photo documentaire). */
+async function getIllustrationsByPathology() {
+  const rows = await db
+    .select({
+      pathologyId: claims.pathologyId,
+      slug: plants.slug,
+      scientificName: plants.scientificName,
+      imageUrl: plants.imageUrl,
+      imageCredit: plants.imageCredit,
+      imageSourceUrl: plants.imageSourceUrl,
+      imageNote: plants.imageNote,
+    })
+    .from(claims)
+    .innerJoin(plants, eq(claims.plantId, plants.id))
+    .where(sql`${claims.pathologyId} is not null and ${plants.imageUrl} is not null`)
+    .orderBy(asc(plants.scientificName));
+  const map = new Map<number, Illustration>();
+  for (const row of rows) {
+    if (row.pathologyId === null || map.has(row.pathologyId)) continue;
+    map.set(row.pathologyId, illustrationOf([row])!);
+  }
+  return map;
+}
+
+/** Première espèce illustrée d’un axe expérimental. */
+async function getIllustrationsByMechanism() {
+  const rows = await db
+    .select({
+      mechanismId: claims.mechanismId,
+      slug: plants.slug,
+      scientificName: plants.scientificName,
+      imageUrl: plants.imageUrl,
+      imageCredit: plants.imageCredit,
+      imageSourceUrl: plants.imageSourceUrl,
+      imageNote: plants.imageNote,
+    })
+    .from(claims)
+    .innerJoin(plants, eq(claims.plantId, plants.id))
+    .where(sql`${claims.mechanismId} is not null and ${plants.imageUrl} is not null`)
+    .orderBy(asc(plants.scientificName));
+  const map = new Map<number, Illustration>();
+  for (const row of rows) {
+    if (row.mechanismId === null || map.has(row.mechanismId)) continue;
+    map.set(row.mechanismId, illustrationOf([row])!);
+  }
+  return map;
 }
 
 export async function getPathologyBySlug(slug: string) {
@@ -173,6 +251,7 @@ export async function getPathologyBySlug(slug: string) {
   }
   return {
     pathology,
+    illustration: illustrationOf(rows.map((row) => row.plant)),
     claims: rows.map((row) => ({
       ...row.claim,
       plant: row.plant,
@@ -186,7 +265,12 @@ export async function getMechanisms() {
   const rows = await db.select().from(mechanisms).orderBy(asc(mechanisms.name));
   const related = await db.select({ mechanismId: claims.mechanismId, total: count() }).from(claims).groupBy(claims.mechanismId);
   const counts = new Map(related.map((row) => [row.mechanismId, Number(row.total)]));
-  return rows.map((mechanism) => ({ ...mechanism, claimCount: counts.get(mechanism.id) ?? 0 }));
+  const illustrations = await getIllustrationsByMechanism();
+  return rows.map((mechanism) => ({
+    ...mechanism,
+    claimCount: counts.get(mechanism.id) ?? 0,
+    illustration: illustrations.get(mechanism.id) ?? null,
+  }));
 }
 
 export async function getMechanismBySlug(slug: string) {
@@ -214,6 +298,7 @@ export async function getMechanismBySlug(slug: string) {
   }
   return {
     mechanism,
+    illustration: illustrationOf(rows.map((row) => row.plant)),
     claims: rows.map((row) => ({
       ...row.claim,
       plant: row.plant,

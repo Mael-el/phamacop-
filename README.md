@@ -142,6 +142,37 @@ Chaque affirmation reste de niveau **ETHNOBOTANIQUE** : une fréquence de citati
 pratique, jamais une efficacité. Le dossier diarrhées rappelle en tête de page que la réhydratation
 et un avis médical sont prioritaires.
 
+## Photos des plantes (recherchées, jamais générées)
+
+Les photographies servent uniquement de repère visuel botanique ; **aucune image n’est générée par IA**
+pour ce projet. Chaque photo est recherchée en ligne, téléchargée, redimensionnée
+(`public/images/plantes/<slug>.jpg`, ≤ 1000 px, ~730 KB au total) puis reliée en base aux colonnes
+`image_url`, `image_credit`, `image_source_url`, `image_note`.
+
+| Espèce | Provenance de la photo |
+| --- | --- |
+| *Nauclea latifolia* | Wikimedia Commons (feuilles + fruit) |
+| *Alstonia boonei* | African Plants Database (planche d’herbier) |
+| *Vernonia amygdalina* | Wikimedia Commons |
+| *Ocimum gratissimum* | Wikimedia Commons (Starr) |
+| *Khaya senegalensis* | Wikimedia Commons (fruits et feuilles) |
+| *Cryptolepis sanguinolenta* | Botanical Institute (feuillage et fleurs) |
+| *Morinda lucida* | Congotrees / RBGE (boutons floraux) |
+| *Alchornea cordifolia* | DR Congo Flora (feuilles et inflorescences) |
+| *Guiera senegalensis* | Wikimedia Commons |
+| *Picralima nitida* | Wikimedia Commons (jeunes feuilles) |
+| *Enantia chlorantha* | Herbal Zoo Services (écorce, bois jaune) |
+| *Mangifera indica* | Tropical The Ferns (feuilles et fruits) |
+| *Moringa oleifera* | Wikimedia Commons (Starr, feuilles) |
+
+**Où les photos apparaissent** : carte et fiche de chaque plante (photo pleine largeur avec légende,
+crédit, lien vers la source et note de licence), pistes de `/solutions`, dossiers `/pathologies` et
+axes `/mecanismes` (photo d’une espèce reliée, légendée comme telle), et accueil via les cartes plantes.
+
+Deux réserves affichées dans l’interface : l’identification de certaines photos (Cryptolepis, Enantia,
+Alstonia) doit être confirmée par un botaniste, et **la licence de chaque image doit être vérifiée sur
+la page source avant toute réutilisation** hors du site — le crédit et le lien sont fournis à cet effet.
+
 ## Solutions documentées
 
 `/solutions` rassemble, sujet par sujet, les plantes étudiées, le mécanisme mesuré, le niveau de

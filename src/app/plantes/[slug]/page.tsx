@@ -6,6 +6,7 @@ import { ClaimCard } from "@/components/claim-card";
 import { EvidenceBadge } from "@/components/evidence-badge";
 import { Icon } from "@/components/icon";
 import { fonNames } from "@/components/plant-card";
+import { PhotoFigure } from "@/components/plant-photo";
 import { StudyCard } from "@/components/study-card";
 import { getPlantBySlug } from "@/lib/catalog";
 import { getDictionary } from "@/lib/i18n";
@@ -45,6 +46,13 @@ export default async function PlantDetailPage({ params }: PageProps) {
               <h1 className="plant-detail-title"><em>{plant.scientificName}</em> <span>{plant.botanicalAuthor}</span></h1>
               <p className="detail-title-summary">{plant.summary}</p>
             </header>
+
+            <PhotoFigure
+              photo={plant}
+              alt={t.plants.photoAlt.replace("{name}", plant.scientificName)}
+              caption={`${plant.scientificName} — ${t.plants.photoIllustration}`}
+              t={t}
+            />
 
             <section className="detail-section" id="usages-traditionnels">
               <h2 className="detail-section-title"><span className="section-index">01</span> {t.plants.usesTitle}</h2>

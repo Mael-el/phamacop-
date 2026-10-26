@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Breadcrumbs } from "@/components/breadcrumbs";
 import { Icon } from "@/components/icon";
+import { PhotoThumb } from "@/components/plant-photo";
 import { getMechanisms } from "@/lib/catalog";
 import { getDictionary } from "@/lib/i18n";
 
@@ -20,6 +21,11 @@ export default async function MechanismsPage() {
       <section className="page-content"><div className="wrap">
         {items.length ? <div className="record-grid">{items.map((item) => (
           <Link href={`/mecanismes/${item.slug}`} className="record-card" key={item.id}>
+            {item.illustration && (
+              <div className="record-card-photo">
+                <PhotoThumb photo={item.illustration} alt={t.plants.photoAlt.replace("{name}", item.illustration.scientificName)} t={t} />
+              </div>
+            )}
             <div className="record-card-top"><span className="record-tag">{t.mechanisms.tag}</span><span>{item.claimCount} {item.claimCount === 1 ? t.mechanisms.claimOne : t.mechanisms.claimMany}</span></div>
             <h2>{item.name}</h2><p>{item.description}</p>
             <span className="record-card-link">{t.mechanisms.open} <Icon name="arrow" size={15} /></span>

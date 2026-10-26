@@ -580,11 +580,101 @@ async function seed() {
       },
     ];
 
+
+    /**
+     * Photos documentaires (recherchées sur le web, jamais générées).
+     * Chaque entrée porte la provenance d’origine ; la licence doit être vérifiée
+     * avant toute réutilisation hors du site.
+     */
+    const plantImages: Record<
+      string,
+      { imageUrl: string; imageCredit: string; imageSourceUrl: string; imageNote: string }
+    > = {
+      "nauclea-latifolia": {
+        imageUrl: "/images/plantes/nauclea-latifolia.jpg",
+        imageCredit: "Wikimedia Commons — Nauclea latifolia (feuilles et fruit)",
+        imageSourceUrl: "https://commons.wikimedia.org/wiki/Category:Nauclea_latifolia",
+        imageNote: "Photo d’illustration botanique; licence à vérifier sur la page source avant réutilisation.",
+      },
+      "alstonia-boonei": {
+        imageUrl: "/images/plantes/alstonia-boonei.jpg",
+        imageCredit: "African Plants Database (herbier) — Alstonia boonei",
+        imageSourceUrl: "https://african-plants.org/portal/taxa/index.php?taxauthid=1&taxon=360&clid=3",
+        imageNote: "Planche d’herbier numérisée, pas une photographie de terrain.",
+      },
+      "vernonia-amygdalina": {
+        imageUrl: "/images/plantes/vernonia-amygdalina.jpg",
+        imageCredit: "Wikimedia Commons — Vernonia amygdalina",
+        imageSourceUrl: "https://commons.wikimedia.org/wiki/File:Vernonia_amygdalina_06.jpg",
+        imageNote: "Photo d’illustration botanique; licence à vérifier sur la page source avant réutilisation.",
+      },
+      "ocimum-gratissimum": {
+        imageUrl: "/images/plantes/ocimum-gratissimum.jpg",
+        imageCredit: "Wikimedia Commons (Starr) — Ocimum gratissimum, fleurs et feuilles",
+        imageSourceUrl: "https://commons.wikimedia.org/wiki/Category:Ocimum_gratissimum",
+        imageNote: "Photo d’illustration botanique; licence à vérifier sur la page source avant réutilisation.",
+      },
+      "khaya-senegalensis": {
+        imageUrl: "/images/plantes/khaya-senegalensis.jpg",
+        imageCredit: "Wikimedia Commons — Khaya senegalensis (fruits et feuilles)",
+        imageSourceUrl: "https://commons.wikimedia.org/wiki/Category:Khaya_senegalensis",
+        imageNote: "Photo d’illustration botanique; licence à vérifier sur la page source avant réutilisation.",
+      },
+      "cryptolepis-sanguinolenta": {
+        imageUrl: "/images/plantes/cryptolepis-sanguinolenta.jpg",
+        imageCredit: "Botanical Institute — Cryptolepis sanguinolenta (feuillage et fleurs)",
+        imageSourceUrl: "https://botanicalinstitute.org/cryptolepis/",
+        imageNote: "Photo issue d’un article de vulgarisation; identification à confirmer par un botaniste.",
+      },
+      "morinda-lucida": {
+        imageUrl: "/images/plantes/morinda-lucida.jpg",
+        imageCredit: "Congotrees / Royal Botanic Garden Edinburgh — Morinda lucida (boutons floraux)",
+        imageSourceUrl: "https://congotrees.rbge.org.uk/species/details/morinda-lucida",
+        imageNote: "Photo d’illustration botanique; licence à vérifier sur la page source avant réutilisation.",
+      },
+      "alchornea-cordifolia": {
+        imageUrl: "/images/plantes/alchornea-cordifolia.jpg",
+        imageCredit: "DR Congo Flora — Alchornea cordifolia (feuilles et inflorescences)",
+        imageSourceUrl: "https://drcongoflora.com/speciesdata/species.php?species_id=241370",
+        imageNote: "Photo d’illustration botanique; licence à vérifier sur la page source avant réutilisation.",
+      },
+      "guiera-senegalensis": {
+        imageUrl: "/images/plantes/guiera-senegalensis.jpg",
+        imageCredit: "Wikimedia Commons — Guiera senegalensis",
+        imageSourceUrl: "https://commons.wikimedia.org/wiki/File:Guiera_senegalensis_MS_1357.JPG",
+        imageNote: "Photo d’illustration botanique; licence à vérifier sur la page source avant réutilisation.",
+      },
+      "picralima-nitida": {
+        imageUrl: "/images/plantes/picralima-nitida.jpg",
+        imageCredit: "Wikimedia Commons — Picralima nitida (jeunes feuilles)",
+        imageSourceUrl: "https://species.wikimedia.org/wiki/Picralima_nitida",
+        imageNote: "Photo d’illustration botanique; licence à vérifier sur la page source avant réutilisation.",
+      },
+      "enantia-chlorantha": {
+        imageUrl: "/images/plantes/enantia-chlorantha.jpg",
+        imageCredit: "Herbal Zoo Services — Enantia chlorantha (écorce, bois jaune)",
+        imageSourceUrl: "https://herbalzooservices.com/product/enantia-chlorantha/",
+        imageNote: "Photo commerciale d’illustration; identification à confirmer par un botaniste.",
+      },
+      "mangifera-indica": {
+        imageUrl: "/images/plantes/mangifera-indica.jpg",
+        imageCredit: "Tropical The Ferns — Mangifera indica (feuilles et fruits)",
+        imageSourceUrl: "https://tropical.theferns.info/viewtropical.php?id=Mangifera+indica",
+        imageNote: "Photo d’illustration botanique; licence à vérifier sur la page source avant réutilisation.",
+      },
+      "moringa-oleifera": {
+        imageUrl: "/images/plantes/moringa-oleifera.jpg",
+        imageCredit: "Wikimedia Commons (Starr) — Moringa oleifera, feuilles",
+        imageSourceUrl: "https://commons.wikimedia.org/wiki/File:Starr-150325-0582-Moringa_oleifera-leaves-Community_Garden_Sand_Island-Midway_Atoll_(24635445594).jpg",
+        imageNote: "Photo d’illustration botanique; licence à vérifier sur la page source avant réutilisation.",
+      },
+    };
+
     const plantBySlug = new Map<string, number>();
     for (const plant of plantRows) {
       const [saved] = await tx
         .insert(plants)
-        .values(plant)
+        .values({ ...plant, ...(plantImages[plant.slug] ?? {}) })
         .onConflictDoUpdate({
           target: plants.slug,
           set: {
@@ -596,6 +686,7 @@ async function seed() {
             summary: plant.summary,
             sourceRegions: plant.sourceRegions,
             partsUsed: plant.partsUsed,
+            ...(plantImages[plant.slug] ?? {}),
             updatedAt: new Date(),
           },
         })

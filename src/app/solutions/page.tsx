@@ -2,6 +2,7 @@ import Link from "next/link";
 import { Breadcrumbs } from "@/components/breadcrumbs";
 import { EvidenceBadge } from "@/components/evidence-badge";
 import { Icon } from "@/components/icon";
+import { PhotoThumb } from "@/components/plant-photo";
 import { getSolutionsOverview } from "@/lib/catalog";
 import { getDictionary } from "@/lib/i18n";
 
@@ -57,6 +58,9 @@ export default async function SolutionsPage() {
             <div className="solution-list">
               {group.entries.map((entry) => (
                 <article className="solution-card" key={entry.id}>
+                  <div className="solution-photo">
+                    <PhotoThumb photo={entry.plant} alt={t.plants.photoAlt.replace("{name}", entry.plant.scientificName)} t={t} />
+                  </div>
                   <div className="solution-card-head">
                     <h3><Link className="solution-plant" href={`/plantes/${entry.plant.slug}`}><em>{entry.plant.scientificName}</em><Icon name="arrow" size={14} /></Link></h3>
                     <EvidenceBadge level={entry.evidenceLevel} t={t} compact />

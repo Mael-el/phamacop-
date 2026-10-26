@@ -32,6 +32,14 @@ export type EvidenceLevel =
   | "RISK_SIGNAL";
 
 export type NameRecord = { language: string; name: string; region?: string };
+
+/** Photo documentaire : fichier local + crédit obligatoire de la source d’origine. */
+export type PhotoFields = {
+  imageUrl: string | null;
+  imageCredit: string | null;
+  imageSourceUrl: string | null;
+  imageNote: string | null;
+};
 export type CandidateStatus = "PENDING_REVIEW" | "APPROVED" | "REJECTED";
 
 export const plants = pgTable(
@@ -47,6 +55,10 @@ export const plants = pgTable(
     summary: text("summary").notNull(),
     sourceRegions: text("source_regions").array().notNull().default(sql`'{}'::text[]`),
     partsUsed: text("parts_used").array().notNull().default(sql`'{}'::text[]`),
+    imageUrl: text("image_url"),
+    imageCredit: varchar("image_credit", { length: 255 }),
+    imageSourceUrl: text("image_source_url"),
+    imageNote: text("image_note"),
     createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
     updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
   },
