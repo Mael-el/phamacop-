@@ -378,6 +378,166 @@ async function seed() {
         limitations:
           "Données déclaratives et indices ethnobotaniques : l’étude ne mesure ni efficacité ni sécurité, et les auteurs signalent une mauvaise transmission intergénérationnelle des connaissances.",
       },
+      {
+        slug: "lagnika-2016-paludisme-sud-benin",
+        title: "Ethnobotanical survey of medicinal plants used in malaria management in South Benin",
+        authors: "Lagnika L, Djehoue R, Yedomonhan H, Sanni A",
+        journal: "Journal of Medicinal Plants Research",
+        year: 2016,
+        studyType: "ETHNOBOTANICAL" as StudyType,
+        doi: "10.5897/JMPR2016.6219",
+        pmid: null,
+        sourceUrl: sourceUrl("10.5897/JMPR2016.6219"),
+        abstractSummary:
+          "Enquête menée auprès de 42 informateurs (15 tradipraticiens et 27 vendeuses de plantes) dans quatre départements du Sud-Bénin (Littoral, Ouémé, Plateau, Zou), avec identification des espèces par un botaniste de l’Herbier national du Bénin. Trente-quatre espèces ont été recueillies; les plus citées sont Chamaecrista rotundifolia, Senna siamea et Dialium guineense.",
+        keyResults:
+          "La décoction est la forme de préparation la plus rapportée et la voie orale la plus citée. Les auteurs présentent ces résultats comme un point de départ pour sélectionner des espèces à étudier en laboratoire.",
+        limitations:
+          "Une fréquence de citation décrit la notoriété d’un usage chez les informateurs, pas son efficacité. L’enquête ne comporte ni dosage standardisé, ni suivi de patients, ni évaluation de sécurité.",
+      },
+      {
+        slug: "annona-senegalensis-2017-dassa-benin",
+        title:
+          "Ethnobotanical study of Senegal custard apple (Annona senegalensis Pers.) in Dassa-Zoumé township, Republic of Benin",
+        authors: "Adjakpa JB, Ahoton LE, Obossou FK, Ogougbe C",
+        journal: "International Journal of Biological and Chemical Sciences",
+        year: 2017,
+        studyType: "ETHNOBOTANICAL" as StudyType,
+        doi: "10.4314/ijbcs.v10i5.15",
+        pmid: null,
+        sourceUrl: sourceUrl("10.4314/ijbcs.v10i5.15"),
+        abstractSummary:
+          "Enquête de terrain à Dassa-Zoumé (Bénin) sur les usages de Annona senegalensis : 65 usages recensés, portant notamment sur les blessures, plaies, piqûres d’abeille ou de guêpe, morsures de serpent, piqûres de scorpion et le paludisme. Feuilles, tiges, racines, fleurs et fruits entrent dans les recettes.",
+        keyResults:
+          "Les auteurs décrivent plusieurs formulations (décoction, infusion, trituration, calcination, mastication) et modes d’administration (bain, boisson, application locale, scarification, bain de bouche).",
+        limitations:
+          "Inventaire d’usages sans évaluation biologique ni clinique; la transcription des pratiques ne prouve ni efficacité ni innocuité des préparations décrites.",
+      },
+      {
+        slug: "laleye-2016-diabete-benin",
+        title:
+          "Étude bibliographique de trois plantes antidiabétiques de la flore béninoise : Khaya senegalensis (Desr) A. Juss, Momordica charantia Linn et Moringa oleifera Lam",
+        authors: "Laleye OAF, Ahissou H, Olounlade AP, et al.",
+        journal: "International Journal of Biological and Chemical Sciences",
+        year: 2016,
+        studyType: "REVIEW" as StudyType,
+        doi: "10.4314/ijbcs.v9i5.38",
+        pmid: null,
+        sourceUrl: sourceUrl("10.4314/ijbcs.v9i5.38"),
+        abstractSummary:
+          "Revue de littérature consacrée à trois plantes utilisées pour soigner le diabète au Bénin : Khaya senegalensis, Momordica charantia et Moringa oleifera. Les auteurs synthétisent les travaux disponibles sur les molécules bioactives et les activités rapportées.",
+        keyResults:
+          "Le travail rassemble des données phytocchimiques et des résultats d’études antérieures pour les trois espèces, en les replaçant dans le contexte de la pharmacopée béninoise.",
+        limitations:
+          "Revue narrative : pas de protocole de recherche systématique, pas d’évaluation formelle de la qualité des études citées, et pas de données cliniques propres.",
+      },
+      {
+        slug: "senna-siamea-2026-antimicrobien",
+        title:
+          "Antimicrobial and anti-biofilm activities of Vernonia amygdalina and Senna siamea leaf extracts against pathogenic bacteria",
+        authors: "Mohammed S, Abdul-Karim Z, Ndezure E, Addo MG, Boampong K",
+        journal: "PLoS One",
+        year: 2026,
+        studyType: "IN_VITRO" as StudyType,
+        doi: "10.1371/journal.pone.0358840",
+        pmid: "42821538",
+        sourceUrl: sourceUrl("10.1371/journal.pone.0358840"),
+        abstractSummary:
+          "Des extraits de feuilles de Vernonia amygdalina et de Senna siamea ont été testés contre des bactéries productrices ou non de bêta-lactamases à spectre élargi (ESBL), avec criblage phytochimique, mesures de concentrations inhibitrices et essais de formation de biofilm.",
+        keyResults:
+          "L’extrait de Senna siamea a produit sa plus large zone d’inhibition contre Klebsiella pneumoniae, avec des CMI de 6,25 à 25 mg/mL. À 100 mg/mL, l’inhibition du biofilm atteignait 99,72 % contre Staphylococcus aureus. Une synergie avec l’extrait de Vernonia amygdalina n’a été observée que pour Escherichia coli.",
+        limitations:
+          "Résultats in vitro obtenus à des concentrations élevées, sans données de pharmacocinétique, de tolérance ni d’efficacité chez l’animal ou chez l’humain.",
+      },
+      {
+        slug: "dialium-guineense-2022-diarrhee-rats",
+        title: "Antidiarrheal Activity of Dialium guineense Willd Fruit Pulp in Wistar Rats",
+        authors: "Assiki T, Diallo A, Badjabaïssi E, Assih M, Kpatcha T, Idoh K, Dosseh K, Agbonon A",
+        journal: "BioMed Research International",
+        year: 2022,
+        studyType: "IN_VIVO" as StudyType,
+        doi: "10.1155/2022/4161714",
+        pmid: "36317113",
+        sourceUrl: sourceUrl("10.1155/2022/4161714"),
+        abstractSummary:
+          "La poudre de pulpe de fruit de Dialium guineense a été évaluée chez le rat Wistar sur un modèle de diarrhée induite par l’huile de ricin, en prévention (dose unique ou répétée sur 8 jours) et en traitement après induction.",
+        keyResults:
+          "Aux doses de 1000 à 4000 mg/kg administrées avant l’induction, la pulpe a retardé l’apparition de la diarrhée, réduit la fréquence des selles et l’indice de purge, avec une inhibition comparable à la lopéramide. En traitement curatif, un effet significatif apparaît dès 250 mg/kg. La teneur en eau des selles n’est pas modifiée de façon significative.",
+        limitations:
+          "Étude animale sur un modèle pharmacologique aigu; elle ne démontre pas d’efficacité contre une diarrhée infectieuse humaine et ne renseigne ni sur la formulation ni sur la sécurité à long terme.",
+      },
+      {
+        slug: "bridelia-ferruginea-2024-schistosome",
+        title:
+          "In Vitro Antischistosomal Activity of Bridelia ferruginea, Clausena anisata, Khaya senegalensis, and Vernonia amygdalina",
+        authors: "Kuevi DNO, Keiser J, Häberli C, Owusu-Senyah AK, Ahiabu MK",
+        journal: "Journal of Tropical Medicine",
+        year: 2024,
+        studyType: "IN_VITRO" as StudyType,
+        doi: "10.1155/2024/8074291",
+        pmid: "39281066",
+        sourceUrl: sourceUrl("10.1155/2024/8074291"),
+        abstractSummary:
+          "Quatre plantes médicinales ghanéennes ont été testées à 50 et 100 µg/mL sur des schistosomules nouvellement transformés et sur des vers adultes de Schistosoma mansoni, avec comparaison au praziquantel.",
+        keyResults:
+          "Sur les schistosomules, l’extrait de Bridelia ferruginea a atteint 80,77 % d’effet à 100 µg/mL. Sur les vers adultes, il a produit 100 % d’effet à 100 µg/mL, sans différence significative avec le praziquantel dans les conditions de l’essai.",
+        limitations:
+          "Essai in vitro uniquement, sur extraits bruts; ni dose thérapeutique, ni pharmacocinétique, ni sécurité, ni équivalence au traitement de référence ne peuvent en être déduites.",
+      },
+      {
+        slug: "annona-senegalensis-2024-toxicite",
+        title:
+          "Safety assessment of crude aqueous methanol extract of Annona senegalensis stem bark: acute and sub-chronic toxicity studies",
+        authors: "Ugwah-Oguejiofor CJ, Nefai MS, Emmanuel MH, Alkali IY, Biambo AA, et al.",
+        journal: "Drug and Chemical Toxicology",
+        year: 2024,
+        studyType: "IN_VIVO" as StudyType,
+        doi: "10.1080/01480545.2024.2344640",
+        pmid: "38682320",
+        sourceUrl: sourceUrl("10.1080/01480545.2024.2344640"),
+        abstractSummary:
+          "Évaluation de la toxicité aiguë et subchronique d’un extrait aqueux-méthanolique d’écorce de tige d’Annona senegalensis chez des rats Wistar des deux sexes, administré par voie orale pendant 28 jours à plusieurs doses.",
+        keyResults:
+          "Aucune mortalité n’a été observée jusqu’à 5000 mg/kg en aigu. Sur 28 jours, les auteurs ne rapportent ni mortalité ni effet indésirable marqué, mais une baisse de la glycémie avec la dose (13,68 mmol/L à 250 mg/kg contre 17,06 mmol/L dans le groupe eau) et une perte de poids. L’analyse élémentaire relève la présence de métaux lourds aux côtés du calcium et du potassium.",
+        limitations:
+          "Étude animale de 28 jours : elle ne permet pas de conclure à l’innocuité chez l’humain, ni sur les effets à long terme, les interactions médicamenteuses ou la transposition des doses.",
+      },
+      {
+        slug: "momordica-charantia-2024-meta-analyse",
+        title:
+          "Effects of Momordica charantia L. supplementation on glycemic control and lipid profile in type 2 diabetes mellitus patients: a systematic review and meta-analysis of randomized controlled trials",
+        authors: "Zhang X, Zhao Y, Song Y, Miao M",
+        journal: "Heliyon",
+        year: 2024,
+        studyType: "CLINICAL" as StudyType,
+        doi: "10.1016/j.heliyon.2024.e31126",
+        pmid: "38784554",
+        sourceUrl: sourceUrl("10.1016/j.heliyon.2024.e31126"),
+        abstractSummary:
+          "Revue systématique et méta-analyse avec évaluation GRADE de huit essais randomisés contrôlés (423 patients atteints de diabète de type 2) portant sur la supplémentation en Momordica charantia et ses effets sur la glycémie et le profil lipidique.",
+        keyResults:
+          "Réductions significatives de la glycémie à jeun (−0,85 mmol/L), de la glycémie postprandiale (−2,28 mmol/L), de l’HbA1c (−0,38 %) et du cholestérol total (−0,38 mmol/L). Aucune différence significative pour les triglycérides, le HDL et le LDL.",
+        limitations:
+          "Huit essais seulement, préparations et doses hétérogènes (I² élevé pour plusieurs critères), effectif modeste et suivi court. Les auteurs demandent des essais de meilleure qualité avant toute conclusion d’usage.",
+      },
+      {
+        slug: "anacardium-occidentale-2026-eskape",
+        title:
+          "Anti-Infective Effect of Anacardium occidentale L. Flowers Against ESKAPE Group Bacteria In Vitro, In Vivo, and In Silico",
+        authors: "Santos PG, Farias JR, Muniz SB, Franco DCG, Fontes AJC, et al.",
+        journal: "BioMed Research International",
+        year: 2026,
+        studyType: "IN_VITRO" as StudyType,
+        doi: "10.1155/bmri/6579435",
+        pmid: "42477859",
+        sourceUrl: sourceUrl("10.1155/bmri/6579435"),
+        abstractSummary:
+          "L’extrait éthanolique de fleurs d’Anacardium occidentale a été caractérisé (HPLC, LC-MS) puis testé sur des bactéries du groupe ESKAPE, avec mesures de CMI et de CMB, tests d’adhésion et de biofilm, essai de survie sur larves de Tenebrio molitor et modélisation moléculaire.",
+        keyResults:
+          "L’extrait a été bactéricide à des CMI de 1,25 à 6,25 mg/mL, avec l’effet le plus marqué sur Staphylococcus aureus, MRSA et Enterococcus faecalis. Il a inhibé l’adhésion et la formation de biofilm (sauf pour Klebsiella pneumoniae) et amélioré la survie des larves infectées.",
+        limitations:
+          "Modèle invertébré et essais in vitro; les concentrations efficaces sont élevées et aucune donnée chez les mammifères ni chez l’humain n’est fournie.",
+      },
     ];
 
     const studyBySlug = new Map<string, number>();
@@ -578,6 +738,96 @@ async function seed() {
         sourceRegions: ["Ghana (étude in vitro)"],
         partsUsed: ["Feuilles"],
       },
+      {
+        slug: "senna-siamea",
+        scientificName: "Senna siamea",
+        botanicalAuthor: "(Lam.) H.S.Irwin & Barneby",
+        family: "Fabaceae",
+        commonNames: [
+          { language: "fr", name: "Cassier, casse du Siam", region: "Nom courant" },
+          { language: "en", name: "Siamese cassia", region: "Nom anglais courant" },
+        ],
+        synonyms: ["Cassia siamea Lam."],
+        summary:
+          "Arbre de la famille des Fabaceae présent en Afrique de l’Ouest. Des extraits de feuilles ont été testés in vitro contre des bactéries pathogènes, dont des souches productrices de bêta-lactamases à spectre élargi; l’espèce figure aussi parmi les plus citées d’une enquête sur le paludisme menée dans quatre départements du Sud-Bénin.",
+        sourceRegions: ["Bénin (enquête ethnobotanique, Sud-Bénin)", "Ghana (étude in vitro)"],
+        partsUsed: ["Feuilles"],
+      },
+      {
+        slug: "dialium-guineense",
+        scientificName: "Dialium guineense",
+        botanicalAuthor: "Willd.",
+        family: "Fabaceae",
+        commonNames: [
+          { language: "fr", name: "Tamarinier noir, velours", region: "Nom courant" },
+          { language: "en", name: "Velvet tamarind", region: "Nom anglais courant" },
+        ],
+        synonyms: [],
+        summary:
+          "Arbre de la famille des Fabaceae dont le fruit est consommé et dont la pulpe a été évaluée dans un modèle de diarrhée chez le rat. L’espèce est l’une des plus citées par les praticiens interrogés dans le Sud-Bénin pour la prise en charge du paludisme.",
+        sourceRegions: ["Bénin (enquête ethnobotanique, Sud-Bénin)", "Togo (étude sur modèle animal)"],
+        partsUsed: ["Pulpe du fruit", "Feuilles et écorce citées dans les enquêtes"],
+      },
+      {
+        slug: "bridelia-ferruginea",
+        scientificName: "Bridelia ferruginea",
+        botanicalAuthor: "Benth.",
+        family: "Phyllanthaceae",
+        commonNames: [
+          { language: "fr", name: "Bridélia", region: "Nom courant" },
+          { language: "en", name: "Ira", region: "Nom vernaculaire anglophone cité dans la littérature" },
+        ],
+        synonyms: [],
+        summary:
+          "Arbuste ou petit arbre de la famille des Phyllanthaceae, présent dans la flore ouest-africaine. Des extraits ont été testés in vitro sur des schistosomes aux stades juvénile et adulte, aux côtés de trois autres plantes médicinales ghanéennes.",
+        sourceRegions: ["Ghana (étude in vitro)"],
+        partsUsed: ["Feuilles et écorce selon les extraits testés"],
+      },
+      {
+        slug: "annona-senegalensis",
+        scientificName: "Annona senegalensis",
+        botanicalAuthor: "Pers.",
+        family: "Annonaceae",
+        commonNames: [
+          { language: "fr", name: "Pomme cannelle du Sénégal, annone", region: "Nom courant" },
+          { language: "en", name: "Wild custard apple", region: "Nom anglais courant" },
+        ],
+        synonyms: [],
+        summary:
+          "Arbuste de la famille des Annonaceae largement décrit dans les enquêtes ethnobotaniques béninoises, où 65 usages ont été recensés à Dassa-Zoumé. Une étude de toxicité chez le rat a par ailleurs observé une baisse de la glycémie sous traitement répété, en marge de son objectif principal.",
+        sourceRegions: ["Bénin (enquête ethnobotanique, Dassa-Zoumé)", "Nigeria (études de toxicité chez le rat)"],
+        partsUsed: ["Feuilles", "Écorce de tige", "Racines"],
+      },
+      {
+        slug: "momordica-charantia",
+        scientificName: "Momordica charantia",
+        botanicalAuthor: "L.",
+        family: "Cucurbitaceae",
+        commonNames: [
+          { language: "fr", name: "Margose, concombre amer", region: "Nom courant" },
+          { language: "en", name: "Bitter melon", region: "Nom anglais courant" },
+        ],
+        synonyms: [],
+        summary:
+          "Plante grimpante de la famille des Cucurbitaceae cultivée en Afrique de l’Ouest. Une revue de littérature béninoise la cite parmi trois plantes utilisées pour soigner le diabète au Bénin; plusieurs essais randomisés chez des patients diabétiques de type 2 ont depuis été synthétisés dans une méta-analyse.",
+        sourceRegions: ["Bénin (revue de littérature sur la flore béninoise)", "Essais cliniques internationaux"],
+        partsUsed: ["Fruits", "Feuilles"],
+      },
+      {
+        slug: "anacardium-occidentale",
+        scientificName: "Anacardium occidentale",
+        botanicalAuthor: "L.",
+        family: "Anacardiaceae",
+        commonNames: [
+          { language: "fr", name: "Anacardier, cajou", region: "Nom courant" },
+          { language: "en", name: "Cashew", region: "Nom anglais courant" },
+        ],
+        synonyms: [],
+        summary:
+          "Arbre de la famille des Anacardiaceae cultivé pour sa noix et présent dans les zones soudaniennes et guinéennes. Un extrait éthanolique de fleurs a été étudié in vitro sur des bactéries du groupe ESKAPE et testé sur des larves infectées.",
+        sourceRegions: ["Brésil (étude expérimentale)", "Afrique de l’Ouest (plante cultivée)"],
+        partsUsed: ["Fleurs", "Feuilles et écorce dans d’autres travaux"],
+      },
     ];
 
 
@@ -662,6 +912,42 @@ async function seed() {
         imageSourceUrl: "https://tropical.theferns.info/viewtropical.php?id=Mangifera+indica",
         imageNote: "Photo d’illustration botanique; licence à vérifier sur la page source avant réutilisation.",
       },
+      "senna-siamea": {
+        imageUrl: "/images/plantes/senna-siamea.jpg",
+        imageCredit: "Wikimedia Commons (Starr) — Senna siamea, fleurs et feuilles",
+        imageSourceUrl: "https://commons.wikimedia.org/wiki/File:Starr-090813-4234-Senna_siamea-flowers_and_leaves-Kahului-Maui_(24341508534).jpg",
+        imageNote: "Photo d’illustration botanique; licence à vérifier sur la page source avant réutilisation.",
+      },
+      "dialium-guineense": {
+        imageUrl: "/images/plantes/dialium-guineense.jpg",
+        imageCredit: "Tropical The Ferns — Dialium guineense (rameau et inflorescences)",
+        imageSourceUrl: "https://tropical.theferns.info/viewtropical.php?id=Dialium+guineense",
+        imageNote: "Photo d’illustration botanique; licence à vérifier sur la page source avant réutilisation.",
+      },
+      "bridelia-ferruginea": {
+        imageUrl: "/images/plantes/bridelia-ferruginea.jpg",
+        imageCredit: "Tropical The Ferns — Bridelia ferruginea (feuilles et fleurs)",
+        imageSourceUrl: "https://tropical.theferns.info/viewtropical.php?id=Bridelia+ferruginea",
+        imageNote: "Photo d’illustration botanique; licence à vérifier sur la page source avant réutilisation.",
+      },
+      "annona-senegalensis": {
+        imageUrl: "/images/plantes/annona-senegalensis.jpg",
+        imageCredit: "Tropical The Ferns — Annona senegalensis (fruits et feuilles)",
+        imageSourceUrl: "https://tropical.theferns.info/viewtropical.php?id=annona+senegalensis",
+        imageNote: "Photo d’illustration botanique; licence à vérifier sur la page source avant réutilisation.",
+      },
+      "momordica-charantia": {
+        imageUrl: "/images/plantes/momordica-charantia.jpg",
+        imageCredit: "Wikimedia Commons — Momordica charantia (feuilles et fleur)",
+        imageSourceUrl: "https://commons.wikimedia.org/wiki/File:Momordica_charantia_(Bitter_melon)_leaves_and_a_flower.jpg",
+        imageNote: "Photo d’illustration botanique; licence à vérifier sur la page source avant réutilisation.",
+      },
+      "anacardium-occidentale": {
+        imageUrl: "/images/plantes/anacardium-occidentale.jpg",
+        imageCredit: "Wikimedia Commons (Starr) — Anacardium occidentale, fleurs et feuilles",
+        imageSourceUrl: "https://commons.wikimedia.org/wiki/Category:Anacardium_occidentale",
+        imageNote: "Photo d’illustration botanique; licence à vérifier sur la page source avant réutilisation.",
+      },
       "moringa-oleifera": {
         imageUrl: "/images/plantes/moringa-oleifera.jpg",
         imageCredit: "Wikimedia Commons (Starr) — Moringa oleifera, feuilles",
@@ -735,6 +1021,25 @@ async function seed() {
       })
       .returning({ id: pathologies.id });
 
+    const diabetesSummary =
+      "Les sources reliées à ce dossier vont de la revue de littérature béninoise sur des plantes utilisées contre le diabète à une méta-analyse d’essais randomisés portant sur Momordica charantia, en passant par des modèles animaux. Les niveaux de preuve y sont très inégaux et sont affichés pour chaque affirmation.";
+    const diabetesScope =
+      "Le diabète de type 2 est une maladie chronique qui se diagnostique et se traite médicalement. Aucune plante de cette page ne doit remplacer un traitement prescrit, ni servir à modifier une dose d’insuline ou d’antidiabétique. Une surveillance de la glycémie relève d’un professionnel de santé.";
+
+    const [diabetes] = await tx
+      .insert(pathologies)
+      .values({
+        slug: "diabete-type-2",
+        name: "Diabète de type 2",
+        summary: diabetesSummary,
+        scopeNote: diabetesScope,
+      })
+      .onConflictDoUpdate({
+        target: pathologies.slug,
+        set: { name: "Diabète de type 2", summary: diabetesSummary, scopeNote: diabetesScope },
+      })
+      .returning({ id: pathologies.id });
+
     const mechanismRows = [
       {
         slug: "croissance-plasmodium",
@@ -759,6 +1064,30 @@ async function seed() {
           "Mesure de l’inhibition de bactéries sélectionnées par des extraits, dans des tests in vitro tels que la diffusion sur gélose.",
         readingText:
           "Un halo d’inhibition observé sur une boîte de culture ne prouve pas l’efficacité contre une infection chez un patient. Les concentrations, la formulation et les conditions d’essai ne représentent pas un usage médical.",
+      },
+      {
+        slug: "controle-glycemique",
+        name: "Contrôle de la glycémie (modèles animaux et essais humains)",
+        description:
+          "Travaux qui mesurent l’effet d’une plante ou d’un extrait sur la glycémie à jeun, la glycémie postprandiale ou l’hémoglobine glyquée, chez l’animal ou chez des patients diabétiques.",
+        readingText:
+          "Une baisse de glycémie observée chez le rat, ou même dans un essai clinique de petite taille, ne définit pas une dose utilisable ni un traitement. Le diabète se suit avec un professionnel de santé : ces données servent à comprendre la recherche, pas à adapter un traitement.",
+      },
+      {
+        slug: "transit-intestinal",
+        name: "Transit intestinal et diarrhée en modèle animal",
+        description:
+          "Essais qui quantifient la fréquence des selles, leur consistance ou l’indice de purge après administration d’un extrait, le plus souvent sur un modèle de diarrhée induite chez le rongeur.",
+        readingText:
+          "Un effet anti-diarrhéique chez l’animal ne remplace pas la réhydratation, qui reste la priorité en cas de diarrhée, en particulier chez l’enfant. Ces résultats orientent la recherche pharmacologique.",
+      },
+      {
+        slug: "viabilite-schistosome",
+        name: "Viabilité des schistosomes en laboratoire",
+        description:
+          "Mesures de survie et de mobilité de schistosomules ou de vers adultes de Schistosoma mansoni exposés à des extraits, avec comparaison à un traitement de référence.",
+        readingText:
+          "Un ver immobilisé dans une boîte de culture n’équivaut pas à une guérison chez une personne infectée. La schistosomiase se traite sur diagnostic, avec un médicament validé.",
       },
     ];
 
@@ -1066,6 +1395,91 @@ async function seed() {
           "Ce résultat limité à un extrait et un protocole ne prouve pas l’absence générale d’activité ou de risque, et ne renseigne pas sur une efficacité clinique.",
         studySlug: "plantes-herbales-ghana-2020-in-vitro",
       },
+      {
+        slug: "senna-siamea-extrait-antibacterien-in-vitro",
+        plantSlug: "senna-siamea",
+        mechanismSlug: "inhibition-bacterienne-in-vitro",
+        pathologyId: null,
+        claimText:
+          "Des extraits de feuilles de Senna siamea ont inhibé la croissance de bactéries pathogènes en laboratoire, dont Klebsiella pneumoniae, et réduit la formation de biofilm.",
+        evidenceLevel: "PRECLINICAL",
+        rationale:
+          "Résultat d’un essai in vitro mesurant zones d’inhibition, concentrations minimales inhibitrices et biomasse de biofilm sur des souches de référence et cliniques.",
+        limitations:
+          "Concentrations élevées (CMI 6,25 à 25 mg/mL), extrait brut non standardisé, aucune donnée animale ni humaine. Un effet sur une bactérie en boîte de culture ne constitue pas un traitement d’infection.",
+        studySlug: "senna-siamea-2026-antimicrobien",
+      },
+      {
+        slug: "dialium-pulpe-effet-antidiarrheique-rat",
+        plantSlug: "dialium-guineense",
+        mechanismSlug: "transit-intestinal",
+        pathologyId: diarrhoea.id,
+        claimText:
+          "La poudre de pulpe de fruit de Dialium guineense a réduit la fréquence et l’intensité de la diarrhée induite par l’huile de ricin chez le rat, avec un effet comparable à celui de la lopéramide à fortes doses.",
+        evidenceLevel: "PRECLINICAL",
+        rationale:
+          "Trois protocoles distincts (prévention à dose unique, prévention répétée sur 8 jours, traitement curatif) menés chez le rat Wistar avec mesures de fréquence des selles et d’indice de purge.",
+        limitations:
+          "Modèle animal pharmacologique et non infectieux; la teneur en eau des selles n’est pas modifiée significativement. Aucune extrapolation possible à une diarrhée infectieuse humaine ni à une posologie.",
+        studySlug: "dialium-guineense-2022-diarrhee-rats",
+      },
+      {
+        slug: "bridelia-extrait-actif-schistosome-in-vitro",
+        plantSlug: "bridelia-ferruginea",
+        mechanismSlug: "viabilite-schistosome",
+        pathologyId: null,
+        claimText:
+          "Des extraits de Bridelia ferruginea ont fortement réduit la viabilité de schistosomules et de vers adultes de Schistosoma mansoni en laboratoire (80,77 % et 100 % à 100 µg/mL).",
+        evidenceLevel: "PRECLINICAL",
+        rationale:
+          "Essai in vitro comparant quatre extraits de plantes au praziquantel sur deux stades du parasite, avec lecture microscopique de la viabilité.",
+        limitations:
+          "Extraits bruts, essai unique, aucune évaluation de la toxicité sélective pour l’hôte ni de l’efficacité chez l’animal infecté. La schistosomiase se traite sur diagnostic médical.",
+        studySlug: "bridelia-ferruginea-2024-schistosome",
+      },
+      {
+        slug: "annona-baisse-glycemie-rat-signal",
+        plantSlug: "annona-senegalensis",
+        mechanismSlug: "controle-glycemique",
+        pathologyId: diabetes.id,
+        claimText:
+          "Lors d’une étude de toxicité de 28 jours, un extrait d’écorce de tige d’Annona senegalensis a été associé à une baisse de la glycémie chez le rat, avec une perte de poids aux doses les plus élevées.",
+        evidenceLevel: "PRECLINICAL",
+        rationale:
+          "Observation issue d’un paramètre secondaire d’une étude de toxicité subchronique chez le rat, avec plusieurs doses et un groupe témoin.",
+        limitations:
+          "Il ne s’agit pas d’un essai thérapeutique : l’étude cherchait à évaluer la sécurité, sans protocole de diabète ni mesure d’insulinémie. Une baisse de glycémie chez le rat ne fournit aucune dose ni indication chez l’humain.",
+        studySlug: "annona-senegalensis-2024-toxicite",
+      },
+      {
+        slug: "momordica-essais-randomises-glycemie",
+        plantSlug: "momordica-charantia",
+        mechanismSlug: "controle-glycemique",
+        pathologyId: diabetes.id,
+        claimText:
+          "Dans une méta-analyse de huit essais randomisés (423 patients diabétiques de type 2), la supplémentation en Momordica charantia a été associée à une baisse modeste de la glycémie à jeun, de l’HbA1c et du cholestérol total.",
+        evidenceLevel: "MODERATE",
+        rationale:
+          "Synthèse d’essais randomisés contrôlés chez l’humain avec évaluation GRADE, montrant des effets statistiquement significatifs et cohérents sur plusieurs critères glycémiques.",
+        limitations:
+          "Huit essais seulement, préparations et doses très variables, hétérogénéité élevée (I² jusqu’à 73 %), effectif modeste. Les auteurs ne concluent pas à un usage thérapeutique et demandent des essais de meilleure qualité.",
+        studySlug: "momordica-charantia-2024-meta-analyse",
+        additionalStudySlugs: ["laleye-2016-diabete-benin"],
+      },
+      {
+        slug: "anacardium-fleurs-bactericides-in-vitro",
+        plantSlug: "anacardium-occidentale",
+        mechanismSlug: "inhibition-bacterienne-in-vitro",
+        pathologyId: null,
+        claimText:
+          "Un extrait éthanolique de fleurs d’Anacardium occidentale a été bactéricide sur Staphylococcus aureus, MRSA et Enterococcus faecalis in vitro, et a inhibé l’adhésion et la formation de biofilm.",
+        evidenceLevel: "PRECLINICAL",
+        rationale:
+          "Mesures de concentrations minimales inhibitrices et bactéricides, tests d’adhésion et de biofilm, complétés par un essai de survie sur larves infectées et de la modélisation moléculaire.",
+        limitations:
+          "CMI élevées (1,25 à 6,25 mg/mL), modèle invertébré, absence de données chez les mammifères et chez l’humain. Aucune conclusion thérapeutique possible.",
+        studySlug: "anacardium-occidentale-2026-eskape",
+      },
     ];
 
     const claimBySlug = new Map<string, number>();
@@ -1301,6 +1715,58 @@ async function seed() {
         studySlug: "picralima-sud-benin-2017-enquete",
         sourceContext: "Inventaire d’usages déclarés; l’étude ne mesure ni efficacité ni sécurité.",
       },
+      {
+        slug: "senna-usage-paludisme-sud-benin",
+        plantSlug: "senna-siamea",
+        description:
+          "Senna siamea figure parmi les trois espèces les plus citées par 42 praticiens interrogés dans quatre départements du Sud-Bénin pour la prise en charge du paludisme. Cette citation documente une pratique rapportée; elle ne démontre pas d’efficacité.",
+        region: "Bénin (Littoral, Ouémé, Plateau, Zou)",
+        community: null,
+        partReported: "Feuilles et rameaux feuillés selon les recettes citées",
+        preparationReported:
+          "Décoction, voie orale — forme de préparation la plus fréquemment rapportée dans l’enquête; information documentaire, pas une instruction.",
+        studySlug: "lagnika-2016-paludisme-sud-benin",
+        sourceContext: "Enquête ethnobotanique avec identification botanique par l’Herbier national du Bénin.",
+      },
+      {
+        slug: "dialium-usage-paludisme-sud-benin",
+        plantSlug: "dialium-guineense",
+        description:
+          "Dialium guineense est l’une des trois espèces les plus citées par les praticiens de quatre départements du Sud-Bénin pour la prise en charge du paludisme, dans la même enquête que Senna siamea et Chamaecrista rotundifolia.",
+        region: "Bénin (Littoral, Ouémé, Plateau, Zou)",
+        community: null,
+        partReported: "Feuilles, écorce et fruit selon les recettes citées",
+        preparationReported:
+          "Décoction, voie orale — usage rapporté, sans dosage ni durée documentés.",
+        studySlug: "lagnika-2016-paludisme-sud-benin",
+        sourceContext: "Enquête ethnobotanique sud-béninoise de 2016 (42 informateurs).",
+      },
+      {
+        slug: "annona-usage-dassa-zoume",
+        plantSlug: "annona-senegalensis",
+        description:
+          "À Dassa-Zoumé, 65 usages d’Annona senegalensis ont été recensés, notamment pour les blessures et plaies, les piqûres d’insectes, les morsures de serpent et le paludisme. Les recettes mobilisent feuilles, tiges, racines, fleurs et fruits.",
+        region: "Bénin (Dassa-Zoumé)",
+        community: null,
+        partReported: "Feuilles, tiges, racines, fleurs et fruits",
+        preparationReported:
+          "Décoction, infusion, trituration, calcination, mastication; administration par bain, boisson, application locale ou scarification selon les recettes rapportées.",
+        studySlug: "annona-senegalensis-2017-dassa-benin",
+        sourceContext: "Enquête ethnobotanique de terrain dans la commune de Dassa-Zoumé.",
+      },
+      {
+        slug: "momordica-usage-diabete-benin",
+        plantSlug: "momordica-charantia",
+        description:
+          "Momordica charantia est l’une des trois plantes retenues par une revue de littérature consacrée aux plantes antidiabétiques de la flore béninoise, aux côtés de Khaya senegalensis et Moringa oleifera. La revue synthétise des travaux antérieurs sans apporter de données cliniques propres.",
+        region: "Bénin (revue de la flore béninoise)",
+        community: null,
+        partReported: "Fruits et feuilles",
+        preparationReported:
+          "Formes d’usage non détaillées de façon homogène dans la revue; aucune préparation n’est recommandée ici.",
+        studySlug: "laleye-2016-diabete-benin",
+        sourceContext: "Revue narrative de littérature sur la pharmacopée béninoise.",
+      },
     ];
 
     for (const use of useRows) {
@@ -1448,6 +1914,12 @@ async function seed() {
     }
 
     const plantStudySlugs: Record<string, string[]> = {
+      "senna-siamea": ["lagnika-2016-paludisme-sud-benin", "senna-siamea-2026-antimicrobien"],
+      "dialium-guineense": ["lagnika-2016-paludisme-sud-benin", "dialium-guineense-2022-diarrhee-rats"],
+      "bridelia-ferruginea": ["bridelia-ferruginea-2024-schistosome"],
+      "annona-senegalensis": ["annona-senegalensis-2017-dassa-benin", "annona-senegalensis-2024-toxicite"],
+      "momordica-charantia": ["laleye-2016-diabete-benin", "momordica-charantia-2024-meta-analyse"],
+      "anacardium-occidentale": ["anacardium-occidentale-2026-eskape"],
       "nauclea-latifolia": ["nauclea-latifolia-1998-in-vitro", "revue-plantes-africaines-paludisme-2021"],
       "alstonia-boonei": ["alstonia-boonei-2021-souris", "alstonia-boonei-revue-2012", "morinda-alstonia-2020-souris", "revue-plantes-africaines-paludisme-2021"],
       "vernonia-amygdalina": ["vernonia-amygdalina-2015-transmission", "revue-plantes-africaines-paludisme-2021", "benin-diarrhees-2021-enquete"],
@@ -1477,6 +1949,21 @@ async function seed() {
       string,
       { summary: string; riskSignal: boolean; riskRationale: string | null; sourceStudySlug: string | null }
     > = {
+      "annona-senegalensis": {
+        summary:
+          "Une étude de toxicité de 28 jours chez le rat ne rapporte ni mortalité ni effet indésirable marqué avec un extrait d’écorce de tige, mais décrit une baisse de la glycémie et une perte de poids aux doses élevées, ainsi que la présence de métaux lourds dans l’extrait. Cela ne permet pas de conclure à l’innocuité chez l’humain.",
+        riskSignal: true,
+        riskRationale:
+          "Hypoglycémie et perte de poids lors d’une administration répétée chez l’animal : signal à ne pas écarter, sans transposition directe à une préparation humaine.",
+        sourceStudySlug: "annona-senegalensis-2024-toxicite",
+      },
+      "momordica-charantia": {
+        summary:
+          "Les essais randomisés synthétisés portent sur des suppléments et des durées courtes ; la méta-analyse ne rapporte pas de suivi de sécurité à long terme ni d’évaluation des interactions avec les antidiabétiques. Aucune conclusion d’innocuité n’est fournie par ces publications.",
+        riskSignal: false,
+        riskRationale: null,
+        sourceStudySlug: "momordica-charantia-2024-meta-analyse",
+      },
       "vernonia-amygdalina": {
         summary:
           "Un signal de prudence bibliographique est recensé : une revue systématique rapporte des signaux de toxicité fréquemment pour cette espèce dans les études antiplasmodiales. Cela ne décrit pas le risque de chaque préparation.",

@@ -164,6 +164,12 @@ pour ce projet. Chaque photo est recherchée en ligne, téléchargée, redimensi
 | *Enantia chlorantha* | Herbal Zoo Services (écorce, bois jaune) |
 | *Mangifera indica* | Tropical The Ferns (feuilles et fruits) |
 | *Moringa oleifera* | Wikimedia Commons (Starr, feuilles) |
+| *Senna siamea* | Wikimedia Commons (Starr, fleurs et feuilles) |
+| *Dialium guineense* | Tropical The Ferns (rameau et inflorescences) |
+| *Bridelia ferruginea* | Tropical The Ferns (feuilles et fleurs) |
+| *Annona senegalensis* | Tropical The Ferns (fruits et feuilles) |
+| *Momordica charantia* | Wikimedia Commons (feuilles et fleur) |
+| *Anacardium occidentale* | Wikimedia Commons (Starr, fleurs et feuilles) |
 
 **Où les photos apparaissent** : carte et fiche de chaque plante (photo pleine largeur avec légende,
 crédit, lien vers la source et note de licence), pistes de `/solutions`, dossiers `/pathologies` et

@@ -20,6 +20,12 @@ de la table `plants` (voir `src/db/seed.ts`, table `plantImages`).
 | `enantia-chlorantha.jpg` | *Enantia chlorantha* | https://herbalzooservices.com/product/enantia-chlorantha/ | site commercial — identification à confirmer |
 | `mangifera-indica.jpg` | *Mangifera indica* | https://tropical.theferns.info/viewtropical.php?id=Mangifera+indica | site tiers — licence à vérifier |
 | `moringa-oleifera.jpg` | *Moringa oleifera* | https://commons.wikimedia.org/wiki/File:Starr-150325-0582-Moringa_oleifera-leaves-Community_Garden_Sand_Island-Midway_Atoll_(24635445594).jpg | Commons (Starr) — licence à vérifier |
+| `senna-siamea.jpg` | *Senna siamea* | https://commons.wikimedia.org/wiki/File:Starr-090813-4234-Senna_siamea-flowers_and_leaves-Kahului-Maui_(24341508534).jpg | Commons (Starr) — licence à vérifier |
+| `dialium-guineense.jpg` | *Dialium guineense* | https://tropical.theferns.info/viewtropical.php?id=Dialium+guineense | site tiers — licence à vérifier |
+| `bridelia-ferruginea.jpg` | *Bridelia ferruginea* | https://tropical.theferns.info/viewtropical.php?id=Bridelia+ferruginea | site tiers — licence à vérifier |
+| `annona-senegalensis.jpg` | *Annona senegalensis* | https://tropical.theferns.info/viewtropical.php?id=annona+senegalensis | site tiers — licence à vérifier |
+| `momordica-charantia.jpg` | *Momordica charantia* | https://commons.wikimedia.org/wiki/File:Momordica_charantia_(Bitter_melon)_leaves_and_a_flower.jpg | Commons — licence à vérifier |
+| `anacardium-occidentale.jpg` | *Anacardium occidentale* | https://commons.wikimedia.org/wiki/Category:Anacardium_occidentale | Commons (Starr) — licence à vérifier |
 
 ## Avant toute réutilisation hors du site
 
