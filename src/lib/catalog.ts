@@ -1,4 +1,5 @@
 import { and, asc, count, desc, eq, inArray, sql } from "drizzle-orm";
+import { containsPattern, foldSql, foldText, rankSql } from "@/lib/search-text";
 import { db } from "@/db";
 import {
   claimPreparations,
@@ -71,7 +72,7 @@ export type PlantDetail = {
 export type SearchResult = {
   href: string;
   title: string;
-  category: "Plante" | "Pathologie" | "Mécanisme" | "Composé" | "Publication";
+  category: "Plante" | "Pathologie" | "Mécanisme" | "Cible" | "Composé" | "Préparation" | "Publication";
   detail: string;
 };
 
@@ -492,48 +493,114 @@ export async function getHomeData() {
 export async function searchCatalog(rawQuery: string): Promise<SearchResult[]> {
   const query = rawQuery.trim().slice(0, 120);
   if (query.length < 2) return [];
-  const tsQuery = sql`plainto_tsquery('french', ${query})`;
-  const [plantRows, pathologyRows, mechanismRows, compoundRows, studyRows] = await Promise.all([
-    db
-      .select({ slug: plants.slug, name: plants.scientificName, family: plants.family, summary: plants.summary })
-      .from(plants)
-      .where(
-        sql`to_tsvector('french', ${plants.scientificName} || ' ' || ${plants.family} || ' ' || ${plants.summary} || ' ' || ${plants.commonNames}::text || ' ' || ${plants.synonyms}::text) @@ ${tsQuery}`, 
-      )
-      .orderBy(asc(plants.scientificName))
-      .limit(8),
-    db
-      .select({ slug: pathologies.slug, name: pathologies.name, summary: pathologies.summary })
-      .from(pathologies)
-      .where(sql`to_tsvector('french', ${pathologies.name} || ' ' || ${pathologies.summary}) @@ ${tsQuery}`)
-      .orderBy(asc(pathologies.name))
-      .limit(6),
-    db
-      .select({ slug: mechanisms.slug, name: mechanisms.name, summary: mechanisms.description })
-      .from(mechanisms)
-      .where(sql`to_tsvector('french', ${mechanisms.name} || ' ' || ${mechanisms.description} || ' ' || ${mechanisms.readingText}) @@ ${tsQuery}`)
-      .orderBy(asc(mechanisms.name))
-      .limit(6),
-    db
-      .select({ slug: compounds.slug, name: compounds.name, summary: compounds.description })
-      .from(compounds)
-      .where(sql`to_tsvector('french', ${compounds.name} || ' ' || ${compounds.chemicalFamily} || ' ' || ${compounds.description}) @@ ${tsQuery}`)
-      .orderBy(asc(compounds.name))
-      .limit(6),
-    db
-      .select({ slug: studies.slug, name: studies.title, journal: studies.journal, year: studies.year })
-      .from(studies)
-      .where(sql`to_tsvector('french', ${studies.title} || ' ' || ${studies.abstractSummary} || ' ' || ${studies.keyResults}) @@ ${tsQuery}`)
-      .orderBy(desc(studies.year))
-      .limit(8),
-  ]);
+
+  const folded = foldText(query);
+  const pattern = containsPattern(query);
+  const like = (expr: unknown) => sql`${foldSql(expr)} like ${pattern} escape '\\'`;
+
+  const plantBlob = sql`${plants.scientificName} || ' ' || ${plants.family} || ' ' || ${plants.summary} || ' ' || ${plants.commonNames}::text || ' ' || ${plants.synonyms}::text`;
+  const pathologyBlob = sql`${pathologies.name} || ' ' || ${pathologies.summary} || ' ' || ${pathologies.scopeNote}`;
+  const mechanismBlob = sql`${mechanisms.name} || ' ' || ${mechanisms.description} || ' ' || ${mechanisms.readingText}`;
+  const targetBlob = sql`${targets.name} || ' ' || coalesce(${targets.organism}, '') || ' ' || ${targets.description}`;
+  const compoundBlob = sql`${compounds.name} || ' ' || ${compounds.chemicalFamily} || ' ' || ${compounds.description}`;
+  const preparationBlob = sql`${preparations.name} || ' ' || ${preparations.partUsed} || ' ' || coalesce(${preparations.solvent}, '') || ' ' || ${preparations.form} || ' ' || ${preparations.notes}`;
+  const studyBlob = sql`${studies.title} || ' ' || ${studies.authors} || ' ' || ${studies.journal} || ' ' || ${studies.abstractSummary} || ' ' || ${studies.keyResults}`;
+
+  const [plantRows, pathologyRows, mechanismRows, targetRows, compoundRows, preparationRows, studyRows] =
+    await Promise.all([
+      db
+        .select({ slug: plants.slug, name: plants.scientificName, family: plants.family, summary: plants.summary })
+        .from(plants)
+        .where(like(plantBlob))
+        .orderBy(rankSql(plants.scientificName, folded), asc(plants.scientificName))
+        .limit(10),
+      db
+        .select({ slug: pathologies.slug, name: pathologies.name, summary: pathologies.summary })
+        .from(pathologies)
+        .where(like(pathologyBlob))
+        .orderBy(rankSql(pathologies.name, folded), asc(pathologies.name))
+        .limit(6),
+      db
+        .select({ slug: mechanisms.slug, name: mechanisms.name, summary: mechanisms.description })
+        .from(mechanisms)
+        .where(like(mechanismBlob))
+        .orderBy(rankSql(mechanisms.name, folded), asc(mechanisms.name))
+        .limit(6),
+      db
+        .select({ slug: targets.slug, name: targets.name, organism: targets.organism, description: targets.description })
+        .from(targets)
+        .where(like(targetBlob))
+        .orderBy(rankSql(targets.name, folded), asc(targets.name))
+        .limit(6),
+      db
+        .select({ slug: compounds.slug, name: compounds.name, summary: compounds.description })
+        .from(compounds)
+        .where(like(compoundBlob))
+        .orderBy(rankSql(compounds.name, folded), asc(compounds.name))
+        .limit(6),
+      db
+        .select({
+          slug: preparations.slug,
+          name: preparations.name,
+          plantSlug: plants.slug,
+          plantName: plants.scientificName,
+        })
+        .from(preparations)
+        .innerJoin(plants, eq(preparations.plantId, plants.id))
+        .where(like(preparationBlob))
+        .orderBy(rankSql(preparations.name, folded), asc(preparations.name))
+        .limit(6),
+      db
+        .select({ slug: studies.slug, name: studies.title, journal: studies.journal, year: studies.year })
+        .from(studies)
+        .where(like(studyBlob))
+        .orderBy(desc(studies.year), asc(studies.title))
+        .limit(10),
+    ]);
 
   return [
-    ...plantRows.map((row) => ({ href: `/plantes/${row.slug}`, title: row.name, category: "Plante" as const, detail: `${row.family} · ${row.summary}` })),
-    ...pathologyRows.map((row) => ({ href: `/pathologies/${row.slug}`, title: row.name, category: "Pathologie" as const, detail: row.summary })),
-    ...mechanismRows.map((row) => ({ href: `/mecanismes/${row.slug}`, title: row.name, category: "Mécanisme" as const, detail: row.summary })),
-    ...compoundRows.map((row) => ({ href: `/composes/${row.slug}`, title: row.name, category: "Composé" as const, detail: row.summary })),
-    ...studyRows.map((row) => ({ href: `/publications#${row.slug}`, title: row.name, category: "Publication" as const, detail: `${row.journal} · ${row.year}` })),
+    ...plantRows.map((row) => ({
+      href: `/plantes/${row.slug}`,
+      title: row.name,
+      category: "Plante" as const,
+      detail: `${row.family} · ${row.summary}`,
+    })),
+    ...pathologyRows.map((row) => ({
+      href: `/pathologies/${row.slug}`,
+      title: row.name,
+      category: "Pathologie" as const,
+      detail: row.summary,
+    })),
+    ...mechanismRows.map((row) => ({
+      href: `/mecanismes/${row.slug}`,
+      title: row.name,
+      category: "Mécanisme" as const,
+      detail: row.summary,
+    })),
+    ...targetRows.map((row) => ({
+      href: `/cibles/${row.slug}`,
+      title: row.name,
+      category: "Cible" as const,
+      detail: row.organism ? `${row.organism} · ${row.description}` : row.description,
+    })),
+    ...compoundRows.map((row) => ({
+      href: `/composes/${row.slug}`,
+      title: row.name,
+      category: "Composé" as const,
+      detail: row.summary,
+    })),
+    ...preparationRows.map((row) => ({
+      href: `/plantes/${row.plantSlug}`,
+      title: row.name,
+      category: "Préparation" as const,
+      detail: `${row.plantName} · préparation testée en étude`,
+    })),
+    ...studyRows.map((row) => ({
+      href: `/publications#${row.slug}`,
+      title: row.name,
+      category: "Publication" as const,
+      detail: `${row.journal} · ${row.year}`,
+    })),
   ];
 }
 

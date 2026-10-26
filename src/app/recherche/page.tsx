@@ -19,11 +19,14 @@ export default async function SearchPage({ searchParams }: { searchParams: Promi
       ? discoverPubMedCandidates(query)
       : Promise.resolve({ candidates: [], status: "no-results" as const }),
   ]);
+  const suggestions = ["paludisme", "diabète", "Nauclea", "biofilm", "Moringa", "amanvivè"];
   const categoryLabel = {
     Plante: t.search.categories.plant,
     Pathologie: t.search.categories.pathology,
     Mécanisme: t.search.categories.mechanism,
+    Cible: t.search.categories.target,
     Composé: t.search.categories.compound,
+    Préparation: t.search.categories.preparation,
     Publication: t.search.categories.publication,
   } as const;
 
@@ -37,9 +40,34 @@ export default async function SearchPage({ searchParams }: { searchParams: Promi
         </div>
       </div></section>
       <section className="page-content"><div className="wrap">
-        <div className="page-search-bar"><SearchForm defaultValue={query} placeholder={t.search.placeholder} /></div>
+        <div className="page-search-bar">
+          <SearchForm defaultValue={query} placeholder={t.search.placeholder} />
+          {query && query.length >= 2 && (
+            <p className="search-summary">
+              {localResults.length} {localResults.length === 1 ? t.search.resultOne : t.search.resultMany} ·{" "}
+              {t.search.resultFor} « {query} » ·{" "}
+              <Link href="/recherche">{t.search.clear}</Link>
+            </p>
+          )}
+        </div>
         {!query ? (
-          <div className="empty-note">{t.search.emptyPrompt}</div>
+          <div className="search-empty-state">
+            <p className="empty-note">{t.search.emptyPrompt}</p>
+            <div className="search-suggestions">
+              <span>{t.search.suggestionsLabel}</span>
+              <div className="filter-row">
+                {suggestions.map((suggestion) => (
+                  <Link
+                    key={suggestion}
+                    className="filter-chip"
+                    href={`/recherche?q=${encodeURIComponent(suggestion)}`}
+                  >
+                    {suggestion}
+                  </Link>
+                ))}
+              </div>
+            </div>
+          </div>
         ) : query.length < 2 ? (
           <div className="empty-note">{t.search.tooShort}</div>
         ) : (

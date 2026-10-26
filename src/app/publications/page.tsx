@@ -4,11 +4,17 @@ import { SearchForm } from "@/components/search-form";
 import { StudyCard } from "@/components/study-card";
 import { getStudies } from "@/lib/catalog";
 import { getDictionary } from "@/lib/i18n";
+import { foldText } from "@/lib/search-text";
 
 export const dynamic = "force-dynamic";
 
-export default async function PublicationsPage({ searchParams }: { searchParams: Promise<{ type?: string }> }) {
+export default async function PublicationsPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ type?: string; q?: string | string[] }>;
+}) {
   const params = await searchParams;
+  const query = typeof params.q === "string" ? params.q.trim().slice(0, 120) : "";
   const [allStudies, { t }] = await Promise.all([getStudies(), getDictionary()]);
   const studyFilters: Array<{ value: StudyType | ""; label: string }> = [
     { value: "", label: t.publications.all },
@@ -20,7 +26,26 @@ export default async function PublicationsPage({ searchParams }: { searchParams:
     { value: "REVIEW", label: t.publications.reviews },
   ];
   const selectedType = studyFilters.some((filter) => filter.value === params.type) ? params.type ?? "" : "";
-  const filteredStudies = selectedType ? allStudies.filter((study) => study.studyType === selectedType) : allStudies;
+  const needle = foldText(query);
+  const filteredStudies = allStudies
+    .filter((study) => (selectedType ? study.studyType === selectedType : true))
+    .filter((study) =>
+      needle
+        ? foldText(
+            [
+              study.title,
+              study.authors,
+              study.journal,
+              String(study.year),
+              study.abstractSummary,
+              study.keyResults,
+              ...study.plants.map((plant) => plant.scientificName),
+            ].join(" "),
+          ).includes(needle)
+        : true,
+    );
+  const withQuery = (href: string) =>
+    query ? `${href}${href.includes("?") ? "&" : "?"}q=${encodeURIComponent(query)}` : href;
 
   return (
     <main>
@@ -32,13 +57,24 @@ export default async function PublicationsPage({ searchParams }: { searchParams:
         </div>
       </div></section>
       <section className="page-content"><div className="wrap">
-        <div className="page-search-bar"><SearchForm placeholder={t.publications.searchPlaceholder} /></div>
+        <div className="page-search-bar">
+          <SearchForm placeholder={t.publications.searchPlaceholder} action="/publications" defaultValue={query} />
+        </div>
         <div className="filter-row" aria-label={t.publications.filterAria}>
           {studyFilters.map((filter) => (
-            <a key={filter.value || "all"} className={`filter-chip ${selectedType === filter.value ? "active" : ""}`} href={filter.value ? `/publications?type=${filter.value}` : "/publications"}>{filter.label}</a>
+            <a
+              key={filter.value || "all"}
+              className={`filter-chip ${selectedType === filter.value ? "active" : ""}`}
+              href={withQuery(filter.value ? `/publications?type=${filter.value}` : "/publications")}
+            >
+              {filter.label}
+            </a>
           ))}
         </div>
-        <p className="results-count">{filteredStudies.length} {filteredStudies.length === 1 ? t.publications.countOne : t.publications.countMany}</p>
+        <p className="results-count">
+          {filteredStudies.length} {filteredStudies.length === 1 ? t.publications.countOne : t.publications.countMany}
+          {query ? ` · « ${query} »` : ""}
+        </p>
         {filteredStudies.length
           ? filteredStudies.map((study) => <StudyCard key={study.id} study={study} t={t} associatedPlants={study.plants} />)
           : <div className="empty-note">{t.publications.empty}</div>}

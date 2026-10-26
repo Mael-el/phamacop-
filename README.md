@@ -192,6 +192,23 @@ Deux réserves affichées dans l’interface : l’identification de certaines p
 Alstonia) doit être confirmée par un botaniste, et **la licence de chaque image doit être vérifiée sur
 la page source avant toute réutilisation** hors du site — le crédit et le lien sont fournis à cet effet.
 
+## Recherche
+
+Trois barres de recherche, toutes fonctionnelles :
+
+- **globale** (`/recherche`) : interroge plantes, pathologies, mécanismes, **cibles biologiques**,
+  composés, **préparations** et publications, puis collecte en parallèle les notices PubMed ;
+- **`/plantes`** : filtre la liste des espèces (nom scientifique, auteur, famille, noms fon, synonymes) ;
+- **`/publications`** : filtre les études par titre, auteurs, revue, année et plante associée.
+
+La comparaison est **tolérante** : insensible à la casse et aux accents (« diabete » trouve
+« diabète », « BÉNIN » trouve « bénin ») et accepte les mots partiels (« nauc » → *Nauclea*,
+« kpati » → *kpatinman*). Comme l'extension PostgreSQL `unaccent` n'est pas disponible sur ce
+déploiement, les accents sont repliés par `translate()` côté SQL et par `normalize()` côté
+JavaScript — les deux tables de repli doivent rester alignées (`src/lib/search-text.ts`).
+
+Les résultats sont classés : correspondance exacte, puis début de nom, puis le reste.
+
 ## Graphe de connaissances (cible biologique et préparation)
 
 Le projet suit la chaîne décrite au §6 du cahier des charges :
