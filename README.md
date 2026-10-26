@@ -142,6 +142,19 @@ Chaque affirmation reste de niveau **ETHNOBOTANIQUE** : une fréquence de citati
 pratique, jamais une efficacité. Le dossier diarrhées rappelle en tête de page que la réhydratation
 et un avis médical sont prioritaires.
 
+## Relancer après une réinitialisation du bac à sable
+
+Les dépendances Node et le cluster PostgreSQL ne survivent pas à une réinitialisation : seul le code
+est conservé (dans Git). Une commande suffit pour tout remettre en place :
+
+```bash
+bash scripts/dev-reset.sh          # PostgreSQL + .env + npm install + schéma + seed
+bash scripts/dev-reset.sh --serve  # idem, puis lance Next.js sur 0.0.0.0:3000
+```
+
+Le script est idempotent : chaque étape déjà en place est ignorée. Il s'appuie sur le paquet Python
+`pgserver` (aucun accès `apt` requis) et sur `scripts/db-start.sh`.
+
 ## Photos des plantes (recherchées, jamais générées)
 
 Les photographies servent uniquement de repère visuel botanique ; **aucune image n’est générée par IA**
