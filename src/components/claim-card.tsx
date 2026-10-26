@@ -3,6 +3,8 @@ import type { StudyRecord } from "@/lib/catalog";
 import type { EvidenceLevel } from "@/db/schema";
 import { EvidenceBadge, ReviewStatus } from "@/components/evidence-badge";
 import { Icon } from "@/components/icon";
+import { ClaimPathway } from "@/components/claim-pathway";
+import type { PreparationRecord, TargetRecord } from "@/lib/catalog";
 import type { Dictionary } from "@/lib/i18n";
 
 type ClaimCardData = {
@@ -13,6 +15,8 @@ type ClaimCardData = {
   rationale: string;
   limitations: string;
   sources: StudyRecord[];
+  targets?: TargetRecord[];
+  preparations?: PreparationRecord[];
   plant?: { slug: string; scientificName: string };
 };
 
@@ -25,6 +29,7 @@ export function ClaimCard({ claim, t, showPlant = false }: { claim: ClaimCardDat
       </div>
       {showPlant && claim.plant && <Link className="claim-plant-link" href={`/plantes/${claim.plant.slug}`}><em>{claim.plant.scientificName}</em><Icon name="arrow" size={14} /></Link>}
       <p className="claim-text">{claim.claimText}</p>
+      <ClaimPathway claim={claim} t={t} />
       <div className="claim-rationale">
         <strong>{t.evidence.whyThisLevel}</strong>
         <p>{claim.rationale}</p>

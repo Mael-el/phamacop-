@@ -14,6 +14,8 @@ import {
   varchar,
 } from "drizzle-orm/pg-core";
 
+export type TargetType = "ENZYME" | "STRUCTURE" | "MARQUEUR" | "ORGANISME";
+
 export type StudyType =
   | "IN_VITRO"
   | "IN_VIVO"
@@ -216,6 +218,50 @@ export const claimStudies = pgTable(
     studyId: integer("study_id").notNull().references(() => studies.id, { onDelete: "cascade" }),
   },
   (table) => [primaryKey({ columns: [table.claimId, table.studyId] })],
+);
+
+/** Cible biologique : molécule, structure ou organisme sur lequel un effet est mesuré. */
+export const targets = pgTable("targets", {
+  id: serial("id").primaryKey(),
+  slug: varchar("slug", { length: 180 }).notNull().unique(),
+  name: varchar("name", { length: 255 }).notNull(),
+  targetType: text("target_type").$type<TargetType>().notNull(),
+  organism: varchar("organism", { length: 255 }),
+  description: text("description").notNull(),
+  externalId: varchar("external_id", { length: 120 }),
+  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+});
+
+/** Extrait ou préparation effectivement testé dans une étude (partie, solvant, forme). */
+export const preparations = pgTable("preparations", {
+  id: serial("id").primaryKey(),
+  slug: varchar("slug", { length: 180 }).notNull().unique(),
+  plantId: integer("plant_id").notNull().references(() => plants.id, { onDelete: "cascade" }),
+  name: varchar("name", { length: 255 }).notNull(),
+  partUsed: varchar("part_used", { length: 255 }).notNull(),
+  solvent: varchar("solvent", { length: 255 }),
+  form: varchar("form", { length: 120 }).notNull(),
+  concentrationTested: varchar("concentration_tested", { length: 255 }),
+  notes: text("notes").notNull(),
+  sourceStudyId: integer("source_study_id").notNull().references(() => studies.id),
+});
+
+export const claimTargets = pgTable(
+  "claim_targets",
+  {
+    claimId: integer("claim_id").notNull().references(() => claims.id, { onDelete: "cascade" }),
+    targetId: integer("target_id").notNull().references(() => targets.id, { onDelete: "cascade" }),
+  },
+  (table) => [primaryKey({ columns: [table.claimId, table.targetId] })],
+);
+
+export const claimPreparations = pgTable(
+  "claim_preparations",
+  {
+    claimId: integer("claim_id").notNull().references(() => claims.id, { onDelete: "cascade" }),
+    preparationId: integer("preparation_id").notNull().references(() => preparations.id, { onDelete: "cascade" }),
+  },
+  (table) => [primaryKey({ columns: [table.claimId, table.preparationId] })],
 );
 
 export const plantSafety = pgTable("plant_safety", {

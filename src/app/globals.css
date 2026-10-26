@@ -557,3 +557,26 @@ em { font-family: var(--serif); }
 .solution-card > .solution-photo { grid-row: span 4; }
 .solution-card .solution-grid, .solution-card .claim-sources { grid-column: 2; }
 @media (max-width: 640px) { .solution-card { grid-template-columns: 1fr; } .solution-card .solution-grid, .solution-card .claim-sources { grid-column: 1; } .solution-card > .solution-photo { grid-row: auto; width: 100%; } .solution-card > .solution-photo .photo-thumb { aspect-ratio: 16 / 9; } }
+
+/* ---------- Graphe : cible biologique et préparation testée ---------- */
+.claim-pathway { display: grid; gap: 10px; margin: 12px 0 2px; padding: 12px 14px; border: 1px solid var(--line); border-radius: 12px; background: var(--paper-2); }
+.claim-pathway-block { display: grid; gap: 6px; }
+.claim-pathway-title { display: inline-flex; align-items: center; gap: 6px; font-size: 10px; letter-spacing: .12em; text-transform: uppercase; color: var(--forest); font-weight: 700; }
+.claim-pathway-list { display: grid; gap: 6px; list-style: none; margin: 0; padding: 0; }
+.claim-pathway-list li { display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px; font-size: 13px; }
+.claim-pathway-list a { color: var(--forest); font-weight: 700; }
+.claim-pathway-type { font-size: 10px; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); border: 1px solid var(--line); border-radius: 999px; padding: 1px 7px; }
+.claim-pathway-name { font-weight: 600; }
+.claim-pathway-meta { font-size: 11.5px; color: var(--muted); }
+.claim-pathway-empty { margin: 0; font-size: 12px; color: var(--muted); }
+.pathway-chain { display: grid; gap: 14px; padding: 16px 18px; margin: 16px 0 8px; border: 1px solid var(--line); border-radius: 14px; background: var(--paper-2); }
+.pathway-chain-block { display: grid; gap: 6px; }
+.pathway-chain-block strong { font-size: 10px; letter-spacing: .12em; text-transform: uppercase; color: var(--forest); }
+.pathway-chain-block p { margin: 0; font-size: 13.5px; }
+.pathway-chain-links { display: flex; flex-wrap: wrap; gap: 8px; }
+.pathway-chain-links a { display: inline-flex; align-items: center; gap: 4px; font-size: 12.5px; font-weight: 600; padding: 4px 10px; border-radius: 999px; border: 1px solid var(--line); background: #fff; color: var(--forest); }
+.pathway-chain-empty { color: var(--muted); font-style: italic; }
+.pathway-chain-note { margin: 0; font-size: 11.5px; color: var(--muted); }
+.record-card-organism { font-size: 12px; color: var(--muted); font-style: italic; margin-top: -6px; }
+.pathway-preparations { display: grid; gap: 8px; list-style: none; margin: 0; padding: 0; }
+.pathway-preparations li { display: flex; align-items: center; gap: 8px; font-size: 13.5px; padding: 8px 12px; border: 1px solid var(--line); border-radius: 10px; background: var(--paper-2); }

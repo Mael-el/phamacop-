@@ -1,7 +1,9 @@
 import "dotenv/config";
 import { db, pool } from "@/db";
 import {
+  claimPreparations,
   claimStudies,
+  claimTargets,
   claims,
   compounds,
   mechanisms,
@@ -10,10 +12,13 @@ import {
   plantSafety,
   plantStudies,
   plants,
+  preparations,
   studies,
+  targets,
   traditionalUses,
   type EvidenceLevel,
   type StudyType,
+  type TargetType,
 } from "./schema";
 
 const sourceUrl = (doi: string) => `https://doi.org/${doi}`;
@@ -2031,12 +2036,293 @@ async function seed() {
         });
     }
 
+
+    const targetRows = [
+      {
+        slug: "plasmodium-falciparum-erythrocytaire",
+        name: "Plasmodium falciparum — stade érythrocytaire",
+        targetType: "ORGANISME" as TargetType,
+        organism: "Plasmodium falciparum",
+        description:
+          "Formes sanguines du parasite du paludisme, sur lesquelles sont mesurés la parasitémie, la maturation des trophozoïtes ou l’inhibition de la croissance en culture.",
+        externalId: null,
+      },
+      {
+        slug: "staphylococcus-aureus",
+        name: "Staphylococcus aureus",
+        targetType: "ORGANISME" as TargetType,
+        organism: "Staphylococcus aureus",
+        description:
+          "Bactérie à Gram positif ciblée par des essais de sensibilité in vitro, y compris des souches résistantes à la méticilline (MRSA).",
+        externalId: null,
+      },
+      {
+        slug: "klebsiella-pneumoniae",
+        name: "Klebsiella pneumoniae",
+        targetType: "ORGANISME" as TargetType,
+        organism: "Klebsiella pneumoniae",
+        description:
+          "Entérobactérie ciblée dans les essais d’antibactériens, notamment dans ses formes productrices de bêta-lactamases à spectre élargi.",
+        externalId: null,
+      },
+      {
+        slug: "biofilm-bacterien",
+        name: "Biofilm bactérien",
+        targetType: "STRUCTURE" as TargetType,
+        organism: "Bactéries diverses",
+        description:
+          "Communauté bactérienne adhérente entourée d’une matrice extracellulaire. Les essais mesurent l’inhibition de l’adhésion ou la biomasse résiduelle après exposition à un extrait.",
+        externalId: null,
+      },
+      {
+        slug: "sortase-a",
+        name: "Sortase A",
+        targetType: "ENZYME" as TargetType,
+        organism: "Staphylococcus aureus",
+        description:
+          "Enzyme de surface qui ancre les protéines de virulence à la paroi bactérienne. Certaines études modélisent l’interaction de composés avec son site actif par amarrage moléculaire.",
+        externalId: null,
+      },
+      {
+        slug: "hemoglobine-glyquee",
+        name: "Hémoglobine glyquée (HbA1c)",
+        targetType: "MARQUEUR" as TargetType,
+        organism: "Humain",
+        description:
+          "Marqueur biologique reflétant l’exposition moyenne au glucose sur plusieurs semaines. Il est utilisé comme critère de jugement dans les essais sur le diabète.",
+        externalId: null,
+      },
+      {
+        slug: "schistosoma-mansoni-adulte",
+        name: "Schistosoma mansoni — ver adulte",
+        targetType: "ORGANISME" as TargetType,
+        organism: "Schistosoma mansoni",
+        description:
+          "Stade adulte du schistosome, exposé in vitro à des extraits avec mesure de la survie et de la mobilité, en comparaison au praziquantel.",
+        externalId: null,
+      },
+      {
+        slug: "schistosomule",
+        name: "Schistosomule (stade juvénile)",
+        targetType: "ORGANISME" as TargetType,
+        organism: "Schistosoma mansoni",
+        description:
+          "Forme juvénile du parasite, obtenue après transformation des cercaires et utilisée pour tester l’effet d’extraits sur les stades précoces de l’infection.",
+        externalId: null,
+      },
+    ];
+
+    const targetBySlug = new Map<string, number>();
+    for (const target of targetRows) {
+      const [saved] = await tx
+        .insert(targets)
+        .values(target)
+        .onConflictDoUpdate({ target: targets.slug, set: target })
+        .returning({ id: targets.id });
+      targetBySlug.set(target.slug, saved.id);
+    }
+
+    const preparationRows = [
+      {
+        slug: "nauclea-tiges-racines-aqueux",
+        plantSlug: "nauclea-latifolia",
+        name: "Extraits aqueux de tiges et de racines",
+        partUsed: "Tiges et racines",
+        solvent: "Eau",
+        form: "Infusion et décoction",
+        concentrationTested: null,
+        notes:
+          "Formes décrites dans l’étude de 1998; les concentrations testées varient selon l’extrait et ne sont pas transposables à une préparation domestique.",
+        studySlug: "nauclea-latifolia-1998-in-vitro",
+      },
+      {
+        slug: "senna-feuilles-extrait",
+        plantSlug: "senna-siamea",
+        name: "Extrait de feuilles de Senna siamea",
+        partUsed: "Feuilles",
+        solvent: null,
+        form: "Extrait (solvant non détaillé dans le résumé consulté)",
+        concentrationTested: "CMI 6,25 à 25 mg/mL; biofilm testé à 100 mg/mL",
+        notes:
+          "Le résumé ne précise pas le solvant d’extraction; cette information doit être lue dans l’article complet avant toute comparaison.",
+        studySlug: "senna-siamea-2026-antimicrobien",
+      },
+      {
+        slug: "dialium-pulpe-poudre",
+        plantSlug: "dialium-guineense",
+        name: "Poudre de pulpe de fruit",
+        partUsed: "Pulpe du fruit",
+        solvent: null,
+        form: "Poudre administrée par voie orale",
+        concentrationTested: "250 à 4000 mg/kg chez le rat",
+        notes:
+          "Préparation testée chez l’animal; les doses indiquées sont expérimentales et ne constituent en aucun cas une posologie.",
+        studySlug: "dialium-guineense-2022-diarrhee-rats",
+      },
+      {
+        slug: "bridelia-extrait-brut",
+        plantSlug: "bridelia-ferruginea",
+        name: "Extrait brut de Bridelia ferruginea",
+        partUsed: "Partie non précisée dans le résumé consulté",
+        solvent: null,
+        form: "Extrait testé in vitro",
+        concentrationTested: "50 et 100 µg/mL",
+        notes:
+          "Le résumé mentionne des extraits de la plante sans détailler la partie utilisée ni le solvant; à vérifier dans l’article complet.",
+        studySlug: "bridelia-ferruginea-2024-schistosome",
+      },
+      {
+        slug: "annona-ecorce-extrait-aqueux-methanolique",
+        plantSlug: "annona-senegalensis",
+        name: "Extrait aqueux-méthanolique d’écorce de tige",
+        partUsed: "Écorce de tige",
+        solvent: "Méthanol 70 %",
+        form: "Extrait",
+        concentrationTested: "250 à 1000 mg/kg chez le rat (28 jours)",
+        notes:
+          "Extrait préparé pour une étude de toxicité; il ne correspond pas nécessairement aux préparations traditionnelles décrites par ailleurs.",
+        studySlug: "annona-senegalensis-2024-toxicite",
+      },
+      {
+        slug: "momordica-supplements-oraux",
+        plantSlug: "momordica-charantia",
+        name: "Suppléments oraux à base de Momordica charantia",
+        partUsed: "Fruits et parties aériennes selon les produits",
+        solvent: null,
+        form: "Suppléments (formes et doses variables selon les essais)",
+        concentrationTested: "Hétérogène entre les huit essais inclus",
+        notes:
+          "La méta-analyse regroupe des produits différents (poudre, extrait, jus) sans standardisation : c’est l’une de ses limites principales.",
+        studySlug: "momordica-charantia-2024-meta-analyse",
+      },
+      {
+        slug: "anacardium-fleurs-ethanolique",
+        plantSlug: "anacardium-occidentale",
+        name: "Extrait éthanolique de fleurs",
+        partUsed: "Fleurs",
+        solvent: "Éthanol",
+        form: "Extrait",
+        concentrationTested: "CMI 1,25 à 6,25 mg/mL",
+        notes:
+          "Extrait caractérisé par HPLC et LC-MS (acide shikimique, acide gallique, quercétine, dérivés galloyl-glucose).",
+        studySlug: "anacardium-occidentale-2026-eskape",
+      },
+      {
+        slug: "moringa-feuilles-aqueux",
+        plantSlug: "moringa-oleifera",
+        name: "Extrait aqueux de feuilles",
+        partUsed: "Feuilles",
+        solvent: "Eau",
+        form: "Extrait",
+        concentrationTested: null,
+        notes:
+          "Extrait inclus dans un criblage antiplasmodial in vitro; l’absence d’activité rapportée est propre aux souches et conditions de cet essai.",
+        studySlug: "plantes-herbales-ghana-2020-in-vitro",
+      },
+      {
+        slug: "ocimum-feuilles-sechees",
+        plantSlug: "ocimum-gratissimum",
+        name: "Feuilles séchées, extraits aqueux et hydroéthanoliques",
+        partUsed: "Feuilles séchées",
+        solvent: "Eau et mélange hydroéthanolique",
+        form: "Extraits",
+        concentrationTested: null,
+        notes:
+          "Les deux types d’extraits ont été testés séparément contre plusieurs bactéries en laboratoire.",
+        studySlug: "ocimum-gratissimum-2017-antimicrobien",
+      },
+      {
+        slug: "alstonia-feuilles-extrait",
+        plantSlug: "alstonia-boonei",
+        name: "Extrait de feuilles d’Alstonia boonei",
+        partUsed: "Feuilles",
+        solvent: null,
+        form: "Extrait administré à la souris",
+        concentrationTested: null,
+        notes:
+          "Extrait évalué dans un modèle murin de paludisme; le solvant et les doses doivent être lus dans l’article.",
+        studySlug: "alstonia-boonei-2021-souris",
+      },
+    ];
+
+    const preparationBySlug = new Map<string, number>();
+    for (const preparation of preparationRows) {
+      const plantId = plantBySlug.get(preparation.plantSlug);
+      const studyId = studyBySlug.get(preparation.studySlug);
+      if (!plantId || !studyId) throw new Error(`Missing link for preparation ${preparation.slug}`);
+      const values = {
+        slug: preparation.slug,
+        plantId,
+        name: preparation.name,
+        partUsed: preparation.partUsed,
+        solvent: preparation.solvent,
+        form: preparation.form,
+        concentrationTested: preparation.concentrationTested,
+        notes: preparation.notes,
+        sourceStudyId: studyId,
+      };
+      const [saved] = await tx
+        .insert(preparations)
+        .values(values)
+        .onConflictDoUpdate({ target: preparations.slug, set: values })
+        .returning({ id: preparations.id });
+      preparationBySlug.set(preparation.slug, saved.id);
+    }
+
+    /** Chaînon cible biologique : affirmation → cible(s) effectivement mesurée(s). */
+    const claimTargetSlugs: Record<string, string[]> = {
+      "nauclea-extrait-contre-plasmodium-in-vitro": ["plasmodium-falciparum-erythrocytaire"],
+      "alstonia-modele-murin-plasmodium": ["plasmodium-falciparum-erythrocytaire"],
+      "senna-siamea-extrait-antibacterien-in-vitro": [
+        "klebsiella-pneumoniae",
+        "staphylococcus-aureus",
+        "biofilm-bacterien",
+      ],
+      "anacardium-fleurs-bactericides-in-vitro": ["staphylococcus-aureus", "biofilm-bacterien", "sortase-a"],
+      "bridelia-extrait-actif-schistosome-in-vitro": ["schistosoma-mansoni-adulte", "schistosomule"],
+      "momordica-essais-randomises-glycemie": ["hemoglobine-glyquee"],
+    };
+
+    for (const [claimSlug, slugs] of Object.entries(claimTargetSlugs)) {
+      const claimId = claimBySlug.get(claimSlug);
+      if (!claimId) throw new Error(`Missing claim for target link ${claimSlug}`);
+      for (const slug of slugs) {
+        const targetId = targetBySlug.get(slug);
+        if (!targetId) throw new Error(`Missing target ${slug}`);
+        await tx.insert(claimTargets).values({ claimId, targetId }).onConflictDoNothing();
+      }
+    }
+
+    /** Chaînon préparation : affirmation → préparation réellement testée. */
+    const claimPreparationSlugs: Record<string, string[]> = {
+      "nauclea-extrait-contre-plasmodium-in-vitro": ["nauclea-tiges-racines-aqueux"],
+      "alstonia-modele-murin-plasmodium": ["alstonia-feuilles-extrait"],
+      "senna-siamea-extrait-antibacterien-in-vitro": ["senna-feuilles-extrait"],
+      "anacardium-fleurs-bactericides-in-vitro": ["anacardium-fleurs-ethanolique"],
+      "bridelia-extrait-actif-schistosome-in-vitro": ["bridelia-extrait-brut"],
+      "momordica-essais-randomises-glycemie": ["momordica-supplements-oraux"],
+      "dialium-pulpe-effet-antidiarrheique-rat": ["dialium-pulpe-poudre"],
+      "annona-baisse-glycemie-rat-signal": ["annona-ecorce-extrait-aqueux-methanolique"],
+    };
+
+    for (const [claimSlug, slugs] of Object.entries(claimPreparationSlugs)) {
+      const claimId = claimBySlug.get(claimSlug);
+      if (!claimId) throw new Error(`Missing claim for preparation link ${claimSlug}`);
+      for (const slug of slugs) {
+        const preparationId = preparationBySlug.get(slug);
+        if (!preparationId) throw new Error(`Missing preparation ${slug}`);
+        await tx.insert(claimPreparations).values({ claimId, preparationId }).onConflictDoNothing();
+      }
+    }
+
     return {
       plants: plantBySlug.size,
       studies: studyBySlug.size,
       claims: claimBySlug.size,
       compounds: compoundBySlug.size,
       traditionalUses: useRows.length,
+      targets: targetBySlug.size,
+      preparations: preparationBySlug.size,
     };
   });
 

@@ -1,7 +1,9 @@
 import { and, asc, count, desc, eq, inArray, sql } from "drizzle-orm";
 import { db } from "@/db";
 import {
+  claimPreparations,
   claimStudies,
+  claimTargets,
   claims,
   compounds,
   mechanisms,
@@ -10,7 +12,9 @@ import {
   plantSafety,
   plantStudies,
   plants,
+  preparations,
   studies,
+  targets,
   traditionalUses,
 } from "@/db/schema";
 
@@ -18,6 +22,8 @@ export type PlantRecord = typeof plants.$inferSelect;
 export type StudyRecord = typeof studies.$inferSelect;
 export type PathologyRecord = typeof pathologies.$inferSelect;
 export type MechanismRecord = typeof mechanisms.$inferSelect;
+export type TargetRecord = typeof targets.$inferSelect;
+export type PreparationRecord = typeof preparations.$inferSelect;
 export type CompoundRecord = typeof compounds.$inferSelect;
 
 export type PlantListItem = PlantRecord & { sourceCount: number };
@@ -93,12 +99,49 @@ async function loadClaimRowsForPlant(plantId: number): Promise<ClaimRecord[]> {
     sourcesByClaim.set(row.claimId, current);
   }
 
+  const { targetsByClaim, preparationsByClaim } = await loadClaimGraph(claimIds);
+
   return rows.map((row) => ({
     ...row.claim,
     mechanism: row.mechanism,
     pathology: row.pathology,
+    targets: targetsByClaim.get(row.claim.id) ?? [],
+    preparations: preparationsByClaim.get(row.claim.id) ?? [],
     sources: sourcesByClaim.get(row.claim.id) ?? [],
   }));
+}
+
+
+/**
+ * Chaînons « cible biologique » et « préparation » d’une liste d’affirmations.
+ * Évite de répéter la jointure sur chaque page qui affiche des affirmations.
+ */
+async function loadClaimGraph(claimIds: number[]) {
+  const targetsByClaim = new Map<number, TargetRecord[]>();
+  const preparationsByClaim = new Map<number, PreparationRecord[]>();
+  if (claimIds.length === 0) return { targetsByClaim, preparationsByClaim };
+
+  const targetRows = await db
+    .select({ claimId: claimTargets.claimId, target: targets })
+    .from(claimTargets)
+    .innerJoin(targets, eq(claimTargets.targetId, targets.id))
+    .where(inArray(claimTargets.claimId, claimIds))
+    .orderBy(asc(targets.name));
+  for (const row of targetRows) {
+    targetsByClaim.set(row.claimId, [...(targetsByClaim.get(row.claimId) ?? []), row.target]);
+  }
+
+  const preparationRows = await db
+    .select({ claimId: claimPreparations.claimId, preparation: preparations })
+    .from(claimPreparations)
+    .innerJoin(preparations, eq(claimPreparations.preparationId, preparations.id))
+    .where(inArray(claimPreparations.claimId, claimIds))
+    .orderBy(asc(preparations.name));
+  for (const row of preparationRows) {
+    preparationsByClaim.set(row.claimId, [...(preparationsByClaim.get(row.claimId) ?? []), row.preparation]);
+  }
+
+  return { targetsByClaim, preparationsByClaim };
 }
 
 export async function getPlants(family?: string): Promise<PlantListItem[]> {
@@ -249,6 +292,7 @@ export async function getPathologyBySlug(slug: string) {
   for (const row of sourceRows) {
     sourceMap.set(row.claimId, [...(sourceMap.get(row.claimId) ?? []), row.study]);
   }
+  const graph = await loadClaimGraph(ids);
   return {
     pathology,
     illustration: illustrationOf(rows.map((row) => row.plant)),
@@ -256,6 +300,8 @@ export async function getPathologyBySlug(slug: string) {
       ...row.claim,
       plant: row.plant,
       mechanism: row.mechanism,
+      targets: graph.targetsByClaim.get(row.claim.id) ?? [],
+      preparations: graph.preparationsByClaim.get(row.claim.id) ?? [],
       sources: sourceMap.get(row.claim.id) ?? [],
     })),
   };
@@ -296,6 +342,7 @@ export async function getMechanismBySlug(slug: string) {
   for (const row of sourceRows) {
     sourceMap.set(row.claimId, [...(sourceMap.get(row.claimId) ?? []), row.study]);
   }
+  const graph = await loadClaimGraph(ids);
   return {
     mechanism,
     illustration: illustrationOf(rows.map((row) => row.plant)),
@@ -303,6 +350,8 @@ export async function getMechanismBySlug(slug: string) {
       ...row.claim,
       plant: row.plant,
       pathology: row.pathology,
+      targets: graph.targetsByClaim.get(row.claim.id) ?? [],
+      preparations: graph.preparationsByClaim.get(row.claim.id) ?? [],
       sources: sourceMap.get(row.claim.id) ?? [],
     })),
   };
@@ -333,6 +382,74 @@ export async function getCompoundBySlug(slug: string) {
     .where(eq(plantCompounds.compoundId, compound.id))
     .orderBy(asc(plants.scientificName));
   return { compound, plants: rows };
+}
+
+
+export async function getTargets() {
+  const rows = await db.select().from(targets).orderBy(asc(targets.targetType), asc(targets.name));
+  const related = await db
+    .select({ targetId: claimTargets.targetId, total: count() })
+    .from(claimTargets)
+    .groupBy(claimTargets.targetId);
+  const counts = new Map(related.map((row) => [row.targetId, Number(row.total)]));
+  return rows.map((target) => ({ ...target, claimCount: counts.get(target.id) ?? 0 }));
+}
+
+export async function getTargetBySlug(slug: string) {
+  const [target] = await db.select().from(targets).where(eq(targets.slug, slug)).limit(1);
+  if (!target) return null;
+
+  const rows = await db
+    .select({ claim: claims, plant: plants, mechanism: mechanisms, pathology: pathologies })
+    .from(claimTargets)
+    .innerJoin(claims, eq(claimTargets.claimId, claims.id))
+    .innerJoin(plants, eq(claims.plantId, plants.id))
+    .leftJoin(mechanisms, eq(claims.mechanismId, mechanisms.id))
+    .leftJoin(pathologies, eq(claims.pathologyId, pathologies.id))
+    .where(eq(claimTargets.targetId, target.id))
+    .orderBy(asc(plants.scientificName));
+
+  const ids = rows.map((row) => row.claim.id);
+  const sourceRows = ids.length
+    ? await db
+        .select({ claimId: claimStudies.claimId, study: studies })
+        .from(claimStudies)
+        .innerJoin(studies, eq(claimStudies.studyId, studies.id))
+        .where(inArray(claimStudies.claimId, ids))
+        .orderBy(desc(studies.year))
+    : [];
+  const sourceMap = new Map<number, StudyRecord[]>();
+  for (const row of sourceRows) {
+    sourceMap.set(row.claimId, [...(sourceMap.get(row.claimId) ?? []), row.study]);
+  }
+  const graph = await loadClaimGraph(ids);
+
+  return {
+    target,
+    illustration: illustrationOf(rows.map((row) => row.plant)),
+    claims: rows.map((row) => ({
+      ...row.claim,
+      plant: row.plant,
+      mechanism: row.mechanism,
+      pathology: row.pathology,
+      preparations: graph.preparationsByClaim.get(row.claim.id) ?? [],
+      sources: sourceMap.get(row.claim.id) ?? [],
+    })),
+  };
+}
+
+/** Parcours complet pathologie → mécanisme → cible → plante → préparation → étude → preuve. */
+export async function getPathwayForPathology(slug: string) {
+  const detail = await getPathologyBySlug(slug);
+  if (!detail) return null;
+  const links = detail.claims
+    .filter((claim) => claim.targets.length > 0 || claim.preparations.length > 0)
+    .map((claim) => ({
+      claim,
+      targets: claim.targets,
+      preparations: claim.preparations,
+    }));
+  return { ...detail, pathway: links };
 }
 
 export async function getStudies() {

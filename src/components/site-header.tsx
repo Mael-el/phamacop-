@@ -9,6 +9,7 @@ export function SiteHeader({ t, locale }: { t: Dictionary; locale: Locale }) {
     { href: "/plantes", label: t.nav.plantes },
     { href: "/pathologies", label: t.nav.pathologies },
     { href: "/mecanismes", label: t.nav.mecanismes },
+    { href: "/cibles", label: t.nav.cibles },
     { href: "/solutions", label: t.nav.solutions },
     { href: "/composes", label: t.nav.composes },
     { href: "/publications", label: t.nav.publications },

@@ -179,6 +179,28 @@ Deux réserves affichées dans l’interface : l’identification de certaines p
 Alstonia) doit être confirmée par un botaniste, et **la licence de chaque image doit être vérifiée sur
 la page source avant toute réutilisation** hors du site — le crédit et le lien sont fournis à cet effet.
 
+## Graphe de connaissances (cible biologique et préparation)
+
+Le projet suit la chaîne décrite au §6 du cahier des charges :
+
+> Pathologie → mécanisme → **cible biologique** → composé → espèce → **préparation testée** → étude → résultat → niveau de preuve → sécurité
+
+Deux nœuds autrefois absents sont désormais modélisés :
+
+- **`targets`** — la cible réellement observée, typée : `ENZYME` (sortase A), `STRUCTURE` (biofilm),
+  `MARQUEUR` (HbA1c), `ORGANISME` (*P. falciparum* stade érythrocytaire, *S. aureus*, *K. pneumoniae*,
+  *S. mansoni* adulte, schistosomule). Un identifiant externe (UniProt, GO) peut y être rattaché.
+- **`preparations`** — l'extrait effectivement testé : partie utilisée, solvant, forme, concentrations,
+  et la publication d'origine. Quand le solvant n'est pas décrit par la source, la valeur reste nulle
+  et l'interface affiche « Non précisé dans la source consultée » plutôt que d'inventer.
+
+Les liens `claim_targets` et `claim_preparations` relient ces nœuds aux affirmations, donc à l'étude et
+au niveau de preuve. Côté public : `/cibles` et `/cibles/[slug]`, un bloc « Cible / Préparation » dans
+chaque carte d'affirmation, et une chaîne documentée en tête des dossiers de pathologie.
+
+Corpus actuel : **8 cibles, 10 préparations**, reliées aux affirmations qui les documentent.
+Aucune cible n'est déduite par analogie : seules celles mesurées dans les publications citées sont saisies.
+
 ## Solutions documentées
 
 `/solutions` rassemble, sujet par sujet, les plantes étudiées, le mécanisme mesuré, le niveau de

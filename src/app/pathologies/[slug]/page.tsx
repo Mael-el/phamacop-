@@ -22,6 +22,16 @@ export default async function PathologyDetailPage({ params }: PageProps) {
   const [data, { t }] = await Promise.all([getPathologyBySlug(slug), getDictionary()]);
   if (!data) notFound();
   const mechanisms = [...new Map(data.claims.filter((claim) => claim.mechanism).map((claim) => [claim.mechanism!.id, claim.mechanism!])).values()];
+  const targets = [
+    ...new Map(
+      data.claims.flatMap((claim) => claim.targets ?? []).map((target) => [target.id, target]),
+    ).values(),
+  ];
+  const preparations = [
+    ...new Map(
+      data.claims.flatMap((claim) => claim.preparations ?? []).map((preparation) => [preparation.id, preparation]),
+    ).values(),
+  ];
 
   return (
     <main><div className="wrap">
@@ -45,8 +55,36 @@ export default async function PathologyDetailPage({ params }: PageProps) {
         <Icon name="shield" size={20} /><p>{data.pathology.scopeNote}</p>
       </section>
       <div className="pathway-inline" aria-label={t.pathologies.relatedClaims}>
-        <span>{t.pathologies.pathway}</span><Icon name="arrow" size={15} /><span>{t.pathologies.pathwayMechanism}</span><Icon name="arrow" size={15} /><span>{t.pathologies.pathwayPlant}</span><Icon name="arrow" size={15} /><span>{t.pathologies.pathwayEvidence}</span>
+        <span>{t.pathologies.pathway}</span><Icon name="arrow" size={15} /><span>{t.pathologies.pathwayMechanism}</span><Icon name="arrow" size={15} /><span>{t.chain.targetLabel}</span><Icon name="arrow" size={15} /><span>{t.pathologies.pathwayPlant}</span><Icon name="arrow" size={15} /><span>{t.chain.preparationLabel}</span><Icon name="arrow" size={15} /><span>{t.pathologies.pathwayEvidence}</span>
       </div>
+      {(targets.length > 0 || preparations.length > 0) && (
+        <section className="pathway-chain">
+          <div className="pathway-chain-block">
+            <strong>{t.chain.targetLabel}</strong>
+            {targets.length ? (
+              <div className="pathway-chain-links">
+                {targets.map((target) => (
+                  <Link key={target.id} href={`/cibles/${target.slug}`}>
+                    {target.name}
+                    <Icon name="arrow" size={12} />
+                  </Link>
+                ))}
+              </div>
+            ) : (
+              <p className="pathway-chain-empty">{t.chain.empty}</p>
+            )}
+          </div>
+          <div className="pathway-chain-block">
+            <strong>{t.chain.preparationLabel}</strong>
+            {preparations.length ? (
+              <p>{preparations.map((preparation) => preparation.name).join(" · ")}</p>
+            ) : (
+              <p className="pathway-chain-empty">{t.chain.notSpecified}</p>
+            )}
+          </div>
+          <p className="pathway-chain-note">{t.chain.pathwayNote}</p>
+        </section>
+      )}
       <section className="page-content">
         <div className="section-heading">
           <div><p className="section-kicker">{t.pathologies.relatedClaims}</p><h2>{t.pathologies.tested}</h2></div>
