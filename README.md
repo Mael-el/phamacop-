@@ -192,6 +192,18 @@ Deux réserves affichées dans l’interface : l’identification de certaines p
 Alstonia) doit être confirmée par un botaniste, et **la licence de chaque image doit être vérifiée sur
 la page source avant toute réutilisation** hors du site — le crédit et le lien sont fournis à cet effet.
 
+## Relief et profondeur (design)
+
+Le site utilise un système d'ombres à trois niveaux (`--e1` à `--e4`) avec **une seule source de
+lumière** : liseré clair en haut (`--hl-top`), arête sombre en bas (`--edge-bottom`), ombre portée
+diffuse. Les surfaces sont légèrement dégradées (blanc → papier), les boutons sont « pressés »
+(`:active` réduit l'ombre et descend de 1 px), les champs se creusent au focus, et les cartes se
+soulèvent au survol avec une très légère inclinaison (`rotateX(.6deg)`), uniquement sur les
+périphériques à survol et hors `prefers-reduced-motion`.
+
+L'animation d'apparition au défilement n'anime que l'opacité : animer `transform` avec `fill: both`
+écrasait le soulèvement au survol (piège CSS corrigé, à ne pas réintroduire).
+
 ## Recherche
 
 Trois barres de recherche, toutes fonctionnelles :
@@ -208,6 +220,11 @@ déploiement, les accents sont repliés par `translate()` côté SQL et par `nor
 JavaScript — les deux tables de repli doivent rester alignées (`src/lib/search-text.ts`).
 
 Les résultats sont classés : correspondance exacte, puis début de nom, puis le reste.
+
+Quand PubMed n'est pas joignable (réseau sortant bloqué), la page ne reste pas vide : elle
+interroge la **file de veille locale** (`literature_candidates`), c'est-à-dire les notices déjà
+collectées, et l'indique explicitement. La file est amorcée par six notices PubMed réelles
+soumises à vérification, visibles sur `/veille` — elles ne créent aucune affirmation.
 
 ## Graphe de connaissances (cible biologique et préparation)
 

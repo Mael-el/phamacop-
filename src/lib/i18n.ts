@@ -377,6 +377,8 @@ const fr = {
       "Source : PubMed / NCBI E-utilities. Les titres, auteurs, résumés et identifiants sont récupérés depuis les notices. Les résultats ne sont ni résumés par IA ni transformés en affirmations ou niveaux de preuve.",
     unavailable:
       "PubMed n’est pas joignable pour le moment. Les résultats du corpus local restent consultables; réessayez plus tard.",
+    localFallbackNote:
+      "PubMed n’est pas joignable depuis ce serveur : les notices ci-dessous proviennent de la file de veille locale, déjà collectée lors d’une session précédente. Elles restent en attente de validation humaine.",
     notSaved:
       "Les notices PubMed ont été récupérées mais la file de vérification n’a pas pu être mise à jour. Elles restent affichées comme candidates non validées.",
     noCandidate:
@@ -846,6 +848,8 @@ const fon: Dictionary = {
     pubmedNote:
       "Xógbɛ́: PubMed / NCBI E-utilities. Nyǐkɔ́, mɛ e wlán lɛ́, xó kpɛví kpodó PMID kpó sɔ́n PubMed wá. Ma yǐn AI ǎ; ma vɔ̀ xó nùnyá tɔn ǎ.",
     unavailable: "PubMed ma ɖò ǎ ɖò hwenu e ɔ́. Wema e ɖò xwégbè ɔ́ ɖò; zlɔ́n ayǐ bɔ ná ba nǔ.",
+    localFallbackNote:
+      "PubMed ma jɛ́n ǎ ɖò sɛ́vɛ ɔ́ jí ǎ: wema e ɖò gbangba lɛ́ sɔ́n wema yɔyɔ́ lɛ́ tɛn mɛ, bɔ è ko mɔ̀ yé hwenu ɖé. È ma ko kpɔ́n yé ganjí ǎ.",
     notSaved: "Wema PubMed tɔn lɛ́ jɔ́, loɔ è ma sixú wlán yé ɖò wema kpɔ́n mɛ ǎ. Yé ɖò xlɛ́ wema e è ma kpɔ́n ǎ lɛ́.",
     noCandidate: "Wema PubMed ɖé ma ɖò xó e ɔ́ wu ǎ, alǒ wlán wálɔ̀n atɔ̀n hǔn.",
     categories: {

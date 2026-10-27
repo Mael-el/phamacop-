@@ -6,6 +6,7 @@ import {
   claimTargets,
   claims,
   compounds,
+  literatureCandidates,
   mechanisms,
   pathologies,
   plantCompounds,
@@ -983,6 +984,118 @@ async function seed() {
         })
         .returning({ id: plants.id });
       plantBySlug.set(plant.slug, saved.id);
+    }
+
+
+    /**
+     * File de veille : notices PubMed réelles, soumises manuellement à la
+     * vérification. Elles ne créent aucune affirmation et ne sont pas publiées
+     * comme contenu validé — elles servent de point de départ à une relecture.
+     */
+    const candidateRows = [
+      {
+        pmid: "38784554",
+        doi: "10.1016/j.heliyon.2024.e31126",
+        title:
+          "Effects of Momordica charantia L. supplementation on glycemic control and lipid profile in type 2 diabetes mellitus patients: a systematic review and meta-analysis of randomized controlled trials",
+        authors: "Zhang X, Zhao Y, Song Y, Miao M",
+        journal: "Heliyon",
+        publicationYear: 2024,
+        publicationTypes: ["Journal Article", "Meta-Analysis", "Systematic Review"],
+        abstractText:
+          "Revue systématique et méta-analyse (GRADE) de huit essais randomisés chez 423 patients diabétiques de type 2, portant sur la supplémentation en Momordica charantia.",
+        sourceUrl: "https://pubmed.ncbi.nlm.nih.gov/38784554/",
+      },
+      {
+        pmid: "36317113",
+        doi: "10.1155/2022/4161714",
+        title: "Antidiarrheal Activity of Dialium guineense Willd Fruit Pulp in Wistar Rats",
+        authors: "Assiki T, Diallo A, Badjabaïssi E, Assih M, Kpatcha T, Idoh K, Dosseh K, Agbonon A",
+        journal: "BioMed Research International",
+        publicationYear: 2022,
+        publicationTypes: ["Journal Article"],
+        abstractText:
+          "Évaluation de la poudre de pulpe de fruit de Dialium guineense sur un modèle de diarrhée induite par l’huile de ricin chez le rat Wistar.",
+        sourceUrl: "https://pubmed.ncbi.nlm.nih.gov/36317113/",
+      },
+      {
+        pmid: "39281066",
+        doi: "10.1155/2024/8074291",
+        title:
+          "In Vitro Antischistosomal Activity of Bridelia ferruginea, Clausena anisata, Khaya senegalensis, and Vernonia amygdalina",
+        authors: "Kuevi DNO, Keiser J, Häberli C, Owusu-Senyah AK, Ahiabu MK",
+        journal: "Journal of Tropical Medicine",
+        publicationYear: 2024,
+        publicationTypes: ["Journal Article"],
+        abstractText:
+          "Essai in vitro sur schistosomules et vers adultes de Schistosoma mansoni, avec comparaison au praziquantel.",
+        sourceUrl: "https://pubmed.ncbi.nlm.nih.gov/39281066/",
+      },
+      {
+        pmid: "38682320",
+        doi: "10.1080/01480545.2024.2344640",
+        title:
+          "Safety assessment of crude aqueous methanol extract of Annona senegalensis stem bark: acute and sub-chronic toxicity studies",
+        authors: "Ugwah-Oguejiofor CJ, Nefai MS, Emmanuel MH, Alkali IY, Biambo AA, Lawal M, Ahmed AH, Muhammed A",
+        journal: "Drug and Chemical Toxicology",
+        publicationYear: 2024,
+        publicationTypes: ["Journal Article"],
+        abstractText:
+          "Toxicité aiguë et subchronique (28 jours) d’un extrait d’écorce de tige d’Annona senegalensis chez le rat Wistar.",
+        sourceUrl: "https://pubmed.ncbi.nlm.nih.gov/38682320/",
+      },
+      {
+        pmid: "42821538",
+        doi: "10.1371/journal.pone.0358840",
+        title:
+          "Antimicrobial and anti-biofilm activities of Vernonia amygdalina and Senna siamea leaf extracts against pathogenic bacteria",
+        authors: "Mohammed S, Abdul-Karim Z, Ndezure E, Addo MG, Boampong K",
+        journal: "PLoS One",
+        publicationYear: 2026,
+        publicationTypes: ["Journal Article"],
+        abstractText:
+          "Activités antibactérienne et anti-biofilm d’extraits de feuilles contre des bactéries productrices ou non de bêta-lactamases à spectre élargi.",
+        sourceUrl: "https://pubmed.ncbi.nlm.nih.gov/42821538/",
+      },
+      {
+        pmid: "42477859",
+        doi: "10.1155/bmri/6579435",
+        title:
+          "Anti-Infective Effect of Anacardium occidentale L. Flowers Against ESKAPE Group Bacteria In Vitro, In Vivo, and In Silico",
+        authors: "Santos PG, Farias JR, Muniz SB, Franco DCG, Fontes AJC, Santos LMR, Nascimento FRF, Rocha CQ, Dos Santos Soares AM, Guerra RNM",
+        journal: "BioMed Research International",
+        publicationYear: 2026,
+        publicationTypes: ["Journal Article"],
+        abstractText:
+          "Extrait éthanolique de fleurs d’Anacardium occidentale testé sur les bactéries du groupe ESKAPE (in vitro, larves, amarrage moléculaire).",
+        sourceUrl: "https://pubmed.ncbi.nlm.nih.gov/42477859/",
+      },
+    ];
+
+    for (const candidate of candidateRows) {
+      await tx
+        .insert(literatureCandidates)
+        .values({
+          ...candidate,
+          status: "PENDING_REVIEW",
+          reviewNote:
+            "Notice repérée manuellement lors de la constitution du corpus : à relire avant toute intégration (elle ne crée ni affirmation ni niveau de preuve).",
+          firstSeenAt: new Date(),
+          lastSeenAt: new Date(),
+          discoveryCount: 1,
+        })
+        .onConflictDoUpdate({
+          target: literatureCandidates.pmid,
+          set: {
+            title: candidate.title,
+            authors: candidate.authors,
+            journal: candidate.journal,
+            publicationYear: candidate.publicationYear,
+            doi: candidate.doi,
+            abstractText: candidate.abstractText,
+            sourceUrl: candidate.sourceUrl,
+          },
+        });
     }
 
     const [malaria] = await tx
@@ -2321,6 +2434,7 @@ async function seed() {
       claims: claimBySlug.size,
       compounds: compoundBySlug.size,
       traditionalUses: useRows.length,
+      candidates: candidateRows.length,
       targets: targetBySlug.size,
       preparations: preparationBySlug.size,
     };

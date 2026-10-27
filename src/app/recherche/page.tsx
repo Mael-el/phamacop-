@@ -3,7 +3,7 @@ import { Breadcrumbs } from "@/components/breadcrumbs";
 import { Icon } from "@/components/icon";
 import { PubMedCandidateCard } from "@/components/pubmed-candidate-card";
 import { SearchForm } from "@/components/search-form";
-import { discoverPubMedCandidates } from "@/lib/discovery";
+import { discoverPubMedCandidates, searchCollectedCandidates } from "@/lib/discovery";
 import { searchCatalog } from "@/lib/catalog";
 import { getDictionary } from "@/lib/i18n";
 
@@ -12,13 +12,17 @@ export const dynamic = "force-dynamic";
 export default async function SearchPage({ searchParams }: { searchParams: Promise<{ q?: string | string[] }> }) {
   const params = await searchParams;
   const query = typeof params.q === "string" ? params.q.trim().slice(0, 100) : "";
-  const [{ t }, localResults, pubmed] = await Promise.all([
+  const [{ t }, localResults, pubmed, collected] = await Promise.all([
     getDictionary(),
     query.length >= 2 ? searchCatalog(query) : Promise.resolve([]),
     query.length >= 3
       ? discoverPubMedCandidates(query)
       : Promise.resolve({ candidates: [], status: "no-results" as const }),
+    // Repli hors ligne : les notices déjà collectées restent interrogeables.
+    query.length >= 2 ? searchCollectedCandidates(query) : Promise.resolve([]),
   ]);
+  const externalCandidates = pubmed.candidates.length > 0 ? pubmed.candidates : collected;
+  const usingLocalFallback = pubmed.candidates.length === 0 && collected.length > 0;
   const suggestions = ["paludisme", "diabète", "Nauclea", "biofilm", "Moringa", "amanvivè"];
   const categoryLabel = {
     Plante: t.search.categories.plant,
@@ -91,11 +95,11 @@ export default async function SearchPage({ searchParams }: { searchParams: Promi
             <section className="discovery-section" aria-labelledby="pubmed-results-heading">
               <div className="discovery-heading">
                 <div><p className="section-kicker">{t.search.pubmedKicker}</p><h2 id="pubmed-results-heading">{t.search.pubmedTitle}</h2></div>
-                {pubmed.candidates.length > 0 && <span className="results-count">{pubmed.candidates.length} {pubmed.candidates.length === 1 ? t.search.candidateOne : t.search.candidateMany}</span>}
+                {externalCandidates.length > 0 && <span className="results-count">{externalCandidates.length} {externalCandidates.length === 1 ? t.search.candidateOne : t.search.candidateMany}</span>}
               </div>
-              <p className="discovery-note">{t.search.pubmedNote}</p>
-              {pubmed.candidates.length > 0 ? (
-                <div className="candidate-list">{pubmed.candidates.map((candidate) => <PubMedCandidateCard key={candidate.pmid} candidate={candidate} t={t} />)}</div>
+              <p className="discovery-note">{usingLocalFallback ? t.search.localFallbackNote : t.search.pubmedNote}</p>
+              {externalCandidates.length > 0 ? (
+                <div className="candidate-list">{externalCandidates.map((candidate) => <PubMedCandidateCard key={candidate.pmid} candidate={candidate} t={t} />)}</div>
               ) : pubmed.status === "unavailable" ? (
                 <div className="empty-note">{t.search.unavailable}</div>
               ) : pubmed.status === "not-saved" ? (

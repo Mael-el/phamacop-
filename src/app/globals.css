@@ -774,8 +774,8 @@ em { font-family: var(--serif); }
   }
 }
 @keyframes float-in {
-  from { opacity: 0; transform: translateY(14px); }
-  to   { opacity: 1; transform: translateY(0); }
+  from { opacity: 0; }
+  to   { opacity: 1; }
 }
 
 /* ---------- 8. Petits écrans : on garde l'air, on réduit la densité ---------- */
@@ -820,3 +820,194 @@ em { font-family: var(--serif); }
 .search-suggestions > span { color: var(--muted); font-size: 10.5px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; }
 .empty-note-more { display: block; margin-top: 8px; }
 .empty-note-more a { color: var(--forest); font-weight: 700; text-decoration: underline; text-underline-offset: 2px; }
+
+/* =====================================================================
+   11. Relief minimal — système d'ombres et 3D discrète
+   Lumière unique venant du haut : highlight interne en haut, ombre
+   portée en bas. Profondeur lisible mais jamais décorative.
+   ===================================================================== */
+
+:root {
+  --hl-top: inset 0 1px 0 rgba(255, 255, 255, .85);
+  --hl-top-strong: inset 0 1px 0 rgba(255, 255, 255, .95);
+  --edge-bottom: inset 0 -1px 0 rgba(20, 45, 36, .05);
+
+  --e1: 0 1px 1px rgba(20, 45, 36, .05), 0 2px 4px rgba(20, 45, 36, .04);
+  --e2: 0 1px 2px rgba(20, 45, 36, .06), 0 4px 10px rgba(20, 45, 36, .06),
+        0 10px 22px -12px rgba(20, 45, 36, .22);
+  --e3: 0 2px 4px rgba(20, 45, 36, .07), 0 10px 22px rgba(20, 45, 36, .09),
+        0 22px 44px -18px rgba(20, 45, 36, .28);
+  --e4: 0 3px 6px rgba(20, 45, 36, .08), 0 18px 38px rgba(20, 45, 36, .12),
+        0 36px 70px -24px rgba(20, 45, 36, .34);
+}
+
+/* ---------- Surfaces : une seule lumière, trois niveaux ---------- */
+.plant-card,
+.record-card,
+.claim-card,
+.study-card,
+.solution-card,
+.compound-mini,
+.glossary-card,
+.evidence-method-card,
+.result-row,
+.pathway-chain,
+.claim-pathway,
+.tradition-panel,
+.safety-panel,
+.page-hero-aside,
+.identity-card,
+.detail-aside > .aside-card {
+  background: linear-gradient(180deg, #ffffff 0%, var(--paper-3) 62%, #fbfaf3 100%);
+  border: 1px solid color-mix(in srgb, var(--ink) 9%, transparent);
+  box-shadow: var(--hl-top), var(--edge-bottom), var(--e1);
+  transition: box-shadow var(--t-base) var(--ease), transform var(--t-base) var(--ease),
+    border-color var(--t-base) var(--ease);
+}
+
+/* Élévation au survol : la carte se soulève vers la lumière */
+.plant-card:hover,
+.record-card:hover,
+.solution-card:hover,
+.glossary-card:hover,
+.compound-mini:hover {
+  transform: translateY(-4px);
+  border-color: color-mix(in srgb, var(--leaf) 42%, transparent);
+  box-shadow: var(--hl-top-strong), var(--edge-bottom), var(--e2), 0 26px 48px -26px rgba(20, 45, 36, .35);
+}
+
+/* Légère inclinaison : de la profondeur, pas du spectacle */
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .plant-card,
+  .record-card {
+    transform-style: preserve-3d;
+    will-change: transform;
+  }
+  .plant-card:hover,
+  .record-card:hover {
+    transform: translateY(-4px) rotateX(.6deg);
+  }
+}
+
+/* ---------- Boutons : appuyés, pas décorés ---------- */
+.button {
+  position: relative;
+  background-image: linear-gradient(180deg, rgba(255, 255, 255, .35), rgba(255, 255, 255, 0) 55%);
+  border: 1px solid transparent;
+  box-shadow: var(--hl-top-strong), 0 1px 2px rgba(16, 43, 35, .16), 0 8px 18px -10px rgba(16, 43, 35, .55);
+}
+.button:hover { box-shadow: var(--hl-top-strong), 0 2px 4px rgba(16, 43, 35, .18), 0 14px 26px -12px rgba(16, 43, 35, .55); }
+.button:active {
+  transform: translateY(1px);
+  box-shadow: inset 0 1px 2px rgba(16, 43, 35, .18), 0 1px 1px rgba(16, 43, 35, .1);
+}
+.button-primary { background-color: #e6ead6; border-color: rgba(255, 255, 255, .55); }
+.button-ghost {
+  background-image: linear-gradient(180deg, rgba(255, 255, 255, .12), rgba(255, 255, 255, 0) 60%);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .18), 0 1px 2px rgba(0, 0, 0, .25);
+}
+.button-ghost:active { box-shadow: inset 0 2px 4px rgba(0, 0, 0, .3); }
+
+/* ---------- Champs : creusés quand actifs ---------- */
+.search-form {
+  background: linear-gradient(180deg, #f7f6ef 0%, var(--paper-3) 45%);
+  box-shadow: inset 0 1px 2px rgba(20, 45, 36, .07), var(--hl-top-strong), var(--e1);
+}
+.search-form:focus-within {
+  box-shadow: inset 0 1px 2px rgba(20, 45, 36, .05), 0 0 0 4px color-mix(in srgb, var(--leaf) 18%, transparent), var(--e2);
+}
+.search-form button {
+  background-image: linear-gradient(180deg, #2a5b47, var(--forest));
+  box-shadow: var(--hl-top), 0 1px 2px rgba(16, 43, 35, .28), 0 6px 14px -8px rgba(16, 43, 35, .5);
+}
+.search-form button:active { transform: translateY(1px); box-shadow: inset 0 2px 4px rgba(0, 0, 0, .3); }
+
+/* ---------- Pastilles et filtres ---------- */
+.filter-chip {
+  background-image: linear-gradient(180deg, #ffffff, #f1f0e6);
+  box-shadow: var(--hl-top), 0 1px 2px rgba(20, 45, 36, .07);
+}
+.filter-chip:hover { box-shadow: var(--hl-top-strong), var(--e2); }
+.filter-chip.active {
+  background-image: linear-gradient(180deg, #2b5d49, var(--forest));
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .18), inset 0 -2px 6px rgba(0, 0, 0, .18), var(--e1);
+  border-color: rgba(16, 43, 35, .5);
+}
+.evidence-badge {
+  box-shadow: var(--hl-top-strong), 0 1px 2px rgba(20, 45, 36, .08);
+}
+.evidence-badge:hover { box-shadow: var(--hl-top-strong), var(--e2); }
+
+/* ---------- Images : cadre et reflet ---------- */
+.photo-thumb,
+.photo-figure-image,
+.hero-art-image {
+  box-shadow: inset 0 0 0 1px rgba(20, 45, 36, .08), 0 1px 2px rgba(20, 45, 36, .1), 0 14px 30px -18px rgba(20, 45, 36, .45);
+}
+.hero-art {
+  box-shadow: var(--hl-top), 0 20px 50px -22px rgba(0, 0, 0, .55), inset 0 0 0 1px rgba(255, 255, 255, .12);
+}
+.photo-thumb::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background: linear-gradient(180deg, rgba(255, 255, 255, .16), rgba(255, 255, 255, 0) 40%);
+}
+
+/* ---------- En-tête : tranche d'ombre sous la barre ---------- */
+.site-header {
+  box-shadow: 0 1px 0 rgba(20, 45, 36, .06), 0 8px 24px -18px rgba(20, 45, 36, .5);
+}
+.brand-mark {
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .25), 0 1px 2px rgba(16, 43, 35, .3), 0 6px 12px -6px rgba(16, 43, 35, .5);
+}
+
+/* ---------- Sélecteur de langue et panneaux ---------- */
+.locale-switcher {
+  background-image: linear-gradient(180deg, #ffffff, #f3f2e9);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .9), 0 1px 2px rgba(20, 45, 36, .08);
+}
+.locale-option.active {
+  background-image: linear-gradient(180deg, #2b5d49, var(--forest));
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .2), 0 1px 3px rgba(16, 43, 35, .35);
+}
+.tradition-notice,
+.pathology-caution,
+.legal-block,
+.detail-aside-note {
+  box-shadow: var(--hl-top), var(--e1);
+}
+.stat-card,
+.hero-stat strong {
+  text-shadow: 0 1px 0 rgba(255, 255, 255, .6);
+}
+
+/* ---------- Profondeur dans les pages de détail ---------- */
+.detail-aside { perspective: 1200px; }
+.detail-section + .detail-section { margin-top: 2px; }
+.claim-pathway {
+  background-image: linear-gradient(180deg, #fbfaf4, #f4f3ea);
+  box-shadow: inset 0 1px 2px rgba(20, 45, 36, .05), var(--hl-top);
+}
+.pathway-chain {
+  background-image: linear-gradient(180deg, #ffffff, #f8f7f0);
+  box-shadow: var(--hl-top), var(--e2);
+}
+.pathway-chain-links a {
+  box-shadow: var(--hl-top), 0 1px 2px rgba(20, 45, 36, .08);
+}
+.pathway-chain-links a:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--hl-top-strong), var(--e2);
+}
+
+/* ---------- Pied de page : socle ---------- */
+.site-footer {
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .06), 0 -20px 40px -30px rgba(0, 0, 0, .6);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .plant-card, .record-card, .button, .pathway-chain-links a { transform: none !important; }
+}
