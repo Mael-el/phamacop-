@@ -1018,6 +1018,110 @@ em { font-family: var(--serif); }
 
 /* ---------- Pied de page : socle ---------- */
 .site-footer {
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .6);
+}
+
+/* ---------- Animations & finitions pro ---------- */
+@media (prefers-reduced-motion: no-preference) {
+  @keyframes fadeSlideUp {
+    from {
+      opacity: 0;
+      transform: translateY(14px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes botanicalFloat {
+    0%, 100% {
+      transform: translate3d(0, 0, 0) scale(1);
+    }
+    50% {
+      transform: translate3d(0, 10px, 0) scale(1.018);
+    }
+  }
+
+  .home-hero::before {
+    animation: botanicalFloat 14s var(--ease) infinite;
+  }
+
+  .hero-copy .eyebrow {
+    animation: fadeSlideUp .55s var(--ease) both;
+  }
+  .hero-copy h1 {
+    animation: fadeSlideUp .65s var(--ease) .07s both;
+  }
+  .hero-copy .hero-intro {
+    animation: fadeSlideUp .65s var(--ease) .14s both;
+  }
+  .hero-copy .hero-actions {
+    animation: fadeSlideUp .65s var(--ease) .21s both;
+  }
+  .hero-art {
+    animation: fadeSlideUp .75s var(--ease) .16s both;
+    transition: transform .45s var(--ease), box-shadow .45s var(--ease);
+  }
+  .hero-art:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--hl-top), 0 28px 60px -22px rgba(0, 0, 0, .62), inset 0 0 0 1px rgba(255, 255, 255, .18);
+  }
+
+  .page-hero-inner > div {
+    animation: fadeSlideUp .55s var(--ease) both;
+  }
+  .page-hero-aside {
+    animation: fadeSlideUp .6s var(--ease) .1s both;
+  }
+
+  .plant-card,
+  .record-card,
+  .claim-card,
+  .study-card,
+  .solution-card {
+    animation: fadeSlideUp .5s var(--ease) both;
+    transition: transform .28s var(--ease), box-shadow .28s var(--ease), border-color .28s var(--ease);
+  }
+
+  .plant-card:hover,
+  .record-card:hover,
+  .solution-card:hover {
+    border-color: color-mix(in srgb, var(--gold) 55%, var(--line));
+  }
+
+  .desktop-nav a {
+    position: relative;
+    padding-block: 4px;
+  }
+  .desktop-nav a::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 1.5px;
+    background: var(--rust);
+    transform: scaleX(0);
+    transform-origin: left center;
+    transition: transform .22s var(--ease);
+  }
+  .desktop-nav a:hover::after,
+  .desktop-nav a[aria-current="page"]::after {
+    transform: scaleX(1);
+  }
+  .desktop-nav a[aria-current="page"] {
+    color: var(--forest);
+  }
+
+  .brand-mark {
+    transition: transform .28s var(--ease), background-color .28s var(--ease);
+  }
+  .brand:hover .brand-mark {
+    transform: rotate(-6deg) scale(1.05);
+  }
+}
+.site-footer {
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, .06), 0 -20px 40px -30px rgba(0, 0, 0, .6);
 }
 
