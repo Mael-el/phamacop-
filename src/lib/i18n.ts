@@ -25,11 +25,11 @@ type DeepStrings<T> = { [K in keyof T]: T[K] extends string ? string : DeepStrin
 
 const fr = {
   meta: {
-    siteName: "Herbier africain",
-    brandLine1: "HERBIER",
-    brandLine2: "AFRICAIN",
-    brandAria: "Pharmacopée végétale africaine, accueil",
-    defaultTitle: "Herbier africain — plantes du Bénin et d’Afrique, preuves et sources",
+    siteName: "phamacopé",
+    brandLine1: "PHAMACOPÉ",
+    brandLine2: "AFRIQUE",
+    brandAria: "phamacopé — accueil",
+    defaultTitle: "phamacopé — plantes du Bénin et d’Afrique, preuves et sources",
     defaultDescription:
       "Base documentaire de pharmacopée végétale africaine : plantes du Bénin et d’Afrique de l’Ouest, usages rapportés, études scientifiques, niveaux de preuve et limites, références DOI et PubMed.",
   },
@@ -504,11 +504,11 @@ export type Dictionary = DeepStrings<typeof fr>;
 
 const fon: Dictionary = {
   meta: {
-    siteName: "Afríka atínkɔn",
-    brandLine1: "ATÍNKƆN",
+    siteName: "phamacopé",
+    brandLine1: "PHAMACOPÉ",
     brandLine2: "AFRÍKA",
-    brandAria: "Atínkɔn xwé, bǐbɛ́mɛ",
-    defaultTitle: "Afríka atínkɔn — atín, nùnyá kpodó xógbɛ́ kpó",
+    brandAria: "phamacopé — bǐbɛ́mɛ",
+    defaultTitle: "phamacopé — atín, nùnyá kpodó xógbɛ́ kpó",
     defaultDescription:
       "Wema kpɔ́n atínkɔn tɔn: atín e ɖò Benɛ̂n kpodó Afríka wè lɛ é, nǔ e kɔ́nú ɖɔ, wema nùnyá tɔn, kpodó nǔ e è tuùn ǎ lɛ́ kpó.",
   },
