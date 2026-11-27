@@ -8,10 +8,14 @@ import "./globals.css";
 export async function generateMetadata(): Promise<Metadata> {
   const { locale, t } = await getDictionary();
   return {
-    metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "https://herbier-ouest-africain.example"),
+    metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "https://phamacope.vercel.app"),
     title: { default: t.meta.defaultTitle, template: `%s · ${t.meta.siteName}` },
     description: t.meta.defaultDescription,
     applicationName: t.meta.siteName,
+    icons: {
+      icon: "/logo.png",
+      apple: "/logo.png",
+    },
     openGraph: {
       type: "website",
       locale: locale === "fon" ? "fr_BJ" : "fr_FR",
