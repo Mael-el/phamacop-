@@ -21,7 +21,9 @@ export function SiteHeader({ t, locale }: { t: Dictionary; locale: Locale }) {
     <header className="site-header">
       <div className="header-main wrap">
         <Link href="/" className="brand" aria-label={t.meta.brandAria}>
-          <span className="brand-mark"><Icon name="leaf" size={23} /></span>
+          <span className="brand-mark">
+            <img src="/logo.png" alt="" width={38} height={38} className="brand-logo" />
+          </span>
           <span className="brand-copy"><strong>{t.meta.brandLine1}</strong><span>{t.meta.brandLine2}</span></span>
         </Link>
         <NavLinks items={navigation} className="desktop-nav" ariaLabel={t.nav.mainAria} />
